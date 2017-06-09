@@ -9,7 +9,7 @@ SET(CMAKE_SYSTEM_NAME Generic)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.8.1)
 
 # define project name
-PROJECT("EFM32 Bootloader")
+PROJECT("EFR32 Bootloader")
 
 # include essential libraries
 INCLUDE(CMakeForceCompiler)
