@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-rf4ce-zrc20" name="Plugin Commands: ZigBee Remote Control 2.0 Profile">
+    <description>
+      The RF4CE ZRC 2.0 plugin contributes several commands to the application framework's CLI.
+    </description>
+  </group>
+  <command cli="plugin rf4ce-zrc20 bind" functionName="emberAfPluginRf4ceZrc20BindCommand" group="plugin-rf4ce-zrc20">
+    <description>
+      Initiate the binding procedure.
+    </description>
+    <arg name="searchDevType" type="INT8U" description="The device type to discovery." />
+  </command>
+  <command cli="plugin rf4ce-zrc20 proxy-bind" functionName="emberAfPluginRf4ceZrc20ProxyBindCommand" group="plugin-rf4ce-zrc20">
+    <description>
+      Initiate the proxy binding procedure.
+    </description>
+    <arg name="panId"   type="INT16U"       description="The pan id of the recipient." />
+    <arg name="ieee"    type="IEEE_ADDRESS" description="The IEEE address of the recipient." />
+  </command>
+  <command cli="plugin rf4ce-zrc20 start" functionName="emberAfPluginRf4ceZrc20StartCommand" group="plugin-rf4ce-zrc20">
+    <description>
+      Start an action.
+    </description>
+    <arg name="pairingIndex"   type="INT8U"        description="The index of the entry in the pairing table to which to send the action." />
+    <arg name="actionBank"     type="INT8U"        description="The action bank." />
+    <arg name="actionCode"     type="INT8U"        description="The action code" />
+    <arg name="actionModifier" type="INT8U"        description="The action modifier bits." />
+    <arg name="actionVendorId" type="INT16U"       description="The action vendor id." />
+    <arg name="actionData"     type="OCTET_STRING" description="The action data." />
+    <arg name="atomic"         type="BOOLEAN"      description="0 for an atomic action or 1 for a repeating action." />
+  </command>
+  <command cli="plugin rf4ce-zrc20 stop" functionName="emberAfPluginRf4ceZrc20StopCommand" group="plugin-rf4ce-zrc20">
+    <description>
+      Stop an action.
+    </description>
+    <arg name="pairingIndex"   type="INT8U"  description="The index of the entry in the pairing table to which the action was sent." />
+    <arg name="actionBank"     type="INT8U"  description="The action bank." />
+    <arg name="actionCode"     type="INT8U"  description="The action code." />
+    <arg name="actionModifier" type="INT8U"  description="The action modifier bits." />
+    <arg name="actionVendorId" type="INT16U" description="The action vendor id." />
+  </command>
+</cli>

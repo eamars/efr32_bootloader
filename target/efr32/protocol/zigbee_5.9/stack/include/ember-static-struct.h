@@ -1,0 +1,141 @@
+/*
+ * File: ember-static-struct.h
+ * Description: Type definitions for customer configurable memory allocations
+ * Author(s): Richard Kelsey, kelsey@ember.com
+ *
+ * Copyright 2004 by Ember Corporation. All rights reserved.                *80*
+ */
+
+#ifndef __EMBER_STATIC_STRUCT_H__ 
+#define __EMBER_STATIC_STRUCT_H__
+
+// This file is used in conjunction with ember-static-memory.h
+//  to provide typedefs for structures allocated there.
+
+// #########################################################
+// # Application developers should not modify any portion  #
+// #  of this file.  Doing so may lead to mysterious bugs. #
+// #########################################################
+
+// Neighbors
+
+typedef struct {
+  uint16_t data0[2];
+  uint8_t  data1[10];
+} EmNeighborTableEntry;
+
+// Routing
+
+typedef struct {
+  uint16_t data0[2];
+  uint8_t data1[2];
+} EmRouteTableEntry;
+
+typedef struct {
+  uint16_t source;
+  uint16_t sender;
+  uint8_t  id;
+  uint8_t  forwardRoutingCost;
+  uint8_t  quarterSecondsToLive;
+  uint8_t  routeTableIndex;
+} EmDiscoveryTableEntry;
+
+typedef struct {
+  uint16_t source; 
+  uint8_t sequence;    
+  uint16_t neighborBitmask;
+} EmBroadcastTableEntry;
+
+typedef struct {
+  uint8_t data0[2];
+  uint16_t data1[2];
+  uint8_t type;
+} EmRetryQueueEntry;
+
+// APS
+
+typedef struct {
+  uint16_t data0;
+  uint8_t data1[8];
+  uint8_t data2;
+} EmAddressTableEntry;
+
+typedef struct {
+  uint16_t data0;
+  uint8_t data1[4];
+} EmApsUnicastMessageData;
+
+typedef struct {
+  uint8_t identifier[8];
+  uint8_t key[16];
+  uint8_t info;
+} EmKeyTableEntry;
+
+// Network general info
+
+typedef struct {
+  uint8_t stackProfile;
+  uint16_t parentId;
+  uint8_t parentEui64[8];
+  uint8_t nodeType;
+  uint8_t zigbeeState;
+  uint8_t radioChannel;
+  int8_t radioPower;
+  uint16_t localNodeId;
+  uint16_t localPanId;
+
+  uint32_t securityStateBitmask;
+  uint8_t macDataSequenceNumber;
+  uint8_t zigbeeSequenceNumber;
+  uint8_t apsSequenceNumber;
+  uint8_t zigbeeNetworkSecurityLevel;
+
+  // Network security stuff
+  uint32_t nextNwkFrameCounter;
+  uint8_t securityKeySequenceNumber;
+
+  // APS security stuff
+  uint32_t incomingTcLinkKeyFrameCounter;
+
+  // Neighbor table
+  EmNeighborTableEntry* neighborTable;
+  uint8_t neighborTableSize;
+  uint8_t neighborCount;
+
+  // Incoming frame counters table
+  uint32_t* frameCounters;
+
+  // Child aging stuff
+  //----------------------------------------------------------------
+  // The last time we updated the child timers for each unit.
+  // The milliseconds needs to be larger because we use it on children, who
+  // may go a long time between calls to emberTick().
+  uint32_t lastChildAgeTimeMs;
+  uint16_t lastChildAgeTimeSeconds;
+
+  // The number of ticks since our last successful poll.  Ticks are seconds
+  // for mobile devices and (seconds << emberEndDevicePollTimeoutShift) for
+  // other end devices.
+  uint32_t ticksSinceLastPoll; // for timing out our parent
+  uint32_t msSinceLastPoll;   // for APS retry timeout adjustment
+
+  // Transmission statistics that are reported in NWK_UPDATE_RESPONSE ZDO
+  // messages.
+  uint16_t unicastTxAttempts;
+  uint16_t unicastTxFailures;
+} EmberNetworkInfo;
+
+// RF4CE
+
+typedef struct {
+  uint32_t submitTime;
+  uint32_t frameCounter;
+  uint8_t packet;
+  uint8_t txOptions;
+  uint8_t channel;
+  uint8_t pairingIndex;
+  uint8_t txCount;
+  uint8_t tag;
+} EmRf4ceOutgoingPacketInfoEntry;
+
+#endif // #ifndef __EMBER_STATIC_STRUCT_H__

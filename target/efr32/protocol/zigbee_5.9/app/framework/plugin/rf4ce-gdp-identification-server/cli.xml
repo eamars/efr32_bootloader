@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-rf4ce-gdp-identification-server" name="Plugin Commands: Generic Device Profile Identification Server">
+    <description>
+      The RF4CE GDP Identification Server plugin contributes several commands to the application framework's CLI.
+    </description>
+  </group>
+  <command cli="plugin rf4ce-gdp-identification-server identify" functionName="emberAfRf4ceGdpIdentificationServerIdentifyCommand" group="plugin-rf4ce-gdp-identification-server">
+    <description>
+      Send an Identify command to an identification client.  If the local device is a polling server and hte identification client is also a polling client, the plugin will wait for the next poll before sending the command.
+    </description>
+    <arg name="pairingIndex" type="INT8U"  description="The index of the entry in the pairing table to which to send the command." />
+    <arg name="flags"        type="INT8U"  description="The identify flags." />
+    <arg name="timeS"        type="INT16U" description="The identify time in seconds." />
+  </command>
+</cli>

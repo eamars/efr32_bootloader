@@ -1,0 +1,141 @@
+#include PLATFORM_HEADER
+#include EMBER_AF_API_EMBER_TYPES
+#include EMBER_AF_API_RF4CE_PROFILE
+#include EMBER_AF_API_RF4CE_MSO
+
+/** @brief Start Validation
+ *
+ * This function is called by the RF4CE MSO plugin when a temporary pairing has
+ * been successfully created and the application should begin the validation
+ * procedure.  The application must complete the validation within the
+ * validation wait time (if set) and also kick the watchdog within the initial
+ * watchdog timeout (if set) to avoid the validation automatically failing due
+ * to a timeout.
+ *
+ * @param pairingIndex The index of the pairing entry.  Ver.: always
+ */
+void emberAfPluginRf4ceMsoStartValidationCallback(uint8_t pairingIndex)
+{
+}
+
+/** @brief Binding Complete
+ *
+ * This function is called by the RF4CE MSO plugin when the binding operation
+ * completes.  If status is ::EMBER_SUCCESS, binding was successful and
+ * pairingIndex indicates the index in the pairing table for the remote node.
+ *
+ * @param status The status of the binding operation.  Ver.: always
+ * @param pairingIndex The index of the pairing entry.  Ver.: always
+ */
+void emberAfPluginRf4ceMsoBindingCompleteCallback(EmberAfRf4ceMsoBindingStatus status,
+                                                  uint8_t pairingIndex)
+{
+}
+
+/** @brief User Control
+ *
+ * This function is called by the RF4CE MSO plugin when a user control starts or
+ * stops.  If the type of the record is
+ * ::EMBER_AF_RF4CE_MSO_COMMAND_USER_CONTROL_PRESSED, the application should
+ * execute the requested operation repeatedly at some application-specific rate.
+ *  When the repetition should stop, the plugin will call the callback again
+ * with the type set to ::EMBER_AF_RF4CE_MSO_COMMAND_USER_CONTROL_RELEASED.
+ * ::EMBER_AF_RF4CE_MSO_COMMAND_USER_CONTROL_REPEATED is a special case of
+ * ::EMBER_AF_RF4CE_MSO_COMMAND_USER_CONTROL_PRESSED and means that the pressed
+ * command from the originator was not received and that the originator is still
+ * triggering the action.  The application should process a repeat type the same
+ * as a pressed type, but may wish to perform additional operations to
+ * compensate for missed commands.
+ *
+ * @param record The user control record.  Ver.: always
+ */
+void emberAfPluginRf4ceMsoUserControlCallback(const EmberAfRf4ceMsoUserControlRecord *record)
+{
+}
+
+/** @brief Get Ir Rf Database Attribute
+ *
+ * This function is called by the RF4CE MSO plugin when a target is queried by a
+ * controller for one of the IR_RF_DATABASE attributes. The application is
+ * responsible for storing these attributes. If the application currently stores
+ * an entry for the corresponding passed pairing index and entry index, it
+ * should copy the content of such attribute at the passed 'value' pointer and
+ * return ::EMBER_AF_RF4CE_STATUS_SUCCESS, otherwise it should return an
+ * ::EmberAfRf4ceStatus indicating the reason of failure.  valueLength is a
+ * pointer to an integer that indicates the length of the buffer pointed to by
+ * value.  The application must not write more than *valueLength bytes to value.
+ *  If the application returns ::EMBER_AF_RF4CE_STATUS_SUCCESS, it must also
+ * update *valueLength to indicate the number of bytes actually written to
+ * value.
+ *
+ * @param pairingIndex The pairing index of the requested attribute.  Ver.:
+ * always
+ * @param entryIndex The entry index of the requested attribute.  Ver.: always
+ * @param valueLength A pointer to the size of the buffer pointed to by value
+ * that must be updated with the length written to value.  Ver.: always
+ * @param value A pointer where the application should copy the content of the
+ * requested attribute.  Ver.: always
+ */
+EmberAfRf4ceStatus emberAfPluginRf4ceMsoGetIrRfDatabaseAttributeCallback(uint8_t pairingIndex,
+                                                                         uint8_t entryIndex,
+                                                                         uint8_t *valueLength,
+                                                                         uint8_t *value)
+{
+  return EMBER_AF_RF4CE_STATUS_UNSUPPORTED_ATTRIBUTE;
+}
+
+/** @brief Have Ir Rf Database Attribute
+ *
+ * This function is called by the RF4CE MSO plugin when a target is queried by a
+ * controller for one of the IR_RF_DATABASE attributes. The application is
+ * responsible for storing these attributes. If the application currently stores
+ * an entry for the corresponding passed pairing index and entry index, it
+ * should return true, otherwise it should return false.
+ *
+ * @param pairingIndex The pairing index of the requested attribute.  Ver.:
+ * always
+ * @param entryIndex The entry index of the requested attribute.  Ver.: always
+ */
+bool emberAfPluginRf4ceMsoHaveIrRfDatabaseAttributeCallback(uint8_t pairingIndex,
+                                                               uint8_t entryIndex)
+{
+  return false;
+}
+
+/** @brief Incoming Ir Rf Database Attribute
+ *
+ * This function is called by the RF4CE MSO plugin when controller receives a
+ * get attribute response for one of the IR_RF_DATABASE attributes. The
+ * application is responsible for storing these attributes.
+ *
+ * @param pairingIndex The pairing index of the requested attribute.  Ver.:
+ * always
+ * @param entryIndex The entry index of the requested attribute.  Ver.: always
+ * @param valueLength The length of the requested attribute.  Ver.: always
+ * @param value A pointer to the content of the requested attribute.  Ver.:
+ * always
+ */
+void emberAfPluginRf4ceMsoIncomingIrRfDatabaseAttributeCallback(uint8_t pairingIndex,
+                                                                uint8_t entryIndex,
+                                                                uint8_t valueLength,
+                                                                const uint8_t *value)
+{
+}
+
+/** @brief Get Ir Rf Database Entry
+ *
+ * This function is called by the RF4CE MSO plugin to retrieve the IR-RF
+ * database entry for a key code when the controller is sending user control
+ * commands.  The application should return ::EMBER_SUCCESS and populate the
+ * entry if the IR-RF database entry is available for the RC command code.
+ * Otherwise, the application should return an error code.
+ *
+ * @param keyCode The RC command code of the user control.  Ver.: always
+ * @param entry A pointer to the ::EmberAfRf4ceMsoIrRfDatabaseEntry to be
+ * populated.  Ver.: always
+ */
+EmberStatus emberAfPluginRf4ceMsoGetIrRfDatabaseEntryCallback(EmberAfRf4ceMsoKeyCode keyCode,
+                                                              EmberAfRf4ceMsoIrRfDatabaseEntry *entry)
+{
+  return EMBER_LIBRARY_NOT_PRESENT;
+}

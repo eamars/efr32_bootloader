@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-rf4ce-mso" name="Plugin Commands: RF4CE Multiple System Operators Profile">
+    <description>
+      The RF4CE MSO plugin contributes several commands to the application framework's CLI.  These commands are used for sending HDMI UI commands.
+    </description>
+  </group>
+  <command cli="plugin rf4ce-mso bind" functionName="emberAfPluginRf4ceMsoBindCommand" group="plugin-rf4ce-mso">
+    <description>
+      Start the MSO binding procedure.
+    </description>
+  </command>
+  <command cli="plugin rf4ce-mso validate" functionName="emberAfPluginRf4ceMsoValidateCommand" group="plugin-rf4ce-mso">
+    <description>
+      Validate a controller.
+    </description>
+  </command>
+  <command cli="plugin rf4ce-mso terminate" functionName="emberAfPluginRf4ceMsoTerminateCommand" group="plugin-rf4ce-mso">
+    <description>
+      Terminate the validation procedure.
+    </description>
+  </command>
+  <command cli="plugin rf4ce-mso abort" functionName="emberAfPluginRf4ceMsoAbortCommand" group="plugin-rf4ce-mso">
+    <description>
+      Abort the validation procedure.
+    </description>
+    <arg name="full" type="BOOLEAN" description="TRUE for a full abort of FALSE otherwise." />
+  </command>
+  <command cli="plugin rf4ce-mso press" functionName="emberAfPluginRf4ceMsoPressCommand" group="plugin-rf4ce-mso">
+    <description>
+      Send User Control Pressed command.
+    </description>
+    <arg name="pairingIndex"     type="INT8U"        description="The index of the entry in the pairing table to which to send the command." />
+    <arg name="rcCommandCode"    type="INT8U"        description="The HDMI CEC operand [UI Command]." />
+    <arg name="rcCommandPayload" type="OCTET_STRING" description="The additional operands, if any, required by the HDMI CEC command." />
+    <arg name="atomic"           type="BOOLEAN"      description="TRUE if the user control is atomic or FALSE if it should repeat." />
+  </command>
+  <command cli="plugin rf4ce-mso release" functionName="emberAfPluginRf4ceMsoReleaseCommand" group="plugin-rf4ce-mso">
+    <description>
+      Send User Control Released command.
+    </description>
+    <arg name="pairingIndex"  type="INT8U" description="The index of the entry in the pairing table to which to send the command." />
+    <arg name="rcCommandCode" type="INT8U" description="The HDMI CEC operand [UI Command]." />
+  </command>
+  <command cli="plugin rf4ce-mso set" functionName="emberAfPluginRf4ceMsoSetCommand" group="plugin-rf4ce-mso">
+    <description>
+      Send Set Attribute Request command.
+    </description>
+    <arg name="pairingIndex" type="INT8U"        description="The index of the entry in the pairing table to which to send the command." />
+    <arg name="attributeId"  type="INT8U"        description="The attribute id to store." />
+    <arg name="index"        type="INT8U"        description="The index of the element to store." />
+    <arg name="value"        type="OCTET_STRING" description="The value of the attribute element to store." />
+  </command>
+  <command cli="plugin rf4ce-mso get" functionName="emberAfPluginRf4ceMsoGetCommand" group="plugin-rf4ce-mso">
+    <description>
+      Send Get Attribute Request command.
+    </description>
+    <arg name="pairingIndex" type="INT8U" description="The index of the entry in the pairing table to which to send the command." />
+    <arg name="attributeId"  type="INT8U" description="The attribute id to retrieve." />
+    <arg name="index"        type="INT8U" description="The index of the element to retrieve." />
+    <arg name="valueLen"     type="INT8U" description="The length of the attribute element to retrieve." />
+  </command>
+</cli>

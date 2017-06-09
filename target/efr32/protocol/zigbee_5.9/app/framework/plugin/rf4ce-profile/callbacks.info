@@ -1,0 +1,865 @@
+#include PLATFORM_HEADER
+#include EMBER_AF_API_EMBER_TYPES
+#include EMBER_AF_API_RF4CE_PROFILE
+
+/** @brief Gdp Message Sent
+ *
+ * This function is called by the RF4CE Profile plugin when a GDP message is
+ * sent. It is expected to return true if the sent message was processed by the
+ * GDP plugin, false otherwise.
+ *
+ * @param pairingIndex The index of the entry in the pairing table used to
+ * transmit the message.  Ver.: always
+ * @param profileId The profile ID included in the message.  Ver.: always
+ * @param vendorId The vendor ID included in the message.  Ver.: always
+ * @param messageTag The tag of the message.  Ver.: always
+ * @param message A pointer to the payload of the message that was sent.  Ver.:
+ * always
+ * @param messageLength The length in bytes of the message.  Ver.: always
+ * @param status An ::EmberStatus value.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileGdpMessageSentCallback(uint8_t pairingIndex,
+                                                        uint8_t profileId,
+                                                        uint16_t vendorId,
+                                                        uint8_t messageTag,
+                                                        const uint8_t *message,
+                                                        uint8_t messageLength,
+                                                        EmberStatus status)
+{
+  return false;
+}
+
+/** @brief Remote Control 1 1 Message Sent
+ *
+ * This function is called by the RF4CE Profile plugin when a Remote Control 1.0
+ * or 1.1 message is sent.
+ *
+ * @param pairingIndex The index of the entry in the pairing table used to
+ * transmit the message.  Ver.: always
+ * @param vendorId The vendor ID included in the message.  Ver.: always
+ * @param messageTag The tag of the message.  Ver.: always
+ * @param message A pointer to the payload of the message that was sent.  Ver.:
+ * always
+ * @param messageLength The length in bytes of the message.  Ver.: always
+ * @param status An ::EmberStatus value.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileRemoteControl11MessageSentCallback(uint8_t pairingIndex,
+                                                                 uint16_t vendorId,
+                                                                 uint8_t messageTag,
+                                                                 const uint8_t *message,
+                                                                 uint8_t messageLength,
+                                                                 EmberStatus status)
+{
+}
+
+/** @brief Zrc 2 0 Message Sent
+ *
+ * This function is called by the RF4CE Profile plugin when a ZRC 2.0 message is
+ * sent.
+ *
+ * @param pairingIndex The index of the entry in the pairing table used to
+ * transmit the message.  Ver.: always
+ * @param vendorId The vendor ID included in the message.  Ver.: always
+ * @param messageTag The tag of the message.  Ver.: always
+ * @param message A pointer to the payload of the message that was sent.  Ver.:
+ * always
+ * @param messageLength The length in bytes of the message.  Ver.: always
+ * @param status An ::EmberStatus value.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileZrc20MessageSentCallback(uint8_t pairingIndex,
+                                                       uint16_t vendorId,
+                                                       uint8_t messageTag,
+                                                       const uint8_t *message,
+                                                       uint8_t messageLength,
+                                                       EmberStatus status)
+{
+}
+
+/** @brief Mso Message Sent
+ *
+ * This function is called by the RF4CE Profile plugin when an MSO message is
+ * sent.
+ *
+ * @param pairingIndex The index of the entry in the pairing table used to
+ * transmit the message.  Ver.: always
+ * @param vendorId The vendor ID included in the message.  Ver.: always
+ * @param messageTag The tag of the message.  Ver.: always
+ * @param message A pointer to the payload of the message that was sent.  Ver.:
+ * always
+ * @param messageLength The length in bytes of the message.  Ver.: always
+ * @param status An ::EmberStatus value.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileMsoMessageSentCallback(uint8_t pairingIndex,
+                                                     uint16_t vendorId,
+                                                     uint8_t messageTag,
+                                                     const uint8_t *message,
+                                                     uint8_t messageLength,
+                                                     EmberStatus status)
+{
+}
+
+/** @brief Message Sent
+ *
+ * This function is called by the RF4CE Profile plugin when a message is sent.
+ * It is called after any profile-specific callbacks.
+ *
+ * @param pairingIndex The index of the entry in the pairing table used to
+ * transmit the message.  Ver.: always
+ * @param profileId The profile ID included in the message.  Ver.: always
+ * @param vendorId The vendor ID included in the message.  Ver.: always
+ * @param messageTag The tag of the message.  Ver.: always
+ * @param message A pointer to the payload of the message that was sent.  Ver.:
+ * always
+ * @param messageLength The length in bytes of the message.  Ver.: always
+ * @param status An ::EmberStatus value.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileMessageSentCallback(uint8_t pairingIndex,
+                                                  uint8_t profileId,
+                                                  uint16_t vendorId,
+                                                  uint8_t messageTag,
+                                                  const uint8_t *message,
+                                                  uint8_t messageLength,
+                                                  EmberStatus status)
+{
+}
+
+/** @brief Gdp Incoming Message
+ *
+ * This function is called by the RF4CE Profile plugin when any message is
+ * received. This callback is expected to return true if the passed message was
+ * processed by the GDP plugin, false otherwise.
+ *
+ * @param pairingIndex The index of the entry in the pairing table corresponding
+ * to the PAN on which the message was received.  Ver.: always
+ * @param profileId The profile ID included in the message.  Ver.: always
+ * @param vendorId The vendor ID included in the message.  Ver.: always
+ * @param txOptions The TX options used by the source node to transmit the
+ * received message.  Ver.: always
+ * @param message A pointer to the payload of the received message.  Ver.:
+ * always
+ * @param messageLength The length in bytes of the received message.  Ver.:
+ * always
+ */
+bool emberAfPluginRf4ceProfileGdpIncomingMessageCallback(uint8_t pairingIndex,
+                                                            uint8_t profileId,
+                                                            uint16_t vendorId,
+                                                            EmberRf4ceTxOption txOptions,
+                                                            const uint8_t *message,
+                                                            uint8_t messageLength)
+{
+  return false;
+}
+
+/** @brief Remote Control 1 1 Incoming Message
+ *
+ * This function is called by the RF4CE Profile plugin when a Remote Control 1.0
+ * or 1.1 message is received.
+ *
+ * @param pairingIndex The index of the entry in the pairing table corresponding
+ * to the PAN on which the message was received.  Ver.: always
+ * @param vendorId The vendor ID included in the message.  Ver.: always
+ * @param txOptions The TX options used by the source node to transmit the
+ * received message.  Ver.: always
+ * @param message A pointer to the payload of the received message.  Ver.:
+ * always
+ * @param messageLength The length in bytes of the received message.  Ver.:
+ * always
+ */
+void emberAfPluginRf4ceProfileRemoteControl11IncomingMessageCallback(uint8_t pairingIndex,
+                                                                     uint16_t vendorId,
+                                                                     EmberRf4ceTxOption txOptions,
+                                                                     const uint8_t *message,
+                                                                     uint8_t messageLength)
+{
+}
+
+/** @brief Zrc 2 0 Incoming Message
+ *
+ * This function is called by the RF4CE Profile plugin when a ZRC 2.0 message is
+ * received.
+ *
+ * @param pairingIndex The index of the entry in the pairing table corresponding
+ * to the PAN on which the message was received.  Ver.: always
+ * @param vendorId The vendor ID included in the message.  Ver.: always
+ * @param txOptions The TX options used by the source node to transmit the
+ * received message.  Ver.: always
+ * @param message A pointer to the payload of the received message.  Ver.:
+ * always
+ * @param messageLength The length in bytes of the received message.  Ver.:
+ * always
+ */
+void emberAfPluginRf4ceProfileZrc20IncomingMessageCallback(uint8_t pairingIndex,
+                                                           uint16_t vendorId,
+                                                           EmberRf4ceTxOption txOptions,
+                                                           const uint8_t *message,
+                                                           uint8_t messageLength)
+{
+}
+
+/** @brief Mso Incoming Message
+ *
+ * This function is called by the RF4CE Profile plugin when an MSO message is
+ * received.
+ *
+ * @param pairingIndex The index of the entry in the pairing table corresponding
+ * to the PAN on which the message was received.  Ver.: always
+ * @param vendorId The vendor ID included in the message.  Ver.: always
+ * @param txOptions The TX options used by the source node to transmit the
+ * received message.  Ver.: always
+ * @param message A pointer to the payload of the received message.  Ver.:
+ * always
+ * @param messageLength The length in bytes of the received message.  Ver.:
+ * always
+ */
+void emberAfPluginRf4ceProfileMsoIncomingMessageCallback(uint8_t pairingIndex,
+                                                         uint16_t vendorId,
+                                                         EmberRf4ceTxOption txOptions,
+                                                         const uint8_t *message,
+                                                         uint8_t messageLength)
+{
+}
+
+/** @brief Incoming Message
+ *
+ * This function is called by the RF4CE Profile plugin when a message is
+ * received.  It is called after any profile-specific callbacks.
+ *
+ * @param pairingIndex The index of the entry in the pairing table corresponding
+ * to the PAN on which the message was received.  Ver.: always
+ * @param profileId The profile ID included in the message.  Ver.: always
+ * @param vendorId The vendor ID included in the message.  Ver.: always
+ * @param txOptions The TX options used by the source node to transmit the
+ * received message.  Ver.: always
+ * @param message A pointer to the payload of the received message.  Ver.:
+ * always
+ * @param messageLength The length in bytes of the received message.  Ver.:
+ * always
+ */
+void emberAfPluginRf4ceProfileIncomingMessageCallback(uint8_t pairingIndex,
+                                                      uint8_t profileId,
+                                                      uint16_t vendorId,
+                                                      EmberRf4ceTxOption txOptions,
+                                                      const uint8_t *message,
+                                                      uint8_t messageLength)
+{
+}
+
+/** @brief Gdp Discovery Request
+ *
+ * This function is called by the RF4CE Profile plugin when a discovery request
+ * for the GDP profile is received.
+ *
+ * @param ieeeAddr The IEEE address of the requesting device.  Ver.: always
+ * @param nodeCapabilities The capabilities of the requesting device.  Ver.:
+ * always
+ * @param vendorInfo The vendor information of the requesting device.  Ver.:
+ * always
+ * @param appInfo The application information of the requesting device.  Ver.:
+ * always
+ * @param searchDevType The device type requested.  Ver.: always
+ * @param rxLinkQuality The LQI of the request.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileGdpDiscoveryRequestCallback(const EmberEUI64 ieeeAddr,
+                                                             uint8_t nodeCapabilities,
+                                                             const EmberRf4ceVendorInfo *vendorInfo,
+                                                             const EmberRf4ceApplicationInfo *appInfo,
+                                                             uint8_t searchDevType,
+                                                             uint8_t rxLinkQuality)
+{
+  return false;
+}
+
+/** @brief Remote Control 1 1 Discovery Request
+ *
+ * This function is called by the RF4CE Profile plugin when a discovery request
+ * for the Remote Control 1.0 or 1.1 profile is received.
+ *
+ * @param ieeeAddr The IEEE address of the requesting device.  Ver.: always
+ * @param nodeCapabilities The capabilities of the requesting device.  Ver.:
+ * always
+ * @param vendorInfo The vendor information of the requesting device.  Ver.:
+ * always
+ * @param appInfo The application information of the requesting device.  Ver.:
+ * always
+ * @param searchDevType The device type requested.  Ver.: always
+ * @param rxLinkQuality The LQI of the request.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileRemoteControl11DiscoveryRequestCallback(const EmberEUI64 ieeeAddr,
+                                                                         uint8_t nodeCapabilities,
+                                                                         const EmberRf4ceVendorInfo *vendorInfo,
+                                                                         const EmberRf4ceApplicationInfo *appInfo,
+                                                                         uint8_t searchDevType,
+                                                                         uint8_t rxLinkQuality)
+{
+  return false;
+}
+
+/** @brief Zrc 2 0 Discovery Request
+ *
+ * This function is called by the RF4CE Profile plugin when a discovery request
+ * for the ZRC 2.0 profile is received.
+ *
+ * @param ieeeAddr The IEEE address of the requesting device.  Ver.: always
+ * @param nodeCapabilities The capabilities of the requesting device.  Ver.:
+ * always
+ * @param vendorInfo The vendor information of the requesting device.  Ver.:
+ * always
+ * @param appInfo The application information of the requesting device.  Ver.:
+ * always
+ * @param searchDevType The device type requested.  Ver.: always
+ * @param rxLinkQuality The LQI of the request.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileZrc20DiscoveryRequestCallback(const EmberEUI64 ieeeAddr,
+                                                               uint8_t nodeCapabilities,
+                                                               const EmberRf4ceVendorInfo *vendorInfo,
+                                                               const EmberRf4ceApplicationInfo *appInfo,
+                                                               uint8_t searchDevType,
+                                                               uint8_t rxLinkQuality)
+{
+  return false;
+}
+
+/** @brief Mso Discovery Request
+ *
+ * This function is called by the RF4CE Profile plugin when a discovery request
+ * for the MSO profile is received.
+ *
+ * @param ieeeAddr The IEEE address of the requesting device.  Ver.: always
+ * @param nodeCapabilities The capabilities of the requesting device.  Ver.:
+ * always
+ * @param vendorInfo The vendor information of the requesting device.  Ver.:
+ * always
+ * @param appInfo The application information of the requesting device.  Ver.:
+ * always
+ * @param searchDevType The device type requested.  Ver.: always
+ * @param rxLinkQuality The LQI of the request.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileMsoDiscoveryRequestCallback(const EmberEUI64 ieeeAddr,
+                                                             uint8_t nodeCapabilities,
+                                                             const EmberRf4ceVendorInfo *vendorInfo,
+                                                             const EmberRf4ceApplicationInfo *appInfo,
+                                                             uint8_t searchDevType,
+                                                             uint8_t rxLinkQuality)
+{
+  return false;
+}
+
+/** @brief Gdp Discovery Response
+ *
+ * This function is called by the RF4CE Profile plugin when a discovery response
+ * for the GDP profile is received.
+ *
+ * @param atCapacity true if the node sending the discovery response has no free
+ * entry in its pairing table, false otherwise.  Ver.: always
+ * @param channel The channel on which the discovery response was received.
+ * Ver.: always
+ * @param panId The PAN identifier of the responding device.  Ver.: always
+ * @param ieeeAddr The IEEE address of the responding device.  Ver.: always
+ * @param nodeCapabilities The capabilities of the responding device.  Ver.:
+ * always
+ * @param vendorInfo The vendor information of the responding device.  Ver.:
+ * always
+ * @param appInfo The application information of the responding device.  Ver.:
+ * always
+ * @param rxLinkQuality The LQI of the discovery response.  Ver.: always
+ * @param discRequestLqi The LQI of the discovery request command frame reported
+ * by the responding device.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileGdpDiscoveryResponseCallback(bool atCapacity,
+                                                              uint8_t channel,
+                                                              EmberPanId panId,
+                                                              const EmberEUI64 ieeeAddr,
+                                                              uint8_t nodeCapabilities,
+                                                              const EmberRf4ceVendorInfo *vendorInfo,
+                                                              const EmberRf4ceApplicationInfo *appInfo,
+                                                              uint8_t rxLinkQuality,
+                                                              uint8_t discRequestLqi)
+{
+  return false;
+}
+
+/** @brief Remote Control 1 1 Discovery Response
+ *
+ * This function is called by the RF4CE Profile plugin when a discovery response
+ * for the Remote Control 1.0 or 1.1 profile is received.
+ *
+ * @param atCapacity true if the node sending the discovery response has no free
+ * entry in its pairing table, false otherwise.  Ver.: always
+ * @param channel The channel on which the discovery response was received.
+ * Ver.: always
+ * @param panId The PAN identifier of the responding device.  Ver.: always
+ * @param ieeeAddr The IEEE address of the responding device.  Ver.: always
+ * @param nodeCapabilities The capabilities of the responding device.  Ver.:
+ * always
+ * @param vendorInfo The vendor information of the responding device.  Ver.:
+ * always
+ * @param appInfo The application information of the responding device.  Ver.:
+ * always
+ * @param rxLinkQuality The LQI of the discovery response.  Ver.: always
+ * @param discRequestLqi The LQI of the discovery request command frame reported
+ * by the responding device.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileRemoteControl11DiscoveryResponseCallback(bool atCapacity,
+                                                                          uint8_t channel,
+                                                                          EmberPanId panId,
+                                                                          const EmberEUI64 ieeeAddr,
+                                                                          uint8_t nodeCapabilities,
+                                                                          const EmberRf4ceVendorInfo *vendorInfo,
+                                                                          const EmberRf4ceApplicationInfo *appInfo,
+                                                                          uint8_t rxLinkQuality,
+                                                                          uint8_t discRequestLqi)
+{
+  return false;
+}
+
+/** @brief Zrc 2 0 Discovery Response
+ *
+ * This function is called by the RF4CE Profile plugin when a discovery response
+ * for the ZRC 2.0 profile is received.
+ *
+ * @param atCapacity true if the node sending the discovery response has no free
+ * entry in its pairing table, false otherwise.  Ver.: always
+ * @param channel The channel on which the discovery response was received.
+ * Ver.: always
+ * @param panId The PAN identifier of the responding device.  Ver.: always
+ * @param ieeeAddr The IEEE address of the responding device.  Ver.: always
+ * @param nodeCapabilities The capabilities of the responding device.  Ver.:
+ * always
+ * @param vendorInfo The vendor information of the responding device.  Ver.:
+ * always
+ * @param appInfo The application information of the responding device.  Ver.:
+ * always
+ * @param rxLinkQuality The LQI of the discovery response.  Ver.: always
+ * @param discRequestLqi The LQI of the discovery request command frame reported
+ * by the responding device.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileZrc20DiscoveryResponseCallback(bool atCapacity,
+                                                                uint8_t channel,
+                                                                EmberPanId panId,
+                                                                const EmberEUI64 ieeeAddr,
+                                                                uint8_t nodeCapabilities,
+                                                                const EmberRf4ceVendorInfo *vendorInfo,
+                                                                const EmberRf4ceApplicationInfo *appInfo,
+                                                                uint8_t rxLinkQuality,
+                                                                uint8_t discRequestLqi)
+{
+  return false;
+}
+
+/** @brief Mso Discovery Response
+ *
+ * This function is called by the RF4CE Profile plugin when a discovery response
+ * for the MSO profile is received.
+ *
+ * @param atCapacity true if the node sending the discovery response has no free
+ * entry in its pairing table, false otherwise.  Ver.: always
+ * @param channel The channel on which the discovery response was received.
+ * Ver.: always
+ * @param panId The PAN identifier of the responding device.  Ver.: always
+ * @param ieeeAddr The IEEE address of the responding device.  Ver.: always
+ * @param nodeCapabilities The capabilities of the responding device.  Ver.:
+ * always
+ * @param vendorInfo The vendor information of the responding device.  Ver.:
+ * always
+ * @param appInfo The application information of the responding device.  Ver.:
+ * always
+ * @param rxLinkQuality The LQI of the discovery response.  Ver.: always
+ * @param discRequestLqi The LQI of the discovery request command frame reported
+ * by the responding device.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileMsoDiscoveryResponseCallback(bool atCapacity,
+                                                              uint8_t channel,
+                                                              EmberPanId panId,
+                                                              const EmberEUI64 ieeeAddr,
+                                                              uint8_t nodeCapabilities,
+                                                              const EmberRf4ceVendorInfo *vendorInfo,
+                                                              const EmberRf4ceApplicationInfo *appInfo,
+                                                              uint8_t rxLinkQuality,
+                                                              uint8_t discRequestLqi)
+{
+  return false;
+}
+
+/** @brief Gdp Discovery Complete
+ *
+ * This function is called by the RF4CE Profile plugin when the discovery
+ * process for the GDP profile has completed.
+ *
+ * @param status An ::EmberStatus value indicating whether the discovery
+ * succeeded or the failure reason.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileGdpDiscoveryCompleteCallback(EmberStatus status)
+{
+}
+
+/** @brief Remote Control 1 1 Discovery Complete
+ *
+ * This function is called by the RF4CE Profile plugin when the discovery
+ * process for the Remote Control 1.0 or 1.1 profile has completed.
+ *
+ * @param status An ::EmberStatus value indicating whether the discovery
+ * succeeded or the failure reason.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileRemoteControl11DiscoveryCompleteCallback(EmberStatus status)
+{
+}
+
+/** @brief Zrc 2 0 Discovery Complete
+ *
+ * This function is called by the RF4CE Profile plugin when the discovery
+ * process for the ZRC 2.0 profile has completed.
+ *
+ * @param status An ::EmberStatus value indicating whether the discovery
+ * succeeded or the failure reason.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileZrc20DiscoveryCompleteCallback(EmberStatus status)
+{
+}
+
+/** @brief Mso Discovery Complete
+ *
+ * This function is called by the RF4CE Profile plugin when the discovery
+ * process for the MSO profile has completed.
+ *
+ * @param status An ::EmberStatus value indicating whether the discovery
+ * succeeded or the failure reason.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileMsoDiscoveryCompleteCallback(EmberStatus status)
+{
+}
+
+/** @brief Gdp Auto Discovery Response Complete
+ *
+ * This function is called by the RF4CE Profile plugin when the auto discovery
+ * response process for the GDP profile has completed.
+ *
+ * @param status An ::EmberStatus value indicating whether the discovery
+ * succeeded or the failure reason.  Ver.: always
+ * @param srcIeeeAddr The IEEE address of the node from which the discovery
+ * request command frame was received.  This parameter is meaningful only if the
+ * status parameter is ::EMBER_SUCCESS  Ver.: always
+ * @param nodeCapabilities The node capabilities of the node that issued the
+ * discovery request.  This parameter is meaningful only if the status parameter
+ * is ::EMBER_SUCCESS.  Ver.: always
+ * @param vendorInfo A pointer to an ::EmberRf4ceVendorInfo struct containing
+ * the vendor information of the node that issued the discovery request.  This
+ * parameter is non-NULL only if the status parameter is ::EMBER_SUCCESS.  Ver.:
+ * always
+ * @param appInfo A pointer to an ::EmberRf4ceApplicationInfo struct containing
+ * the application information of the node that issued the discovery request.
+ * This parameter is non-NULL only if the status parameter is ::EMBER_SUCCESS.
+ * Ver.: always
+ * @param searchDevType The device type being discovered.  If this is 0xFF, any
+ * type is being requested.  This parameter is meaningful only if the status
+ * parameter is ::EMBER_SUCCESS.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileGdpAutoDiscoveryResponseCompleteCallback(EmberStatus status,
+                                                                       const EmberEUI64 srcIeeeAddr,
+                                                                       uint8_t nodeCapabilities,
+                                                                       const EmberRf4ceVendorInfo *vendorInfo,
+                                                                       const EmberRf4ceApplicationInfo *appInfo,
+                                                                       uint8_t searchDevType)
+{
+}
+
+/** @brief Remote Control 1 1 Auto Discovery Response Complete
+ *
+ * This function is called by the RF4CE Profile plugin when the auto discovery
+ * response process for the Remote Control 1.0 or 1.1 profile has completed.
+ *
+ * @param status An ::EmberStatus value indicating whether the discovery
+ * succeeded or the failure reason.  Ver.: always
+ * @param srcIeeeAddr The IEEE address of the node from which the discovery
+ * request command frame was received.  This parameter is meaningful only if the
+ * status parameter is ::EMBER_SUCCESS  Ver.: always
+ * @param nodeCapabilities The node capabilities of the node that issued the
+ * discovery request.  This parameter is meaningful only if the status parameter
+ * is ::EMBER_SUCCESS.  Ver.: always
+ * @param vendorInfo A pointer to an ::EmberRf4ceVendorInfo struct containing
+ * the vendor information of the node that issued the discovery request.  This
+ * parameter is non-NULL only if the status parameter is ::EMBER_SUCCESS.  Ver.:
+ * always
+ * @param appInfo A pointer to an ::EmberRf4ceApplicationInfo struct containing
+ * the application information of the node that issued the discovery request.
+ * This parameter is non-NULL only if the status parameter is ::EMBER_SUCCESS.
+ * Ver.: always
+ * @param searchDevType The device type being discovered.  If this is 0xFF, any
+ * type is being requested.  This parameter is meaningful only if the status
+ * parameter is ::EMBER_SUCCESS.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileRemoteControl11AutoDiscoveryResponseCompleteCallback(EmberStatus status,
+                                                                                   const EmberEUI64 srcIeeeAddr,
+                                                                                   uint8_t nodeCapabilities,
+                                                                                   const EmberRf4ceVendorInfo *vendorInfo,
+                                                                                   const EmberRf4ceApplicationInfo *appInfo,
+                                                                                   uint8_t searchDevType)
+{
+}
+
+/** @brief Zrc 2 0 Auto Discovery Response Complete
+ *
+ * This function is called by the RF4CE Profile plugin when the auto discovery
+ * response process for the ZRC 2.0 profile has completed.
+ *
+ * @param status An ::EmberStatus value indicating whether the discovery
+ * succeeded or the failure reason.  Ver.: always
+ * @param srcIeeeAddr The IEEE address of the node from which the discovery
+ * request command frame was received.  This parameter is meaningful only if the
+ * status parameter is ::EMBER_SUCCESS  Ver.: always
+ * @param nodeCapabilities The node capabilities of the node that issued the
+ * discovery request.  This parameter is meaningful only if the status parameter
+ * is ::EMBER_SUCCESS.  Ver.: always
+ * @param vendorInfo A pointer to an ::EmberRf4ceVendorInfo struct containing
+ * the vendor information of the node that issued the discovery request.  This
+ * parameter is non-NULL only if the status parameter is ::EMBER_SUCCESS.  Ver.:
+ * always
+ * @param appInfo A pointer to an ::EmberRf4ceApplicationInfo struct containing
+ * the application information of the node that issued the discovery request.
+ * This parameter is non-NULL only if the status parameter is ::EMBER_SUCCESS.
+ * Ver.: always
+ * @param searchDevType The device type being discovered.  If this is 0xFF, any
+ * type is being requested.  This parameter is meaningful only if the status
+ * parameter is ::EMBER_SUCCESS.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileZrc20AutoDiscoveryResponseCompleteCallback(EmberStatus status,
+                                                                         const EmberEUI64 srcIeeeAddr,
+                                                                         uint8_t nodeCapabilities,
+                                                                         const EmberRf4ceVendorInfo *vendorInfo,
+                                                                         const EmberRf4ceApplicationInfo *appInfo,
+                                                                         uint8_t searchDevType)
+{
+}
+
+/** @brief Mso Auto Discovery Response Complete
+ *
+ * This function is called by the RF4CE Profile plugin when the auto discovery
+ * response process for the MSO profile has completed.
+ *
+ * @param status An ::EmberStatus value indicating whether the discovery
+ * succeeded or the failure reason.  Ver.: always
+ * @param srcIeeeAddr The IEEE address of the node from which the discovery
+ * request command frame was received.  This parameter is meaningful only if the
+ * status parameter is ::EMBER_SUCCESS  Ver.: always
+ * @param nodeCapabilities The node capabilities of the node that issued the
+ * discovery request.  This parameter is meaningful only if the status parameter
+ * is ::EMBER_SUCCESS.  Ver.: always
+ * @param vendorInfo A pointer to an ::EmberRf4ceVendorInfo struct containing
+ * the vendor information of the node that issued the discovery request.  This
+ * parameter is non-NULL only if the status parameter is ::EMBER_SUCCESS.  Ver.:
+ * always
+ * @param appInfo A pointer to an ::EmberRf4ceApplicationInfo struct containing
+ * the application information of the node that issued the discovery request.
+ * This parameter is non-NULL only if the status parameter is ::EMBER_SUCCESS.
+ * Ver.: always
+ * @param searchDevType The device type being discovered.  If this is 0xFF, any
+ * type is being requested.  This parameter is meaningful only if the status
+ * parameter is ::EMBER_SUCCESS.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileMsoAutoDiscoveryResponseCompleteCallback(EmberStatus status,
+                                                                       const EmberEUI64 srcIeeeAddr,
+                                                                       uint8_t nodeCapabilities,
+                                                                       const EmberRf4ceVendorInfo *vendorInfo,
+                                                                       const EmberRf4ceApplicationInfo *appInfo,
+                                                                       uint8_t searchDevType)
+{
+}
+
+/** @brief Gdp Pair Request
+ *
+ * This function is called by the RF4CE Profile plugin when a pair request for
+ * the GDP profile is received.
+ *
+ * @param status An ::EmberStatus value indicating whether the pairing is a new
+ * pairing, a duplicate or if the pairing table is full.  Ver.: always
+ * @param pairingIndex The index of the entry that will be used by the stack for
+ * the pairing link.  Ver.: always
+ * @param sourceIeeeAddr The source IEEE address of the incoming pair request.
+ * Ver.: always
+ * @param nodeCapabilities The node capabilities of the node that issued the
+ * pair request.  Ver.: always
+ * @param vendorInfo The vendor information of the requesting device.  Ver.:
+ * always
+ * @param appInfo The application information of the requesting device.  Ver.:
+ * always
+ * @param keyExchangeTransferCount The number of transfers to be used to
+ * exchange the link key with the pairing originator.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileGdpPairRequestCallback(EmberStatus status,
+                                                        uint8_t pairingIndex,
+                                                        const EmberEUI64 sourceIeeeAddr,
+                                                        uint8_t nodeCapabilities,
+                                                        const EmberRf4ceVendorInfo *vendorInfo,
+                                                        const EmberRf4ceApplicationInfo *appInfo,
+                                                        uint8_t keyExchangeTransferCount)
+{
+  return false;
+}
+
+/** @brief Remote Control 1 1 Pair Request
+ *
+ * This function is called by the RF4CE Profile plugin when a pair request for
+ * the Remote Control 1.0 or 1.1 profile is received.
+ *
+ * @param status An ::EmberStatus value indicating whether the pairing is a new
+ * pairing, a duplicate or if the pairing table is full.  Ver.: always
+ * @param pairingIndex The index of the entry that will be used by the stack for
+ * the pairing link.  Ver.: always
+ * @param sourceIeeeAddr The source IEEE address of the incoming pair request.
+ * Ver.: always
+ * @param nodeCapabilities The node capabilities of the node that issued the
+ * pair request.  Ver.: always
+ * @param vendorInfo The vendor information of the requesting device.  Ver.:
+ * always
+ * @param appInfo The application information of the requesting device.  Ver.:
+ * always
+ * @param keyExchangeTransferCount The number of transfers to be used to
+ * exchange the link key with the pairing originator.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileRemoteControl11PairRequestCallback(EmberStatus status,
+                                                                    uint8_t pairingIndex,
+                                                                    const EmberEUI64 sourceIeeeAddr,
+                                                                    uint8_t nodeCapabilities,
+                                                                    const EmberRf4ceVendorInfo *vendorInfo,
+                                                                    const EmberRf4ceApplicationInfo *appInfo,
+                                                                    uint8_t keyExchangeTransferCount)
+{
+  return false;
+}
+
+/** @brief Zrc 2 0 Pair Request
+ *
+ * This function is called by the RF4CE Profile plugin when a pair request for
+ * the ZRC 2.0 profile is received.
+ *
+ * @param status An ::EmberStatus value indicating whether the pairing is a new
+ * pairing, a duplicate or if the pairing table is full.  Ver.: always
+ * @param pairingIndex The index of the entry that will be used by the stack for
+ * the pairing link.  Ver.: always
+ * @param sourceIeeeAddr The source IEEE address of the incoming pair request.
+ * Ver.: always
+ * @param nodeCapabilities The node capabilities of the node that issued the
+ * pair request.  Ver.: always
+ * @param vendorInfo The vendor information of the requesting device.  Ver.:
+ * always
+ * @param appInfo The application information of the requesting device.  Ver.:
+ * always
+ * @param keyExchangeTransferCount The number of transfers to be used to
+ * exchange the link key with the pairing originator.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileZrc20PairRequestCallback(EmberStatus status,
+                                                          uint8_t pairingIndex,
+                                                          const EmberEUI64 sourceIeeeAddr,
+                                                          uint8_t nodeCapabilities,
+                                                          const EmberRf4ceVendorInfo *vendorInfo,
+                                                          const EmberRf4ceApplicationInfo *appInfo,
+                                                          uint8_t keyExchangeTransferCount)
+{
+  return false;
+}
+
+/** @brief Mso Pair Request
+ *
+ * This function is called by the RF4CE Profile plugin when a pair request for
+ * the MSO profile is received.
+ *
+ * @param status An ::EmberStatus value indicating whether the pairing is a new
+ * pairing, a duplicate or if the pairing table is full.  Ver.: always
+ * @param pairingIndex The index of the entry that will be used by the stack for
+ * the pairing link.  Ver.: always
+ * @param sourceIeeeAddr The source IEEE address of the incoming pair request.
+ * Ver.: always
+ * @param nodeCapabilities The node capabilities of the node that issued the
+ * pair request.  Ver.: always
+ * @param vendorInfo The vendor information of the requesting device.  Ver.:
+ * always
+ * @param appInfo The application information of the requesting device.  Ver.:
+ * always
+ * @param keyExchangeTransferCount The number of transfers to be used to
+ * exchange the link key with the pairing originator.  Ver.: always
+ */
+bool emberAfPluginRf4ceProfileMsoPairRequestCallback(EmberStatus status,
+                                                        uint8_t pairingIndex,
+                                                        const EmberEUI64 sourceIeeeAddr,
+                                                        uint8_t nodeCapabilities,
+                                                        const EmberRf4ceVendorInfo *vendorInfo,
+                                                        const EmberRf4ceApplicationInfo *appInfo,
+                                                        uint8_t keyExchangeTransferCount)
+{
+  return false;
+}
+
+/** @brief Gdp Pair Complete
+ *
+ * This function is called by the RF4CE Profile plugin when the pairing process
+ * for the GDP profile has completed.
+ *
+ * @param status An ::EmberStatus value indicating whether the pairing succeeded
+ * or the failure reason.  Ver.: always
+ * @param pairingIndex The index of the pairing table entry corresponding to the
+ * pairing link that was established during the pairing process.  Ver.: always
+ * @param vendorInfo The vendor information of the peer device.  Ver.: always
+ * @param appInfo The application information of the peer device.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileGdpPairCompleteCallback(EmberStatus status,
+                                                      uint8_t pairingIndex,
+                                                      const EmberRf4ceVendorInfo *vendorInfo,
+                                                      const EmberRf4ceApplicationInfo *appInfo)
+{
+}
+
+/** @brief Remote Control 1 1 Pair Complete
+ *
+ * This function is called by the RF4CE Profile plugin when the pairing process
+ * for the Remote Control 1.0 or 1.1 profile has completed.
+ *
+ * @param status An ::EmberStatus value indicating whether the pairing succeeded
+ * or the failure reason.  Ver.: always
+ * @param pairingIndex The index of the pairing table entry corresponding to the
+ * pairing link that was established during the pairing process.  Ver.: always
+ * @param vendorInfo The vendor information of the peer device.  Ver.: always
+ * @param appInfo The application information of the peer device.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileRemoteControl11PairCompleteCallback(EmberStatus status,
+                                                                  uint8_t pairingIndex,
+                                                                  const EmberRf4ceVendorInfo *vendorInfo,
+                                                                  const EmberRf4ceApplicationInfo *appInfo)
+{
+}
+
+/** @brief Zrc 2 0 Pair Complete
+ *
+ * This function is called by the RF4CE Profile plugin when the pairing process
+ * for the ZRC 2.0 profile has completed.
+ *
+ * @param status An ::EmberStatus value indicating whether the pairing succeeded
+ * or the failure reason.  Ver.: always
+ * @param pairingIndex The index of the pairing table entry corresponding to the
+ * pairing link that was established during the pairing process.  Ver.: always
+ * @param vendorInfo The vendor information of the peer device.  Ver.: always
+ * @param appInfo The application information of the peer device.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileZrc20PairCompleteCallback(EmberStatus status,
+                                                        uint8_t pairingIndex,
+                                                        const EmberRf4ceVendorInfo *vendorInfo,
+                                                        const EmberRf4ceApplicationInfo *appInfo)
+{
+}
+
+/** @brief Mso Pair Complete
+ *
+ * This function is called by the RF4CE Profile plugin when the pairing process
+ * for the MSO profile has completed.
+ *
+ * @param status An ::EmberStatus value indicating whether the pairing succeeded
+ * or the failure reason.  Ver.: always
+ * @param pairingIndex The index of the pairing table entry corresponding to the
+ * pairing link that was established during the pairing process.  Ver.: always
+ * @param vendorInfo The vendor information of the peer device.  Ver.: always
+ * @param appInfo The application information of the peer device.  Ver.: always
+ */
+void emberAfPluginRf4ceProfileMsoPairCompleteCallback(EmberStatus status,
+                                                      uint8_t pairingIndex,
+                                                      const EmberRf4ceVendorInfo *vendorInfo,
+                                                      const EmberRf4ceApplicationInfo *appInfo)
+{
+}

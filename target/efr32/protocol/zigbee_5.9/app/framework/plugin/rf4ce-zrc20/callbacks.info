@@ -1,0 +1,267 @@
+#include PLATFORM_HEADER
+#include EMBER_AF_API_EMBER_TYPES
+#include EMBER_AF_API_RF4CE_PROFILE
+#include EMBER_AF_API_RF4CE_GDP
+#include EMBER_AF_API_RF4CE_ZRC20
+
+/** @brief Action
+ *
+ * This function is called by the RF4CE ZRC 2.0 plugin when an action starts or
+ * stops.  If the action type of the action record is
+ * ::EMBER_AF_RF4CE_ZRC_ACTION_TYPE_START, the application should execute the
+ * requested operation repeatedly at some application-specific rate.  When the
+ * repetition should stop, the plugin will call the callback again with the
+ * action type set to ::EMBER_AF_RF4CE_ZRC_ACTION_TYPE_STOP.
+ * ::EMBER_AF_RF4CE_ZRC_ACTION_TYPE_REPEAT is a special case of
+ * ::EMBER_AF_RF4CE_ZRC_ACTION_TYPE_START and means that the start action from
+ * the originator was not received and that the originator is still triggering
+ * the action.  The application should process a repeat type the same as a start
+ * type, but may wish to perform additional operations to compensate for missed
+ * actions.  If the action type is ::EMBER_AF_RF4CE_ZRC_ACTION_TYPE_ATOMIC, the
+ * application should execute the operation once.  The plugin will not call the
+ * callback again for an atomic action.
+ *
+ * @param record The action record.  Ver.: always
+ */
+void emberAfPluginRf4ceZrc20ActionCallback(const EmberAfRf4ceZrcActionRecord *record)
+{
+}
+
+/** @brief Ha Action
+ *
+ * This function is called by the RF4CE ZRC 2.0 plugin when an HA action starts
+ * or stops. TODO
+ *
+ * @param record The action record.  Ver.: always
+ */
+void emberAfPluginRf4ceZrc20HaActionCallback(const EmberAfRf4ceZrcActionRecord *record)
+{
+}
+
+/** @brief Legacy Command Discovery Complete
+ *
+ * This function is called by the RF4CE ZRC plugin upon completion of the legacy
+ * ZRC 1.1 command discovery process.
+ *
+ * @param status An ::EmberStatus value indicating that the command discovery
+ * process succeeded or the failure reason.  Ver.: always
+ * @param commandsSupported The 256-bit field indicating which user control
+ * commands are supported.  Ver.: always
+ */
+void emberAfPluginRf4ceZrc20LegacyCommandDiscoveryCompleteCallback(EmberStatus status,
+                                                                   const EmberAfRf4ceZrcCommandsSupported *commandsSupported)
+{
+}
+
+/** @brief Action Mappings Negotiation Complete
+ *
+ * This function is called by the RF4CE ZRC plugin upon completion of the action
+ * mapping negotiation procedure.
+ *
+ * @param status An ::EmberStatus value indicating that the action mappings
+ * negotiation succeeded or the failure reason.  Ver.: always
+ */
+void emberAfPluginRf4ceZrc20ActionMappingsNegotiationCompleteCallback(EmberStatus status)
+{
+}
+
+/** @brief Incoming Mappable Action
+ *
+ * This function is called by an RF4CE ZRC action mapping server upon receiving
+ * a mappable action from an already bound action mapping client.
+ *
+ * @param pairingIndex The index of the pairing the mappable action was received
+ * from.  Ver.: always
+ * @param entryIndex The index of the mappable action entry.  Ver.: always
+ * @param mappableAction A pointer to the mappable action struct that was
+ * received.  Ver.: always
+ */
+void emberAfPluginRf4ceZrc20IncomingMappableActionCallback(uint8_t pairingIndex,
+                                                           uint16_t entryIndex,
+                                                           EmberAfRf4ceZrcMappableAction *mappableAction)
+{
+}
+
+/** @brief Get Mappable Action
+ *
+ * This function is called by an RF4CE ZRC action mapping client or server to
+ * retrieve the mappable action corresponding to the passed entry index.
+ *
+ * @param pairingIndex The index of the pairing the mappable action was received
+ * from.  Ver.: always
+ * @param entryIndex The index of the mappable action entry.  Ver.: always
+ * @param mappableAction A pointer to the mappable action struct to be
+ * populated.  Ver.: always
+ */
+EmberStatus emberAfPluginRf4ceZrc20GetMappableActionCallback(uint8_t pairingIndex,
+                                                             uint16_t entryIndex,
+                                                             EmberAfRf4ceZrcMappableAction *mappableAction)
+{
+  return EMBER_INVALID_CALL;
+}
+
+/** @brief Get Mappable Action Count
+ *
+ * This function is called by an RF4CE ZRC action mapping server or client to
+ * retrieve the number of entries currently stored in the mappable action table
+ * for a certain pairing.
+ *
+ * @param pairingIndex The index of the pairing entry.  Ver.: always
+ */
+uint16_t emberAfPluginRf4ceZrc20GetMappableActionCountCallback(uint8_t pairingIndex)
+{
+  return 0;
+}
+
+/** @brief Incoming Action Mapping
+ *
+ * This function is called by an RF4CE ZRC action mapping client upon receiving
+ * an action mapping pulled from an already bound action mapping server.
+ *
+ * @param pairingIndex The index of the pairing the action mapping was received
+ * from.  Ver.: always
+ * @param entryIndex The index of the action mapping entry.  Ver.: always
+ * @param actionMapping A pointer to the action mapping struct that was
+ * received.  Ver.: always
+ */
+void emberAfPluginRf4ceZrc20IncomingActionMappingCallback(uint8_t pairingIndex,
+                                                          uint16_t entryIndex,
+                                                          EmberAfRf4ceZrcActionMapping *actionMapping)
+{
+}
+
+/** @brief Get Action Mapping
+ *
+ * This function is called by an RF4CE ZRC action mapping server to retrieve the
+ * action mapping corresponding to the mappable action indicated by the passed
+ * entry index.
+ *
+ * @param pairingIndex The index of the pairing the mappable action was received
+ * from.  Ver.: always
+ * @param entryIndex The index of the mappable action entry.  Ver.: always
+ * @param actionMapping A pointer to the action mapping struct to be populated.
+ * Ver.: always
+ */
+EmberStatus emberAfPluginRf4ceZrc20GetActionMappingCallback(uint8_t pairingIndex,
+                                                            uint16_t entryIndex,
+                                                            EmberAfRf4ceZrcActionMapping *actionMapping)
+{
+  return EMBER_INVALID_CALL;
+}
+
+/** @brief Set Action Mapping
+ *
+ * This function is called by an RF4CE ZRC action mapping server to retrieve the
+ * action mapping corresponding to the mappable action indicated by the passed
+ * entry index.
+ *
+ * @param pairingIndex The index of the pairing the mappable action was received
+ * from.  Ver.: always
+ * @param entryIndex The index of the mappable action entry.  Ver.: always
+ * @param actionMapping A pointer to the action mapping struct to be populated.
+ * Ver.: always
+ */
+EmberStatus emberAfPluginRf4ceZrc20SetActionMappingCallback(uint8_t pairingIndex,
+                                                            uint16_t entryIndex,
+                                                            EmberAfRf4ceZrcActionMapping *actionMapping)
+{
+  return EMBER_INVALID_CALL;
+}
+
+/** @brief Home Automation Supported Announcement Complete
+ *
+ * This function is called by the RF4CE ZRC plugin upon completion of the Home
+ * Automation supported announcement procedure.
+ *
+ * @param status An ::EmberStatus value indicating that the Home Automation
+ * supported announcement procedure succeeded or the failure reason.  Ver.:
+ * always
+ */
+void emberAfPluginRf4ceZrc20HomeAutomationSupportedAnnouncementCompleteCallback(EmberStatus status)
+{
+}
+
+/** @brief Incoming Home Automation Supported
+ *
+ * This function is called by an RF4CE ZRC Home Automation actions recipient
+ * upon receiving a Home Automation supported attribute from an already bound
+ * Home Automation originator.
+ *
+ * @param pairingIndex The index of the pairing the Home Automation supported
+ * attribute was received from.  Ver.: always
+ * @param haInstanceId The instance ID the Home Automation supported attribute
+ * refers to.  Ver.: always
+ * @param haSupported A pointer to the Home Automation supported struct that was
+ * received.  Ver.: always
+ */
+void emberAfPluginRf4ceZrc20IncomingHomeAutomationSupportedCallback(uint8_t pairingIndex,
+                                                                    uint8_t haInstanceId,
+                                                                    EmberAfRf4ceZrcHomeAutomationSupported *haSupported)
+{
+}
+
+/** @brief Get Home Automation Supported
+ *
+ * This function is called by an RF4CE ZRC Home Automation actions originator to
+ * retrieve the Home Automation supported attribute corresponding to the passed
+ * entry index.
+ *
+ * @param pairingIndex The index of the pairing the Home Automation supported
+ * attribute  was received from.  Ver.: always
+ * @param haInstanceId The instance ID the Home Automation supported attribute
+ * refers to.  Ver.: always
+ * @param haSupported A pointer to the Home Automation supported struct to be
+ * populated.  Ver.: always
+ */
+EmberStatus emberAfPluginRf4ceZrc20GetHomeAutomationSupportedCallback(uint8_t pairingIndex,
+                                                                      uint8_t haInstanceId,
+                                                                      EmberAfRf4ceZrcHomeAutomationSupported *haSupported)
+{
+  return EMBER_INVALID_CALL;
+}
+
+/** @brief Get Home Automation Attribute
+ *
+ * This function is called by an RF4CE ZRC Home Automation actions recipient
+ * upon receiving a Pull attribute command from a Home Automation actions
+ * originator to retrieve the contents of a Home Automation attribute. The
+ * contents in the haAttribute struct will be included in the response only if
+ * this callback returned an ::EmberAfRf4ceGdpAttributeStatus value of
+ * ::EMBER_AF_RF4CE_GDP_ATTRIBUTE_STATUS_SUCCESS.
+ *
+ * @param pairingIndex The index of the pairing entry corresponding to the Home
+ * Automation actions originator..  Ver.: always
+ * @param haInstanceId The Home Automation instance ID.  Ver.: always
+ * @param haAttributeId The Home Automation attribute ID.  Ver.: always
+ * @param haAttribute A pointer to an ::EmberAfRf4ceZrcHomeAutomationAttribute
+ * struct to be populated.  Ver.: always
+ */
+EmberAfRf4ceGdpAttributeStatus emberAfPluginRf4ceZrc20GetHomeAutomationAttributeCallback(uint8_t pairingIndex,
+                                                                                         uint8_t haInstanceId,
+                                                                                         uint8_t haAttributeId,
+                                                                                         EmberAfRf4ceZrcHomeAutomationAttribute *haAttribute)
+{
+  return EMBER_AF_RF4CE_GDP_ATTRIBUTE_STATUS_UNSUPPORTED_ATTRIBUTE;
+}
+
+/** @brief Pull Home Automation Attribute Complete
+ *
+ * This function is called by an RF4CE ZRC Home Automation actions originator as
+ * asynchronous response to a successful call to the
+ * emberAfRf4ceZrc20PullHomeAutomationAttribute() API. This callback is also
+ * invoked upon receiving pull attributes responses as result of an initial
+ * client notification request for Home Automation attribute pull from the Home
+ * Automation actions server.
+ *
+ * @param responseStatus An ::EmberAfRf4ceGdpAttributeStatus value indication
+ * whether the attribute was successfully retrieved or the reason of failure.
+ * Ver.: always
+ * @param haAttribute A pointer to an ::EmberAfRf4ceZrcHomeAutomationAttribute
+ * struct carrying the contents of the retrieved attribute. This parameter is
+ * meaningful only if responseStatus is
+ * ::EMBER_AF_RF4CE_GDP_ATTRIBUTE_STATUS_SUCCESS.  Ver.: always
+ */
+void emberAfPluginRf4ceZrc20PullHomeAutomationAttributeCompleteCallback(EmberAfRf4ceGdpAttributeStatus responseStatus,
+                                                                        EmberAfRf4ceZrcHomeAutomationAttribute *haAttribute)
+{
+}

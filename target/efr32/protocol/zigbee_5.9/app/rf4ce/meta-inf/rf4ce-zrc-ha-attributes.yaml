@@ -1,0 +1,147 @@
+# RF4CE ZRC HA Attributes (13-0614-08)
+---
+- id: 0x80
+  name: Home Automation Instance 0
+  attributes: &HA-attributes
+    - {id: 0x00, name: Store Local Scene Response 0, group: Scenes}
+    - {id: 0x01, name: Store Local Scene Response 1, group: Scenes}
+    - {id: 0x02, name: Store Local Scene Response 2, group: Scenes}
+    - {id: 0x03, name: Store Local Scene Response 3, group: Scenes}
+    - {id: 0x04, name: Store Local Scene Response 4, group: Scenes}
+    - {id: 0x05, name: Store Local Scene Response 5, group: Scenes}
+    - {id: 0x06, name: Store Local Scene Response 6, group: Scenes}
+    - {id: 0x07, name: Store Local Scene Response 7, group: Scenes}
+    - {id: 0x08, name: Store Local Scene Response 8, group: Scenes}
+    - {id: 0x09, name: Store Local Scene Response 9, group: Scenes}
+    - {id: 0x0A, name: Store Local Scene Response 10, group: Scenes}
+    - {id: 0x0B, name: Store Local Scene Response 11, group: Scenes}
+    - {id: 0x0C, name: Store Local Scene Response 12, group: Scenes}
+    - {id: 0x0D, name: Store Local Scene Response 13, group: Scenes}
+    - {id: 0x0E, name: Store Local Scene Response 14, group: Scenes}
+    - {id: 0x0F, name: Store Local Scene Response 15, group: Scenes}
+    - {id: 0x10, name: Local Scene Valid 0, group: Scenes}
+    - {id: 0x11, name: Local Scene Valid 1, group: Scenes}
+    - {id: 0x12, name: Local Scene Valid 2, group: Scenes}
+    - {id: 0x13, name: Local Scene Valid 3, group: Scenes}
+    - {id: 0x14, name: Local Scene Valid 4, group: Scenes}
+    - {id: 0x15, name: Local Scene Valid 5, group: Scenes}
+    - {id: 0x16, name: Local Scene Valid 6, group: Scenes}
+    - {id: 0x17, name: Local Scene Valid 7, group: Scenes}
+    - {id: 0x18, name: Local Scene Valid 8, group: Scenes}
+    - {id: 0x19, name: Local Scene Valid 9, group: Scenes}
+    - {id: 0x1A, name: Local Scene Valid 10, group: Scenes}
+    - {id: 0x1B, name: Local Scene Valid 11, group: Scenes}
+    - {id: 0x1C, name: Local Scene Valid 12, group: Scenes}
+    - {id: 0x1D, name: Local Scene Valid 13, group: Scenes}
+    - {id: 0x1E, name: Local Scene Valid 14, group: Scenes}
+    - {id: 0x1F, name: Local Scene Valid 15, group: Scenes}
+    - {id: 0x20, name: On/Off, group: On/Off}
+    - {id: 0x30, name: Current Level, group: Level Control}
+    - {id: 0x40, name: Lock Door Response, group: Door Lock}
+    - {id: 0x41, name: Unlock Door Response, group: Door Lock}
+    - {id: 0x42, name: Toggle Response, group: Door Lock}
+    - {id: 0x43, name: Unlock with Timeout Response, group: Door Lock}
+    - {id: 0x50, name: Current Position Lift Percentage, group: Window Covering}
+    - {id: 0x51, name: Current Position Tilt Percentage, group: Window Covering}
+    - {id: 0x60, name: Local Temperature, group: Thermostat}
+    - {id: 0x61, name: Occupied Cooling Setpoint, group: Thermostat}
+    - {id: 0x62, name: Occupied Heating Setpoint, group: Thermostat}
+    - {id: 0x70, name: Current Hue, group: Color Control}
+    - {id: 0x71, name: Current Saturation, group: Color Control}
+    - {id: 0x72, name: Current X, group: Color Control}
+    - {id: 0x73, name: Current Y, group: Color Control}
+    - {id: 0x74, name: Color Mode, group: Color Control}
+    - {id: 0xC4, name: Arm Response, group: IAS ACE}
+- id: 0x81
+  name: Home Automation Instance 1
+  attributes: *HA-attributes
+- id: 0x82
+  name: Home Automation Instance 2
+  attributes: *HA-attributes
+- id: 0x83
+  name: Home Automation Instance 3
+  attributes: *HA-attributes
+- id: 0x84
+  name: Home Automation Instance 4
+  attributes: *HA-attributes
+- id: 0x85
+  name: Home Automation Instance 5
+  attributes: *HA-attributes
+- id: 0x86
+  name: Home Automation Instance 6
+  attributes: *HA-attributes
+- id: 0x87
+  name: Home Automation Instance 7
+  attributes: *HA-attributes
+- id: 0x88
+  name: Home Automation Instance 8
+  attributes: *HA-attributes
+- id: 0x89
+  name: Home Automation Instance 9
+  attributes: *HA-attributes
+- id: 0x8A
+  name: Home Automation Instance 10
+  attributes: *HA-attributes
+- id: 0x8B
+  name: Home Automation Instance 11
+  attributes: *HA-attributes
+- id: 0x8C
+  name: Home Automation Instance 12
+  attributes: *HA-attributes
+- id: 0x8D
+  name: Home Automation Instance 13
+  attributes: *HA-attributes
+- id: 0x8E
+  name: Home Automation Instance 14
+  attributes: *HA-attributes
+- id: 0x8F
+  name: Home Automation Instance 15
+  attributes: *HA-attributes
+- id: 0x90
+  name: Home Automation Instance 16
+  attributes: *HA-attributes
+- id: 0x91
+  name: Home Automation Instance 17
+  attributes: *HA-attributes
+- id: 0x92
+  name: Home Automation Instance 18
+  attributes: *HA-attributes
+- id: 0x93
+  name: Home Automation Instance 19
+  attributes: *HA-attributes
+- id: 0x94
+  name: Home Automation Instance 20
+  attributes: *HA-attributes
+- id: 0x95
+  name: Home Automation Instance 21
+  attributes: *HA-attributes
+- id: 0x96
+  name: Home Automation Instance 22
+  attributes: *HA-attributes
+- id: 0x97
+  name: Home Automation Instance 23
+  attributes: *HA-attributes
+- id: 0x98
+  name: Home Automation Instance 24
+  attributes: *HA-attributes
+- id: 0x99
+  name: Home Automation Instance 25
+  attributes: *HA-attributes
+- id: 0x9A
+  name: Home Automation Instance 26
+  attributes: *HA-attributes
+- id: 0x9B
+  name: Home Automation Instance 27
+  attributes: *HA-attributes
+- id: 0x9C
+  name: Home Automation Instance 28
+  attributes: *HA-attributes
+- id: 0x9D
+  name: Home Automation Instance 29
+  attributes: *HA-attributes
+- id: 0x9E
+  name: Home Automation Instance 30
+  attributes: *HA-attributes
+- id: 0x9F
+  name: Home Automation Instance 31
+  attributes: *HA-attributes

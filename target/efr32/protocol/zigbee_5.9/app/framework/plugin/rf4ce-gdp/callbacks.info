@@ -1,0 +1,153 @@
+#include PLATFORM_HEADER
+#include EMBER_AF_API_EMBER_TYPES
+#include EMBER_AF_API_RF4CE_PROFILE
+#include EMBER_AF_API_RF4CE_GDP
+
+/** @brief Zrc 2 0 Start Configuration
+ *
+ * This function is called by the RF4CE GDP plugin when ZRC 2.0 configuration
+ * should begin.
+ *
+ * @param isOriginator true if is originator, false if is recipient.  Ver.:
+ * always
+ * @param pairingIndex The index of the pairing entry.  Ver.: always
+ */
+bool emberAfPluginRf4ceGdpZrc20StartConfigurationCallback(bool isOriginator,
+                                                             uint8_t pairingIndex)
+{
+  return false;
+}
+
+/** @brief Zrc 2 0 Binding Complete
+ *
+ * This function is called by the RF4CE GDP plugin when a ZRC 2.0 binding
+ * procedure completed.
+ *
+ * @param status An ::EmberAfRf4ceGdpBindingStatus value indicating whether the
+ * the binding succeeded or the reason of failure.  Ver.: always
+ * @param pairingIndex The index of the pairing entry.  Ver.: always
+ */
+void emberAfPluginRf4ceGdpZrc20BindingCompleteCallback(EmberAfRf4ceGdpBindingStatus status,
+                                                       uint8_t pairingIndex)
+{
+}
+
+/** @brief Start Validation
+ *
+ * This function is called by the RF4CE GDP plugin when the application should
+ * begin the validation procedure.  The application must complete the validation
+ * within the validation wait time to avoid the validation automatically failing
+ * due to a timeout.
+ *
+ * @param pairingIndex The index of the pairing entry.  Ver.: always
+ */
+void emberAfPluginRf4ceGdpStartValidationCallback(uint8_t pairingIndex)
+{
+}
+
+/** @brief Binding Complete
+ *
+ * This function is called by the RF4CE GDP plugin when the binding operation
+ * completes.  If status is ::EMBER_SUCCESS, binding was successful and
+ * pairingIndex indicates the index in the pairing table for the remote node.
+ *
+ * @param status The status of the binding operation.  Ver.: always
+ * @param pairingIndex The index of the pairing entry.  Ver.: always
+ */
+void emberAfPluginRf4ceGdpBindingCompleteCallback(EmberAfRf4ceGdpBindingStatus status,
+                                                  uint8_t pairingIndex)
+{
+}
+
+/** @brief Incoming Bind Proxy
+ *
+ * This function is called by the RF4CE GDP plugin when the binding recipient
+ * receives a pair request with the Binding Proxy Supported bit set. If this
+ * callback returns true, the recipient will respond to the pair request,
+ * otherwise it will ignore it.
+ *
+ * @param ieeeAddr The IEEE address of the originator node sending the pair
+ * request.  Ver.: always
+ */
+bool emberAfPluginRf4ceGdpIncomingBindProxyCallback(const EmberEUI64 ieeeAddr)
+{
+  return false;
+}
+
+/** @brief Heartbeat Polling Established
+ *
+ * This function is called by the RF4CE GDP plugin when heartbeat polling is
+ * established between a client and this server. The application should wait
+ * until the heartbeat callback is called to send messages to the client. A
+ * module can subscribe to incoming heartbeats by using the
+ * ::emberAfRf4ceGdpSubscribeToHeartbeat() API.
+ *
+ * @param pairingIndex The polling method.  Ver.: always
+ * @param triggers The polling triggers.  Ver.: always
+ */
+void emberAfPluginRf4ceGdpHeartbeatPollingEstablishedCallback(uint8_t pairingIndex,
+                                                              EmberAfRf4ceGdpPollingTrigger triggers)
+{
+}
+
+/** @brief Identify
+ *
+ * This function is called by the RF4CE GDP plugin when the client should take
+ * an action to identify itself.
+ *
+ * @param flags The actions the client should take to identify itself.  Ver.:
+ * always
+ * @param timeS The time in seconds that the client should perform the identify
+ * action or zero if the client should stop the action.  Ver.: always
+ */
+void emberAfPluginRf4ceGdpIdentifyCallback(EmberAfRf4ceGdpClientNotificationIdentifyFlags flags,
+                                           uint16_t timeS)
+{
+}
+
+/** @brief Identify Client Found
+ *
+ * This function is called by the RF4CE GDP plugin when the an identify server
+ * discovers an identify client.
+ *
+ * @param flags The actions supported by the discovered identify client.  Ver.:
+ * always
+ */
+void emberAfPluginRf4ceGdpIdentifyClientFoundCallback(EmberAfRf4ceGdpClientNotificationIdentifyFlags flags)
+{
+}
+
+/** @brief Key Exchange Complete
+ *
+ * This function is called by the RF4CE GDP plugin when a Key Exchange procedure
+ * that was initiated by the application has completed.
+ *
+ * @param status The status success/failed of the Key Exchange procedure.  Ver.:
+ * always
+ */
+void emberAfPluginRf4ceGdpKeyExchangeCompleteCallback(EmberStatus status)
+{
+}
+
+/** @brief Vendor Specific Key Exchange
+ *
+ * This function is called by the RF4CE GDP plugin when a Key Exchange Challenge
+ * with the vendor-specific bit set is received. If this callback returns true,
+ * the node will respond with a Key Exchange Challenge Response command with the
+ * vendor-specific bit set.
+ *
+ * @param initiatorVendorSpecificParam The additional parameter included in the
+ * Key Exchange Flags of the incoming Key Exchange Challenge command.  Ver.:
+ * always
+ * @param responderVendorSpecificParam The additional parameter to be included
+ * in the Key Exchange Flags of the Key Exchange Challenge Response command the
+ * node will send out.  Ver.: always
+ * @param sharedSecret A pointer to an 8-byte area memory to be filled with the
+ * vendor-specific shared secret.  Ver.: always
+ */
+bool emberAfPluginRf4ceGdpVendorSpecificKeyExchangeCallback(uint8_t initiatorVendorSpecificParam,
+                                                               uint8_t *responderVendorSpecificParam,
+                                                               uint8_t *sharedSecret)
+{
+  return false;
+}

@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head><meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+<title>Silicon Labs EmberZNet Documentation</title>
+<body>
+
+<h2>Silicon Labs EmberZNet Documentation</h2>
+
+<h3>Release Notes / Quick Start Guide</h3>
+<ul>
+<li><strong><a href="EmberStack_ReleaseNotes.pdf">EmberZNet PRO Release Notes</a></strong>
+  <p>EmberZNet: Lists compatibility requirements and sources for all software components  in the development environment. Discusses the latest changes to the EmberZNet PRO   stack (and associated utilities) including added/deleted/deprecated  features/API, and lists bugs that have been fixed  since the last release and any pending ones.
+</p>
+</li>
+<li><strong><a href="120-8098-000_ReleaseNotes_AFV2.pdf">Application Framework V2 for EmberZNet PRO Release Notes</a></strong>
+  <p>EmberZNet: Discusses the latest changes to the AFV2 (application framework V2) including added/deleted/deprecated  features/API. Details any additions to Zigbee Application Profiles and discusses corresponding changes  to the framework. Lists bugs that have been fixed since the last release and any pending ones.
+</p>
+</li>
+<li><strong><a href="qsg106-efr32-zigbee-pro.pdf">Getting Started with EmberZNet PRO</a> -- QSG106</strong>
+  <p>EmberZNet: Provides basic information on configuring, building, and installing applications for the Mighty Gecko  family and EM35x using the EmberZNet PRO stack and Simplicity Studio v4.
+</p>
+</li>
+<li><strong><a href="qsg100-em34x.pdf">Getting Started with the EM34x Development Kit</a> -- QSG100</strong>
+  <p>EmberZNet: Contains a storyboard-like description of the Ember EM34x Low-Cost Remote Development Kit's contents, and  provides step-by-step instructions on setting up the hardware and software.
+</p>
+</li>
+</ul>
+<h3>Zigbee Fundamentals</h3>
+<ul>
+<li><strong><a href="ug103-02-fundamentals-zigbee.pdf">Fundamentals - Zigbee</a> -- UG103-02</strong>
+  <p>EmberZNet: Describes the key features and characteristics of a zigbee solution. It also includes a  section on zigbee 3.0.
+</p>
+</li>
+</ul>
+<h3>API References</h3>
+<ul>
+<li><strong><a href="120-3022-000_API_EM35x/index.htm">API Reference for the EmberZNet SOC Platform</a></strong>
+  <p>EmberZNet: Lists SoC Platform APIs used to interface to the EmberZNet PRO stack, HAL, and status of  the application-controlled network. These APIs concern network management, device and stack management,  messaging, fragmentation, serial communication, token access, peripheral access, bootload utilities, and  others. They are independent of the Application Framework and therefore can be used to develop applications  that do not rely on the Zigbee Cluster Library.
+</p>
+</li>
+<li><strong><a href="120-3025-000_API_STM32F103RET_Host/index.htm">API Reference for the EmberZNet STM32F103RET Host</a></strong>
+  <p>EmberZNet: Lists STM32F103RET Host APIs used to interface to the EmberZNet PRO stack, HAL, and status of the  application-controlled network. These APIs concern network management, device and stack configuration, message  fragmentation, serial communication, peripheral access, and others. They are independent of the Application  Framework and therefore can be used to develop  applications that do not rely on the Zigbee Cluster Library.
+</p>
+</li>
+<li><strong><a href="120-3026-000_API_PC_Host/index.htm">API Reference for EmberZNet PC Host</a></strong>
+  <p>EmberZNet: Lists PC Host APIs used to interface to the EmberZNet stack, HAL, and status of the  application-controlled network. These APIs concern network management, device and stack configuration, message  fragmentation, serial communication, ASH (Asynchronus Serial Host) utilities, and others. They are independent  of the Application Framework and therefore can be used for developing applications that do not rely on the ZigBee  Cluster Library.
+</p>
+</li>
+<li><strong><a href="RF4CE_API/index.htm">API Reference for EmberZNet RF4CE</a></strong>
+  <p>EmberZNet: Lists RF4CE APIS used to interface to the stack, HAL, and application utilities. 
+</p>
+</li>
+<li><strong><a href="ug105-adv-app-programming.pdf">Advanced Application Programming with the Stack and HAL APIs</a> -- UG105</strong>
+  <p>EmberZNet: A companion to the EmberZNet API references, for developers whose applications require functionality not available through AppBuilder and the  application framework, or who prefer working with an API. Includes an introduction to the stack API, a  discussion of advanced design issues to consider when developing an application using the API, and  provides an example application. 
+</p>
+</li>
+</ul>
+<h3>Application Framework</h3>
+<ul>
+<li><strong><a href="120-3023-000_AF_V2_API/index.html">Application Framework V2 (AFV2) API</a></strong>
+  <p>EmberZNet: Describes AFV2 APIs, the CLI interface, and callbacks. 
+</p>
+</li>
+<li><strong><a href="AF_RF4CE_Framework/index.htm">RF4CE Application Framework Reference</a></strong>
+  <p>EmberZNet: Lists APIs used to implement RF4CE standards. Also describes a CLI, example applications, and architecture-agnostic plugins.
+</p>
+</li>
+<li><strong><a href="ug102-app-framework-dev-guide.pdf">Application Framework V2 (AFV2) Developer Guide</a> -- UG102</strong>
+  <p>EmberZNet: Covers the AFV2 structure and usage. Topics  include the  callback interface, time handling, event management, attributes management, multinetwork management,  plugin management, sleepy Device management, and ZCL command handling.  
+</p>
+</li>
+</ul>
+<h3>Application Development Fundamentals</h3>
+<ul>
+<li><strong><a href="ug103-01-fundamentals-wireless-network.pdf">Fundamentals - Wireless Networking</a> -- UG103-01</strong>
+  <p>EmberZNet: Introduces some fundamental concepts of wireless networking. These concepts are referred to in other  Fundamentals documents. If you are new to wireless networking, read this document first.
+</p>
+</li>
+<li><strong><a href="ug103-03-fundamentals-design-choices.pdf">Fundamentals - Design Choices</a> -- UG103-03</strong>
+  <p>EmberZNet: Discusses the major decisions that must be made about which wireless protocol you should use,  as well as additional decisions to be made if you are designing a zigbee solution.
+</p>
+</li>
+<li><strong><a href="ug103-04-fundamentals-hal.pdf">Fundamentals - HAL</a> -- UG103-04</strong>
+  <p>EmberZNet: Silicon Labs HAL (Hardware Abstraction Layer) is program code between a  system's hardware and its software that provides a consistent interface  for applications that can run on several different hardware platforms. The HAL is designed for developers using EmberZNet PRO, EmberZNet RF4CE, and Silicon Labs Thread on the  Wireless Gecko (EFR32) portfolio and the EM3x-Based MCU family of products. 
+</p>
+</li>
+<li><strong><a href="ug103-05-fundamentals-security.pdf">Fundamentals - Security</a> -- UG103-05</strong>
+  <p>EmberZNet: Introduces some basic security concepts, including network layer security, trust centers, and application  support layer security features. Discusses the types of standard protocols available in EmberZNet PRO.  Coding requirements for implementing security are reviewed in summary. Finally, information on implementing  zigbee Smart Energy security is provided.
+</p>
+</li>
+<li><strong><a href="UG103-06-AppDevFundamentals-Bootloading.pdf">Fundamentals - Bootloading</a> -- UG103-06</strong>
+  <p>EmberZNet: Introduces bootloading for Silicon Labs networking devices. Discusses the Gecko Bootloader as well  as legacy Ember and Bluetooth bootloaders, and describes the file formats used by each. 
+</p>
+</li>
+<li><strong><a href="ug103-07-fundamentals-tokens.pdf">Fundamentals - Tokens</a> -- UG103-07</strong>
+  <p>EmberZNet: Describes tokens and shows how to use them in EmberZNet PRO, EmberZNet RF4CE, and Silicon Labs Thread  applications. It also discusses bindings, the zigbee PRO application-defined associations between two  devices on a network.
+</p>
+</li>
+<li><strong><a href="ug103-08-fundamentals-tools.pdf">Fundamentals - Tools</a> -- UG103-08</strong>
+  <p>EmberZNet: Provides an overview of the toolchain used to develop, build, and deploy EmberZNet and Silicon Labs  Thread applications, and discusses some addition tools and utilities.  
+</p>
+</li>
+<li><strong><a href="ug103-09-fundamentals-zll.pdf">Fundamentals - ZLL</a> -- UG103-09</strong>
+  <p>EmberZNet: Compares the ZLL stack and network with the EmberZNet PRO stack and network, with notes about considerations  when implementing a ZLL solution. Includes a basic description of ZLL configuration and commissioning, and  notes about the interoperability of ZLL and non-ZLL devices.
+</p>
+</li>
+<li><strong><a href="ug103-10-fundamentals-rf4ce.pdf">Fundamentals - RF4CE</a> -- UG103-10</strong>
+  <p>EmberZNet: Describes the zigbee RF4CE specification, with notes about considerations when implementing an RF4CE  solution. Includes a basic description of RF4CE device types, the network formation process, power  saving, and security.
+</p>
+</li>
+</ul>
+<h3>Users Guides</h3>
+<ul>
+<li><strong><a href="ug104-test-debug-apps.pdf">Testing and Debugging Applications for the Silicon Labs EM35x and Mighty Gecko (EFR32MG) Platforms</a> -- UG104</strong>
+  <p>EmberZNet: Describes strategies for testing and debugging  applications, including:  hardware and application considerations, initial development testing, and lab  testing. For additional information about later stages of programming and testing see application  notes AN700, Manufacturing Test Guidelines, and AN718, Manufacturing Test Overview.
+</p>
+</li>
+<li><strong><a href="ug110-em35x-dev-kit-user-guide.pdf">EM35x Development Kit User Guide</a> -- UG110</strong>
+  <p>EmberZNet: Explains how to set up EM35x Development kit hardware and use the Debug Adapter (ISA3). Describes some of the  software tools available, along with examples of their use.
+</p>
+</li>
+<li><strong><a href="ug113-em34x-dev-kit-user-guide.pdf">EM34x User Guide</a> -- UG113</strong>
+  <p>EmberZNet: Describes the EM34x Low Cost Remote Development Kit and the EM34x Full-Feature Remote Development  Kit, and explains how to set up their hardware and use the Debug Adapter  (ISA3).
+</p>
+</li>
+<li><strong><a href="ug107-em35x-soc-utilities.pdf">ISA3 Utilities Guide</a> -- UG107</strong>
+  <p>EmberZNet: Describes how to use the   standalone ISA3 utilities supplied with EmberZNet PRO and Silicon Labs Thread software. It also gives  a brief overview of the various file types that may be used.
+</p>
+</li>
+<li><strong><a href="UG162-SimplicityCommanderReferenceGuide.pdf">Simplicity Commander Reference Guide</a> -- UG162</strong>
+  <p>EmberZNet: Describes how and when to use Simplicity Commander's Command-Line Interface.  Only EFR32 is currently supported. EM3xx is not supported at this time.
+</p>
+</li>
+<li><strong><a href="ug100-ezsp-reference-guide.pdf">EZSP Protocol Reference Guide</a> -- UG100</strong>
+  <p>EmberZNet: Describes the EmberZNet Serial Protocol (EZSP), used by a host application processor to interact with the EmberZNet PRO stack running on an NCP over either a SPI or a UART interface. Describes the frame formats  for different EZSP-bound stack activities such as network management, messaging, bootloading, and token  access. 
+</p>
+</li>
+<li><strong><a href="ug101-uart-gateway-protocol-reference.pdf">UART Protocol Reference Guide</a> -- UG101</strong>
+  <p>EmberZNet: Describes the protocol used by EZSP-UART to reliably carry commands and responses between a host processor  and a network co-processor. The topics discussed include a brief overview of Ember-designed ASH (Asynchronus  Serial Host) protocol, general ASH frame format, different ASH frames, and their oprations. 
+</p>
+</li>
+<li><strong><a href="ug266-gecko-bootloader-user-guide.pdf">Silicon Labs Gecko Bootloader User's Guide</a> -- UG266</strong>
+  <p>EmberZNet: Describes the high-level implementation of the Silicon Labs Gecko Bootloader for EFR32 SoCs and NCPs,  and provides information on how to get started using the Gecko Bootloader with Silicon Labs wireless protocol stacks. 
+</p>
+</li>
+<li><strong><a href="ug267-multiprotocol-user-guide.pdf">Multiprotocol User's Guide</a> -- UG267</strong>
+  <p>EmberZNet: Provides details about the Silicon Labs multiprotocol implementation released in March 2017, including details on the  Multiprotocol Stack Interface (MPSI) and data storage issues. Also provides a detailed procedure for using the  switched multiprotol feature. 
+</p>
+</li>
+</ul>
+<h3>Application Notes</h3>
+<ul>
+<li><strong><a href="an718-mfg-test-overview.pdf">Manufacturing Test Overview</a> -- AN718</strong>
+  <p>EmberZNet: Provides a high-level description of the different options for integrating RF testing and characterization  into your standard test flows. It is intended for customers who are moving from the early prototype  development stage to the manufacturing production environment and need assistance with manufacturing test. 
+</p>
+</li>
+<li><strong><a href="an700-mfg-test-guidelines.pdf">Manufacturing Test Guidelines</a> -- AN700</strong>
+  <p>EmberZNet: Details the different options for integrating RF testing and characterization into your standard test flows.
+</p>
+</li>
+<li><strong><a href="an708-setting-manufacturing-certificates.pdf">Setting Manufacturing Certificates and Installation Codes</a> -- AN708</strong>
+  <p>EmberZNet: Provides an overview of the use of install codes and certificates in a Smart Energy network. Describes the  components of a Smart Energy certificate and the differences between test certificates and production  certificates. Explains how to use Silicon Labs utilities to program, verify and erase install codes and  certificates.
+</p>
+</li>
+<li><strong><a href="an710-custom-nodes-em35x.pdf">Bringing Up Custom Devices for the EM35x SoC or NCP Platform</a> -- AN710</strong>
+  <p>EmberZNet: Contains a list of Customer Information Block (CIB) tokens  and explains how to program/use the CIB, a special non-volatile area of Flash that contains information  such as custom EUI64, install code, certificates and other data that can only be programmed through an  external interface such as JTAG serial wire. 
+</p>
+</li>
+<li><strong><a href="an717-progamming-options-em35x.pdf">Programming Options - For the EM35x Platform</a> -- AN717</strong>
+  <p>EmberZNet: Describes the various programming options available to EM35x series customers - the Debug Adapter (ISA3) for  the developer environment and the prototype and low-volume production environment, and gang programmers,  in-system programmers (ISPs), and in-circuit test (ICT) programming options for the high-volume production  environment.
+</p>
+</li>
+<li><strong><a href="an703-simulated-eeprom.pdf">Using the Simulated EEPROM for the EM35x and Mighty Gecko Family SoC Platforms</a> -- AN703</strong>
+  <p>EmberZNet: Describes how to use the simulated EEPROM in Silicon Labs' EM35x and Mighty Gecko (EFR32MG) platforms, gives an  overview of the internal design, and discusses design considerations. You should already be familiar with  the token system in the HAL. For more information on HAL and the token system, see the online HAL API documentation.
+</p>
+</li>
+<li><strong><a href="an706-ezsp-uart-host-interfacing-guide.pdf">EZSP-UART Host Interfacing Guide</a> -- AN706</strong>
+  <p>EmberZNet: Describes procedures for initial tests of a host connected to a zigbee processor using EZSP-UART. It  assumes that you have already read  UG101, the UART Gateway Protocol Reference Guide. You should have a basic  understanding of the UART Gateway protocol, as well as the signals needed by the UART interface.
+</p>
+</li>
+<li><strong><a href="../documentationan713-measuring-em35x-power-consumption.pdf"> Measuring EM35x Power Consumption For Sleepy End Devices using EmberZNet</a> -- AN713</strong>
+  <p>EmberZNet: Describes techniques for making detailed measurements of the power consumption of sleepy end devices running  EmberZNet PRO on the EM35x SOC platform. Includes information on test setup  and some common usage scenarios,  besides providing details about what operations are observed in the measurements.
+</p>
+</li>
+<li><strong><a href="an714-smart-energy-ecc-enabled-device-setup.pdf"> Smart Energy ECC-Enabled Device Setup Process</a> -- AN714</strong>
+  <p>EmberZNet: Describes how to set up a device with the security resources required to support Smart Energy (SE) security,  which is based on certificate-based key establishment (CBKE) using Elliptic-Curve Cryptography (ECC). You  should be familiar the Zigbee Smart Energy Profile specification.
+</p>
+</li>
+<li><strong><a href="an716-image-builder-instructions.pdf"> Instructions for Using Image Builder</a> -- AN716</strong>
+  <p>EmberZNet: Provides instructions for creating zigbee Over-the-air (OTA) bootloader files with Image Builder, which takes  an existing file (or multiple files) and wraps them in the file format as declared in the zigbee specification. 
+</p>
+</li>
+<li><strong><a href="an709-acr-measurement.pdf">Adjacent Channel Rejection Measurements - For 802.15.4 radios</a> -- AN709</strong>
+  <p>EmberZNet: Presents the method Silicon Labs uses to measure Adjacent channel rejection (ACR) on its IEEE 802.15.4-2003 compliant ICs, and compares it to other methods. ACR is a measure of how well a reciever performs on its frequency channel  when there is an interfering system in the vicinity operating on a nearby channel. 
+</p>
+</li>
+<li><strong><a href="an715-using-em35x-adc.pdf">Using the EM35x ADC</a> -- AN715</strong>
+  <p>EmberZNet: Describes how to use the EM35x Analog to Digital Converter (ADC), a first-order sigma-delta converter, and  also gives an overview of the internal design, discusses design considerations, and provides example code  of fundamental usage.
+</p>
+</li>
+<li><strong><a href="an740-using-em358-usb.pdf">Using the Ember EM358x/EM359x USB</a> -- AN740</strong>
+  <p>EmberZNet: Provides key information for using the Ember EM358x USB. The goal of the EM358x USB is to only act as COM  port replacement for UART-style functionality.
+</p>
+</li>
+<li><strong><a href="an760-using-legacy-standalone-bootloader.pdf">Using the Ember Standalone Bootloader</a> -- AN760</strong>
+  <p>EmberZNet: For EFR32xG12 platforms and newer, see UG266: Silicon Labs Gecko Bootloader User Guide.  This describes using the legacy Ember Standalone Bootloader for EM3x and early EFR32 platforms. The Ember Standalone bootloader is a simple, dedicated program to facilitate input of new application/stack firmware via Xmodem upload  to a serial interface (SPI or UART) or via a proprietary, IEEE 802.15.4-based, single-hop MAC layer RF  protocol.
+</p>
+</li>
+<li><strong><a href="an772-using-legacy-applicatione-bootloader.pdf">Using the Ember Application Bootloader</a> -- AN772</strong>
+  <p>EmberZNet: For EFR32xG12 platforms and newer, see UG266: Silicon Labs Gecko Bootloader User Guide. This describes using the legacy Ember Application Bootloader for EM3x and early EFR32 platforms. The Ember  application bootloader is stored on the chip along with the stack/application, and facilitates firmware image  updates by the application. 
+</p>
+</li>
+<li><strong><a href="an728-ota-client-server-setup.pdf">Zigbee OTA Bootload Cluster Server and Client Setup</a> -- AN728</strong>
+  <p>EmberZNet: Describes how to perform a zigbee over-the-air (OTA) bootload cluster download between a client and server device.  The instructions are for Smart Energy 1.x devices using Ember EM35x development kits.  Users can also refer to this  procedure when setting up or testing zigbee OTA bootload cluster download in their own development environments with  their own hardware.
+</p>
+</li>
+<li><strong><a href="an724-multi-network.pdf">Designing for Multiple Networks on a Single Zigbee Chip</a> -- AN724</strong>
+  <p>EmberZNet: Describes the multi-network stack feature that allows a single-radio chip to be concurrently part of more than one  distinct network. Some limitations and restrictions are enforced by the multi-network stack and should be taken  into account during the design of a multi-network application. These limitations are mostly related to the role  the node assumes on the networks and are discussed here in detail.
+</p>
+</li>
+<li><strong><a href="an879-rf4ce-cli.pdf">Application Framework Command Line Interface for RF4CE</a> -- AN879</strong>
+  <p>EmberZNet: Describes the command line interface (CLI) functionality provided in the Application Framework for RF4CE-based  applications.
+</p>
+</li>
+<li><strong><a href="an875-rf4ce-gdp-enhanced-security.pdf">RF4CE GDP Enhanced Security</a> -- AN875</strong>
+  <p>EmberZNet: Describes the enhanced security feature (based on AES-CMAC) available for use with RF4CE. 
+</p>
+</li>
+<li><strong><a href="an906-rf4ce-zigbee-remote-control-firmware-guide.pdf">RF4CE Zigbee Remote Control Firmware Guide</a> -- AN906</strong>
+  <p>EmberZNet: Explains Silicon Labs RF4CE ZRC (Zigbee Remote Control) Low Cost Remote and Full Featured Remote  reference designs main firmware structures and how to customize them.
+</p>
+</li>
+<li><strong><a href="an711-ezsp-spi-host-interfacing-guide.pdf">EZSP-SPI Host Interfacing Guide</a> -- AN711</strong>
+  <p>EmberZNet: Details the EZSP-SPI Protocol used by a host microcontroller to communicate with an Ember network  co-processor (NCP) running the EmberZNet PRO stack. It includes recommended procedures for developing  and testing a driver for the EZSP-SPI Protocol on a new host microcontroller.
+</p>
+</li>
+<li><strong><a href="an712-new-micros-for-ncp.pdf">Bringing Up New Microcontrollers for an NCP and EmberZNet PRO 5.x</a> -- AN712</strong>
+  <p>EmberZNet: Describes recommended practices and procedures for designing, developing, and testing the SPI Protocol  on a new microcontroller that is interfaced to a network co-processor (NCP) and uses the EmberZNet PRO  stack software. Discusses physical interfaces between the host and the co-processor, initialization of SPI  transacations, and extended communication. You should understand the basics of EZSP (refer to the EZSP  reference guide) and the EM35x data sheet.
+</p>
+</li>
+<li><strong><a href="an961-custom-nodes-efr32.pdf">Bringing Up Custom Devices for the Mighty Gecko and Flex Gecko Families</a> -- AN961</strong>
+  <p>EmberZNet: Describes how to initialize a piece of custom hardware (a 'device') based on the Mighty Gecko and Flex  Gecko families so that it interfaces correctly with a network stack. The same procedures can be used to  restore devices whose settings have been corrupted or erased.
+</p>
+</li>
+<li><strong><a href="an1010-customized-ncp.pdf">Building a Customized NCP Application</a> -- AN1010</strong>
+  <p>EmberZNet: Provides instructions for configuring various aspects of an NCP application image using the Application  Builder tool within Simplicity Studio.
+</p>
+</li>
+<li><strong><a href="an1019-node-test.pdf">Using the NodeTest Application</a> -- AN1019</strong>
+  <p>EmberZNet: Describes how to use NodeTest, a pre-built application supplied by Silicon Labs for the purpose of performing  RF evaluation, functional testing, and hardware validation. It contains RF test functions pertinent to IEEE  802.15.4-based radio configurations such as those used by the Silicon Labs EmberZNet PRO and Silicon Labs Thread  stacks on platforms such as the EM35x, Mighty Gecko, or Flex Gecko families.
+</p>
+</li>
+<li><strong><a href="an1017-coexistence-with-WiFi.pdf">Zigbee and Thread Coexistence with WiFi</a> -- AN1017</strong>
+  <p>EmberZNet: Describes the impact of Wi-Fi on zigbee and Thread, and methods to improve coexistence. First, methods to improve coexistence without direct  interaction between zigbee/Thread and Wi-Fi radios are described (for both EM35x/EM358x and EFR32MG). Second, Silicon Labs's Packet Traffic  Arbitration (PTA) support to coordinate 2.5 GHz RF traffic for co-located zigbee/Thread and Wi-Fi radios is described (for the EFR32MG only).
+</p>
+</li>
+</ul>
+</body>
+</html>

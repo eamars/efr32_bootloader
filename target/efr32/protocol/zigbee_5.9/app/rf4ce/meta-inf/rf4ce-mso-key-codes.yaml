@@ -1,0 +1,174 @@
+# RF4CE MSO Key Codes
+---
+- {id: 0x00, name: OK}
+- {id: 0x01, name: Up Arrow}
+- {id: 0x02, name: Down Arrow}
+- {id: 0x03, name: Left Arrow}
+- {id: 0x04, name: Right Arrow}
+# 0x05--0x08: Reserved
+- {id: 0x09, name: Menu}
+# 0x0A: Reserved
+- {id: 0x0B, name: DVR}
+- {id: 0x0C, name: Fav}
+- {id: 0x0D, name: Exit}
+# 0x0E--0x0F: Reserved
+- {id: 0x10, name: Home}
+# 0x11--0x1F: Reserved
+- {id: 0x20, name: Digit 0}
+- {id: 0x21, name: Digit 1}
+- {id: 0x22, name: Digit 2}
+- {id: 0x23, name: Digit 3}
+- {id: 0x24, name: Digit 4}
+- {id: 0x25, name: Digit 5}
+- {id: 0x26, name: Digit 6}
+- {id: 0x27, name: Digit 7}
+- {id: 0x28, name: Digit 8}
+- {id: 0x29, name: Digit 9}
+- {id: 0x2A, name: .}
+- {id: 0x2B, name: Return}
+# 0x2C--0x2F: Reserved
+- {id: 0x30, name: Ch+}
+- {id: 0x31, name: Ch-}
+- {id: 0x32, name: Last}
+- {id: 0x33, name: Lang}
+- {id: 0x34, name: Input/Select}
+- {id: 0x35, name: Info}
+- {id: 0x36, name: Help}
+- {id: 0x37, name: Page Up}
+- {id: 0x38, name: Page Down}
+# 0x39--0x3A: Reserved
+- {id: 0x3B, name: Motion}
+- {id: 0x3C, name: Search}
+- {id: 0x3D, name: Live}
+- {id: 0x3E, name: HD/Zoom}
+- {id: 0x3F, name: Share}
+- {id: 0x40, name: TV Power}
+- {id: 0x41, name: Vol+}
+- {id: 0x42, name: Vol-}
+- {id: 0x43, name: Mute}
+- {id: 0x44, name: Play}
+- {id: 0x45, name: Stop}
+- {id: 0x46, name: Pause}
+- {id: 0x47, name: Record}
+- {id: 0x48, name: Rewind}
+- {id: 0x49, name: Fast Forward}
+# 0x4A: Reserved
+- {id: 0x4B, name: 30-Second Skip Ahead}
+- {id: 0x4C, name: Replay}
+# 0x4D--0x50: Reserved
+- {id: 0x51, name: Swap}
+- {id: 0x52, name: On Demand}
+- {id: 0x53, name: Guide}
+# 0x54--0x56: Reserved
+- {id: 0x57, name: Push to Talk}
+- {id: 0x58, name: PIP On/Off}
+- {id: 0x59, name: PIP Move}
+- {id: 0x5A, name: PIP Ch+}
+- {id: 0x5B, name: PIP Ch-}
+- {id: 0x5C, name: Lock}
+- {id: 0x5D, name: Day+}
+- {id: 0x5E, name: Day-}
+# 0x5F--0x60: Reserved
+- {id: 0x61, name: Play/Pause}
+# 0x62--0x63: Reserved
+- {id: 0x64, name: Stop Video}
+- {id: 0x65, name: Mute Mic}
+# 0x66--0x6A: Reserved
+- {id: 0x6B, name: Power Toggle}
+- {id: 0x6C, name: Power Off}
+- {id: 0x6D, name: Power On}
+# 0x6E--0x70: Reserved
+- {id: 0x71, name: OCAP B (Blue Square)}
+- {id: 0x72, name: OCAP C (Red Circle)}
+- {id: 0x73, name: OCAP D (Green Diamond)}
+- {id: 0x74, name: OCAP A (Yellow Triangle)}
+# 0x75--0x9F: Reserved
+- {id: 0xA0, name: Profile}
+- {id: 0xA1, name: Call}
+- {id: 0xA2, name: Hold}
+- {id: 0xA3, name: End}
+- {id: 0xA4, name: Views}
+- {id: 0xA5, name: Self-View}
+- {id: 0xA6, name: Zoom In}
+- {id: 0xA7, name: Zoom Out}
+- {id: 0xA8, name: Backspace}
+- {id: 0xA9, name: Lock/Unlock}
+- {id: 0xAA, name: Caps}
+- {id: 0xAB, name: Alt}
+- {id: 0xAC, name: Space}
+- {id: 0xAD, name: www.}
+- {id: 0xAE, name: .com}
+# 0xAF: Reserved
+- {id: 0xB0, name: A}
+- {id: 0xB1, name: B}
+- {id: 0xB2, name: C}
+- {id: 0xB3, name: D}
+- {id: 0xB4, name: E}
+- {id: 0xB5, name: F}
+- {id: 0xB6, name: G}
+- {id: 0xB7, name: H}
+- {id: 0xB8, name: I}
+- {id: 0xB9, name: J}
+- {id: 0xBA, name: K}
+- {id: 0xBB, name: L}
+- {id: 0xBC, name: M}
+- {id: 0xBD, name: N}
+- {id: 0xBE, name: O}
+- {id: 0xBF, name: P}
+- {id: 0xC0, name: Q}
+- {id: 0xC1, name: R}
+- {id: 0xC2, name: S}
+- {id: 0xC3, name: T}
+- {id: 0xC4, name: U}
+- {id: 0xC5, name: V}
+- {id: 0xC6, name: W}
+- {id: 0xC7, name: X}
+- {id: 0xC8, name: Y}
+- {id: 0xC9, name: Z}
+- {id: 0xCA, name: a}
+- {id: 0xCB, name: b}
+- {id: 0xCC, name: c}
+- {id: 0xCD, name: d}
+- {id: 0xCE, name: e}
+- {id: 0xCF, name: f}
+- {id: 0xD0, name: g}
+- {id: 0xD1, name: h}
+- {id: 0xD2, name: i}
+- {id: 0xD3, name: j}
+- {id: 0xD4, name: k}
+- {id: 0xD5, name: l}
+- {id: 0xD6, name: m}
+- {id: 0xD7, name: n}
+- {id: 0xD8, name: o}
+- {id: 0xD9, name: p}
+- {id: 0xDA, name: q}
+- {id: 0xDB, name: r}
+- {id: 0xDC, name: s}
+- {id: 0xDD, name: t}
+- {id: 0xDE, name: u}
+- {id: 0xDF, name: v}
+- {id: 0xE0, name: w}
+- {id: 0xE1, name: x}
+- {id: 0xE2, name: y}
+- {id: 0xE3, name: z}
+- {id: 0xE4, name: "?"}
+- {id: 0xE5, name: "!"}
+- {id: 0xE6, name: "#"}
+- {id: 0xE7, name: "$"}
+- {id: 0xE8, name: "%"}
+- {id: 0xE9, name: "&"}
+- {id: 0xEA, name: "*"}
+- {id: 0xEB, name: (}
+- {id: 0xEC, name: )}
+- {id: 0xED, name: +}
+- {id: 0xEE, name: -}
+- {id: 0xEF, name: "="}
+- {id: 0xF0, name: /}
+- {id: 0xF1, name: _}
+- {id: 0xF2, name: "\""}
+- {id: 0xF3, name: ":"}
+- {id: 0xF4, name: ;}
+- {id: 0xF5, name: "@"}
+- {id: 0xF6, name: "'"}
+- {id: 0xF7, name: ","}
+# 0xF8--0xFF: Reserved

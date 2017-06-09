@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-rf4ce-gdp-identification-client" name="Plugin Commands: Generic Device Profile Identification Client">
+    <description>
+      The RF4CE GDP Identification Client plugin contributes several commands to the application framework's CLI.
+    </description>
+  </group>
+  <command cli="plugin rf4ce-gdp-identification-client user-interaction" functionName="emberAfRf4ceGdpIdentificationClientDetectedUserInteraction" group="plugin-rf4ce-gdp-identification-client">
+    <description>
+      Indicate that user interaction has occurred.
+    </description>
+  </command>
+</cli>

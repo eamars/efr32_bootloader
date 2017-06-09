@@ -1,0 +1,9 @@
+api(power-meter) {
+  name=Power Meter
+  callbacks=$PLUGIN/power-meter-callback.info
+}
+
+api(sim-eeprom) {
+  name=Simulated EEPROM
+  callbacks=$HAL/config/sim-eeprom-callback.info
+}

@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-rf4ce-profile" name="Plugin Commands: RF4CE Profile">
+    <description>
+      The RF4CE Profile plugin contributes several commands to the application framework's CLI.  These commands are used for sending and receiving RF4CE profile message.
+    </description>
+  </group>
+  <command cli="plugin rf4ce-profile start" functionName="emberAfPluginRf4ceProfileStartCommand" group="plugin-rf4ce-profile">
+    <description>
+      Start an RF4CE network.
+    </description>
+  </command>
+  <command cli="plugin rf4ce-profile stop" functionName="emberAfPluginRf4ceProfileStopCommand" group="plugin-rf4ce-profile">
+    <description>
+      Stop the network operations of an RF4CE network.
+    </description>
+  </command>
+  <command cli="plugin rf4ce-profile pair" functionName="emberAfPluginRf4ceProfilePairCommand" group="plugin-rf4ce-profile">
+    <description>
+      Initiate the pairing process.
+    </description>
+    <arg name="channel"                  type="INT8U"        description="The logical channel of the device with which to pair." />
+    <arg name="panId"                    type="INT16U"       description="The PAN identifier of the device with which to pair." />
+    <arg name="eui64"                    type="IEEE_ADDRESS" description="The IEEE address of the device with which to pair." />
+    <arg name="keyExchangeTransferCount" type="INT8U"        description="The number of transfers the target should use to exchange the link key with the pairing originator." />
+  </command>
+  <command cli="plugin rf4ce-profile send" functionName="emberAfPluginRf4ceProfileSendCommand" group="plugin-rf4ce-profile">
+    <description>
+      Send an RF4CE profile message.
+    </description>
+    <arg name="pairingIndex" type="INT8U"        description="The index of the entry in the pairing table to which to send the command." />
+    <arg name="profileId"    type="INT8U"        description="Thee profile ID to be included in the RF4CE network header of the outgoing RF4CE network DATA frame." />
+    <arg name="message"      type="OCTET_STRING" description="The message to be sent." />
+  </command>
+  <command cli="plugin rf4ce-profile vendor" functionName="emberAfPluginRf4ceProfileVendorCommand" group="plugin-rf4ce-profile">
+    <description>
+      Send a vendor-specific RF4CE profile message.
+    </description>
+    <arg name="pairingIndex" type="INT8U"        description="The index of the entry in the pairing table to which to send the command." />
+    <arg name="profileId"    type="INT8U"        description="Thee profile ID to be included in the RF4CE network header of the outgoing RF4CE network DATA frame." />
+    <arg name="vendorId"     type="INT16U"       description="Thee vendor ID to be included in the RF4CE network header of the outgoing RF4CE network DATA frame." />
+    <arg name="message"      type="OCTET_STRING" description="The message to be sent." />
+  </command>
+  <command cli="plugin rf4ce-profile unpair" functionName="emberAfPluginRf4ceProfileUnpairCommand" group="plugin-rf4ce-profile">
+    <description>
+      Initiate the unpairing process.
+    </description>
+    <arg name="pairingIndex" type="INT8U" description="The index of the entry in the pairing table with which to unpair." />
+  </command>
+  <command cli="plugin rf4ce-profile power" functionName="emberAfPluginRf4ceProfilePowerCommand" group="plugin-rf4ce-profile">
+    <description>
+      Set the power saving parameters.
+    </description>
+    <arg name="dutyCycle"    type="INT32U" description="The duty cycle of a device in milliseconds." />
+    <arg name="activePeriod" type="INT32U" description="The active period of a device in milliseconds." />
+  </command>
+  <command cli="plugin rf4ce-profile rx" functionName="emberAfPluginRf4ceProfileRxCommand" group="plugin-rf4ce-profile">
+    <description>
+      Set the RX-enabled state of a profile.
+    </description>
+    <arg name="profileId" type="INT8U" description="The profile id to enable or disable." />
+    <arg name="enable"    type="INT8U" description="0 to disable or 1 to enable." />
+  </command>
+  <command cli="plugin rf4ce-profile agility" functionName="emberAfPluginRf4ceProfileAgilityCommand" group="plugin-rf4ce-profile">
+    <description>
+      Set the frequency agility parameters.
+    </description>
+    <arg name="rssiWindowSize"     type="INT8U"  description="The number of the most recent RSSI reads that are taken into consideration to decide whether a channel switch is required or not." />
+    <arg name="channelChangeReads" type="INT8U"  description="The number of RSSI reads above the RSSI threshold that will trigger a channel switch." />
+    <arg name="rssiThreshold"      type="INT8S"  description="The RSSI threshold above which a channel will be considered congested." />
+    <arg name="readInterval"       type="INT16U" description="The interval length in seconds between two consecutive RSSI reads." />
+    <arg name="readDuration"       type="INT8U"  description="The exponent of the number of scan periods of the RSSI read process." />
+  </command>
+  <command cli="plugin rf4ce-profile lqi" functionName="emberAfPluginRf4ceProfileLqiCommand" group="plugin-rf4ce-profile">
+    <description>
+      Set the discovery LQI threshold parameter.
+    </description>
+    <arg name="threshold" type="INT8U" description="The LQI threshold below which discovery requests will be rejected." />
+  </command>
+  <command cli="plugin rf4ce-profile print" functionName="emberAfPluginRf4ceProfilePrintCommand" group="plugin-rf4ce-profile">
+    <description>
+      Print the pairing table.
+    </description>
+  </command>
+</cli>

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-rf4ce-zrc20-ha-server" name="Plugin Commands: ZigBee Remote Control 2.0 HA Server">
+    <description>
+      The RF4CE ZRC 2.0 HA Server plugin contributes several commands to the application framework's CLI.
+    </description>
+  </group>
+  <command cli="plugin rf4ce-zrc20-ha-server clearallhaattr" functionName="emberAfPluginRf4ceZrc20HaServerClearAllHaAttributesCommand" group="plugin-rf4ce-zrc20-ha-server">
+    <description>
+      Clear all HA attribute values.
+    </description>
+  </command>
+  <command cli="plugin rf4ce-zrc20-ha-server gethaattr" functionName="emberAfPluginRf4ceZrc20HaServerGetHaAttributeCommand" group="plugin-rf4ce-zrc20-ha-server">
+    <description>
+      Get HA attribute.
+    </description>
+    <arg name="pairingIndex"  type="INT8U" description="Pairing Index." />
+    <arg name="haInstanceId"  type="INT8U" description="HA Instance ID." />
+    <arg name="haAttributeId" type="INT8U" description="HA Attribute ID." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-ha-server sethaattr" functionName="emberAfPluginRf4ceZrc20HaServerSetHaAttributeCommand" group="plugin-rf4ce-zrc20-ha-server">
+    <description>
+      Set HA attribute.
+    </description>
+    <arg name="pairingIndex"        type="INT8U"        description="Pairing Index." />
+    <arg name="haInstanceId"        type="INT8U"        description="HA Instance ID." />
+    <arg name="haAttributeId"       type="INT8U"        description="HA Attribute ID." />
+    <arg name="haAttributeContents" type="OCTET_STRING" description="HA Attribute contents." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-ha-server ldandmappingclear" functionName="emberAfPluginRf4ceZrc20HaLogicalDeviceAndInstanceToLogicalDeviceMappingClearCommand" group="plugin-rf4ce-zrc20-ha-server">
+    <description>
+       Clear logicalDevices table and instanceToLogicalDevice table.
+    </description>
+  </command>
+  <command cli="plugin rf4ce-zrc20-ha-server ldandmappingadd" functionName="emberAfPluginRf4ceZrc20HaLogicalDeviceAndInstanceToLogicalDeviceMappingAddCommand" group="plugin-rf4ce-zrc20-ha-server">
+    <description>
+      Add logical device and map it to instance.
+    </description>
+    <arg name="pairingIndex"        type="INT8U"  description="Pairing Index." />
+    <arg name="haInstanceId"        type="INT8U"  description="HA Instance ID." />
+    <arg name="type"                type="INT8U"  description="Outgoing Message Type." />
+    <arg name="indexOrDestination"  type="INT16U" description="Index or Destination." />
+    <arg name="sourceEndpoint"      type="INT8U"  description="Source Endpoint." />
+    <arg name="destinationEndpoint" type="INT8U"  description="Destination Endpoint." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-ha-server ldandmappingremove" functionName="emberAfPluginRf4ceZrc20HaLogicalDeviceAndInstanceToLogicalDeviceMappingRemoveCommand" group="plugin-rf4ce-zrc20-ha-server">
+    <description>
+      Remove logical device and all instances mapped to it.
+    </description>
+    <arg name="type"                type="INT8U"  description="Outgoing Message Type." />
+    <arg name="indexOrDestination"  type="INT16U" description="Index or Destination." />
+    <arg name="sourceEndpoint"      type="INT8U"  description="Source Endpoint." />
+    <arg name="destinationEndpoint" type="INT8U"  description="Destination Endpoint." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-ha-server ldandmappingget" functionName="emberAfPluginRf4ceZrc20HaLogicalDeviceAndInstanceToLogicalDeviceMappingGetCommand" group="plugin-rf4ce-zrc20-ha-server">
+    <description>
+      Get logical device mapped to an instance.
+    </description>
+    <arg name="pairingIndex"        type="INT8U"  description="Pairing Index." />
+    <arg name="haInstanceId"        type="INT8U"  description="HA Instance ID." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-ha-server ldandmappingprint" functionName="emberAfPluginRf4ceZrc20HaLogicalDeviceAndInstanceToLogicalDeviceMappingPrintCommand" group="plugin-rf4ce-zrc20-ha-server">
+    <description>
+      Print logical device and all HA instaces mapped to it.
+    </description>
+    <arg name="type"                type="INT8U"  description="Outgoing Message Type." />
+    <arg name="indexOrDestination"  type="INT16U" description="Index or Destination." />
+    <arg name="sourceEndpoint"      type="INT8U"  description="Source Endpoint." />
+    <arg name="destinationEndpoint" type="INT8U"  description="Destination Endpoint." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-ha-server ldandmappingprintall" functionName="emberAfPluginRf4ceZrc20HaLogicalDeviceAndInstanceToLogicalDeviceMappingPrintAllCommand" group="plugin-rf4ce-zrc20-ha-server">
+    <description>
+      Print logicalDevices table and instanceToLogicalDevice table.
+    </description>
+  </command>
+</cli>

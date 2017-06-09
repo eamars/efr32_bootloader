@@ -1,0 +1,9 @@
+
+What's new in EmberZNet 5.9.1.0:
+  * Critical bug fixes for zigbee
+  
+What's new in EmberZNet 5.9.0.0:
+  * Switched multiprotocol between Bluetooth and zigbee
+  * Bluetooth reference commisioning app
+  * Support for EFR32MG12
+  * Support for Gecko Bootloader

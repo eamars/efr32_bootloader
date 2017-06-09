@@ -1,0 +1,3 @@
+[submodule "target/efr32"]
+	path = target/efr32
+	url = git@github.com:THEANTsMAN/efr32.git

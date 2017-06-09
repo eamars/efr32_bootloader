@@ -1,0 +1,22 @@
+xncp-led {
+  name=xNCP LED
+  dir=xncp-led
+  isc=xncp-led/xncp-led.isc
+  include=xncp-led-implementation.c
+  include=led-protocol.h
+  EmberZNet: An extensible network co-processor (xNCP) application with an LED controlled by a HOST.
+}
+
+ncp-rf4ce-spi {
+  name=NCP RF4CE SPI
+  dir=ncp-rf4ce-spi
+  isc=ncp-rf4ce-spi/ncp-rf4ce-spi.isc
+  EmberZNet: An RF4CE-only network co-processor application.
+}
+
+SecureEzspNcp {
+  name=SecureEzspNcp
+  dir=secure-ezsp
+  isc=secure-ezsp/SecureEzspNcp.isc
+  EmberZNet: This is a demonstration of a NCP application that securely communicates with the Host.
+}

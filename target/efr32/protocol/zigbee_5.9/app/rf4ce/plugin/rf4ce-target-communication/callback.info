@@ -1,0 +1,10 @@
+#include PLATFORM_HEADER
+
+/** @brief Host Binding Request
+ *
+ * This function is called by the RF4CE Target Communication plugin when it
+ * receives a request from the host to accept incoming binding requests.
+ */
+void emberAfPluginRf4ceTargetCommunicationHostBindingRequestCallback(void)
+{
+}

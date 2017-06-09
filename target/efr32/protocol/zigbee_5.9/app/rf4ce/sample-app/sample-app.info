@@ -1,0 +1,63 @@
+controller-zrc11 {
+  name=ZRC 1.1 Controller
+  dir=controller-zrc11
+  isc=controller-zrc11/controller-zrc11.isc
+  include=controller-zrc11-implementation.c
+  EmberZNet: ZRC 1.1 controller example.
+}
+
+controller-zrc20 {
+  name=ZRC 2.0 Controller
+  dir=controller-zrc20
+  isc=controller-zrc20/controller-zrc20.isc
+  include=controller-zrc20-implementation.c
+  EmberZNet: ZRC 2.0 controller example.
+}
+
+full-featured-controller-hard-codec {
+  name=Full Featured Controller Hard Codec
+  dir=full-featured-controller-hard-codec
+  isc=full-featured-controller-hard-codec/full-featured-controller-hard-codec.isc
+  include=full-featured-controller-hard-codec-implementation.c,full-featured-controller-hard-codec-tokens.h,default-actions.c,default-actions.h
+  EmberZNet: Full featured ZRC 2.0 controller application intended for the RD-17A Full Featured Remote reference design with hardware codec
+}
+
+full-featured-controller-soft-codec {
+  name=Full Featured Controller Soft Codec
+  dir=full-featured-controller-soft-codec
+  isc=full-featured-controller-soft-codec/full-featured-controller-soft-codec.isc
+  include=full-featured-controller-soft-codec-implementation.c,full-featured-controller-soft-codec-tokens.h,default-actions.c,default-actions.h
+  EmberZNet: Full featured ZRC 2.0 controller application intended for the RD-17B Full Featured Remote reference design with software codec
+}
+
+full-featured-target {
+  name=Full Featured Target
+  dir=full-featured-target
+  isc=full-featured-target/full-featured-target.isc
+  include=full-featured-target-implementation.c
+  EmberZNet: Full featured ZRC 2.0 target application intended for use on an EM346 devkit module or an EM3588 Telegesis USB stick.
+}
+
+low-cost-controller {
+  name=Low Cost Controller
+  dir=low-cost-controller
+  isc=low-cost-controller/low-cost-controller.isc
+  include=low-cost-controller-implementation.c,low-cost-controller-tokens.h,default-actions.c,default-actions.h
+  EmberZNet: Low cost ZRC 2.0 controller application intended for the EM341 device in the RD-43 Low Cost Remote reference design.
+}
+
+target-zrc11 {
+  name=ZRC 1.1 Target
+  dir=target-zrc11
+  isc=target-zrc11/target-zrc11.isc
+  include=target-zrc11-implementation.c
+  EmberZNet: ZRC 1.1 target example.
+}
+
+target-zrc20 {
+  name=ZRC 2.0 Target
+  dir=target-zrc20
+  isc=target-zrc20/target-zrc20.isc
+  include=target-zrc20-implementation.c
+  EmberZNet: ZRC 2.0 target example.
+}

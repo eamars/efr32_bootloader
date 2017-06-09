@@ -1,0 +1,124 @@
+device "EM3xx NCP" {
+  # HAL.
+  required:adc
+  required:ember-minimal-printf
+  required:ext-device
+  required:hal-library
+  required:serial
+
+  # HAL.
+  recommended:antenna-stub
+  recommended:button-stub
+  recommended:diagnostic
+  recommended:led
+  recommended:sim-eeprom2
+  recommended:sim-eeprom2-1to2-upgrade-stub
+
+  optional:antenna
+  optional:diagnostic-stub
+  optional:antenna-stub
+  optional:led-stub
+  optional:sim-eeprom1
+
+  # STACK.
+  required:rail-library
+  required:security-library-core
+  required:zigbee-pro-stack
+
+  recommended:binding-table-library
+  recommended:cbke-163k1-stub-library
+  recommended:cbke-283k1-stub-library
+  recommended:cbke-library-dsa-sign-stub
+  recommended:cbke-library-dsa-verify-stub
+  recommended:cbke-library-dsa-verify-283k1-stub
+  recommended:cbke-stub-library
+  recommended:debug-basic-library
+  recommended:debug-extended-library
+  recommended:end-device-bind-library
+  recommended:enhanced-beacon-request-stub-library
+  recommended:gp-library
+  recommended:install-code-library
+  recommended:mfglib-library
+  recommended:multi-network-library
+  recommended:packet-validate-library
+  recommended:rf4ce-stack-library
+  recommended:security-library-link-keys
+  recommended:zll-library
+  
+  optional:binding-table-stub-library
+  optional:cbke-163k1-library
+  optional:cbke-283k1-library
+  optional:cbke-library-core
+  optional:cbke-library-dsa-sign
+  optional:cbke-library-dsa-verify
+  optional:cbke-library-dsa-verify-283k1
+  optional:debug-basic-stub-library
+  optional:debug-extended-stub-library
+  optional:end-device-bind-stub-library
+  optional:enhanced-beacon-request-library
+  optional:gp-stub-library
+  optional:install-code-library-stub
+  optional:mfglib-stub-library
+  optional:multi-network-stub-library
+  optional:packet-validate-stub-library
+  optional:rf4ce-stack-stub-library
+  optional:security-library-link-keys-stub
+  optional:zll-stub-library
+  
+  # APP.
+  required:ezsp-security
+  required:ezsp-zigbee-pro
+
+  recommended:ezsp-binding
+  recommended:ezsp-cbke
+  recommended:ezsp-gp
+  recommended:ezsp-mfglib
+  recommended:ezsp-rf4ce
+  recommended:ezsp-zll
+
+  # UTIL.
+  recommended:concentrator-support-library
+  recommended:xncp-stub
+  
+  optional:concentrator-support-stub-library
+  optional:xncp
+}
+
+device "EM3xx RF4CE NCP" {
+  # HAL.
+  required:adc
+  required:ember-minimal-printf
+  required:ext-device
+  required:hal-library
+  required:serial
+
+  recommended:button-stub
+  recommended:led-stub
+  recommended:sim-eeprom1
+
+  optional:led
+
+  # STACK.
+  required:multi-network-stub-library
+  required:packet-validate-stub-library
+  required:rail-library
+  required:rf4ce-stack-library
+  required:stack-minimal-library
+  required:zll-stub-library
+
+  recommended:debug-basic-library
+  recommended:debug-extended-stub-library
+
+  optional:debug-basic-stub-library
+  optional:debug-extended-library
+
+  # APP
+  required:ezsp-rf4ce
+
+  # UTIL
+  required:concentrator-support-stub-library
+
+  recommended:xncp-stub
+
+  optional:xncp
+}

@@ -1,0 +1,332 @@
+#include PLATFORM_HEADER
+#include EMBER_AF_API_EMBER_TYPES
+
+/** @brief A callback invoked by the ZigBee RF4CE stack when it has completed
+ * sending a message.
+ *
+ *  @param status         An ::EmberStatus value of:
+ *  - ::EMBER_SUCCESS - The message was successfully delivered.
+ *  - ::EMBER_DELIVERY_FAILED - The message was not delivered.
+ *
+ * @param pairingIndex    The index of the entry in the pairing table used to
+ *  transmit the message.
+ *
+ * @param txOptions       The TX options bitmask as per ZigBee RF4CE
+ *                        specification used for transmitting the packet.
+ *
+ * @param profileId       The profile ID included in the message.
+ *
+ * @param vendorId        The vendor ID included in the message, if any.
+ *
+ * @param messageTag      The tag value that was originally passed by the
+ *                        application in the ::emberRf4ceSend() API.
+ *
+ * @param messageLength   The length in bytes of the message.
+ *
+ * @param message         A pointer to the payload of the message that was sent.
+ */
+void emberRf4ceMessageSentHandler(EmberStatus status,
+                                  uint8_t pairingIndex,
+                                  uint8_t txOptions,
+                                  uint8_t profileId,
+                                  uint16_t vendorId,
+                                  uint8_t messageTag,
+                                  uint8_t messageLength,
+                                  uint8_t *message)
+{
+}
+
+/** @brief A callback invoked by the ZigBee RF4CE stack when a message is
+ * received.
+ *
+ * @param pairingIndex    The index of the entry in the pairing table
+ * corresponding to the PAN on which the message was received.
+ *
+ * @param profileId       The profile ID included in the message.
+ *
+ * @param vendorId        The vendor ID included in the message, if any.
+ *
+ * @param txOptions       The TX options used by the source node to transmit the
+ *                        received message.
+ *
+ * @param messageLength   The length in bytes of the received message.
+ *
+ * @param message         A pointer to the payload of the received message.
+ */
+void emberRf4ceIncomingMessageHandler(uint8_t pairingIndex,
+                                      uint8_t profileId,
+                                      uint16_t vendorId,
+                                      EmberRf4ceTxOption txOptions,
+                                      uint8_t messageLength,
+                                      uint8_t *message)
+{
+}
+
+/** @brief A callback invoked by the ZigBee RF4CE stack when it has completed
+ *  the discovery process.
+ *
+ * @param status  An ::EmberStatus value of ::EMBER_SUCCESS if discovery has
+ *                been correctly performed over the three RF4CE channels and at
+ *                least a valid discovery response was received.
+ *                An ::EmberStatus value of ::EMBER_DISCOVERY_TIMEOUT if the
+ *                discovery process completed and no valid discovery response
+ *                was received.
+ *                Otherwise, another ::EmberStatus value indicating the error
+ *                occurred.
+ */
+void emberRf4ceDiscoveryCompleteHandler(EmberStatus status)
+{
+}
+
+/** @brief A callback invoked by the ZigBee RF4CE stack when a discovery request
+ * is received. If the callback returns true, the stack shall respond with a
+ * discovery response, otherwise it will silently discard the discovery request
+ * message.
+ *
+ * @param srcIeeeAddr       The IEEE address of the node that issued the
+ *                          discovery request.
+ *
+ * @param nodeCapabilities  The node capabilities of the node that issued the
+ *                          discovery request.
+ *
+ * @param vendorInfo        A pointer to an ::EmberRf4ceVendorInfo struct
+ *                          containing the vendor information of the node that
+ *                          issued the discovery request.
+ *
+ * @param appInfo           A pointer to an ::EmberRf4ceApplicationInfo struct
+ *                          containing the application information of the node
+ *                          that issued the discovery request.
+ *
+ * @param searchDevType     The device type being discovered. If this is 0xFF,
+ *                          any type is being requested.
+ *
+ * @param rxLinkQuality     LQI value, as passed via the MAC sub-layer, of the
+ *                          discovery request command frame.
+ *
+ * @return   false if the discovery request should be discarded. Return true if
+ * the application wants to respond to the discovery request.
+ */
+bool emberRf4ceDiscoveryRequestHandler(EmberEUI64 srcIeeeAddr,
+                                          uint8_t nodeCapabilities,
+                                          EmberRf4ceVendorInfo *vendorInfo,
+                                          EmberRf4ceApplicationInfo *appInfo,
+                                          uint8_t searchDevType,
+                                          uint8_t rxLinkQuality)
+{
+  return false;
+}
+
+/** @brief A callback invoked by the ZigBee RF4CE stack when a discovery
+ * response is received.
+ *
+ * @param atCapacity        A bool set to true if the node sending the
+ *                          discovery response has no free entry in its pairing
+ *                          table, false otherwise.
+ *
+ * @param channel           The channel on which the discovery response was
+ *                          received.
+ *
+ * @param panId             The PAN identifier of the responding device.
+ *
+ * @param srcIeeeAddr       The IEEE address of the responding device.
+ *
+ * @param nodeCapabilities  The capabilities of the responding node.
+ *
+ * @param vendorInfo        The vendor information of the responding device.
+ *
+ * @param appInfo           The application information of the responding
+ *                          device.
+ *
+ * @param rxLinkQuality     LQI value, as passed via the MAC sub-layer, of the
+ *                          discovery response command frame.
+ *
+ * @param discRequestLqi    The LQI of the discovery request command frame
+ *                          reported by the responding device.
+ *
+ * @return   If this callback returns true the stack will continue the discovery
+ * process. If this callback returns false, the discovery process will end at
+ * the end of the current discovery trial. A discovery trial is defined as the
+ * transmission of a discovery request command frame on all available channels.
+ */
+bool emberRf4ceDiscoveryResponseHandler(bool atCapacity,
+                                           uint8_t channel,
+                                           EmberPanId panId,
+                                           EmberEUI64 srcIeeeAddr,
+                                           uint8_t nodeCapabilities,
+                                           EmberRf4ceVendorInfo *vendorInfo,
+                                           EmberRf4ceApplicationInfo *appInfo,
+                                           uint8_t rxLinkQuality,
+                                           uint8_t discRequestLqi)
+{
+  return false;
+}
+
+/** @brief A callback invoked by the ZigBee RF4CE stack when it has completed
+ * the requested auto discovery response phase.
+ *
+ * @param status       An ::EmberStatus value of EMBER_SUCCESS indicating that
+ *                     it successfully received a discovery request frame twice
+ *                     from the same node with IEEE address specified by the
+ *                     scrIeeeAddr parameter. An ::EmberStatus value of
+ *                     EMBER_DISCOVERY_TIMEOUT if the node has not received the
+ *                     two discovery request frame within the auto discovery
+ *                     response duration interval. An ::EmberStatus value of
+ *                     EMBER_DISCOVERY_ERROR if the node has received two
+ *                     valid discovery request command frames from two different
+ *                     nodes. An ::EmberStatus value of EMBER_NO_BUFFERS if the
+ *                     node could not respond because of RAM shortage. An
+ *                     ::EmberStatus value of EMBER_ERR_FATAL if the MAC layer
+ *                     rejected the discovery response.
+ *
+ * @param srcIeeeAddr  An ::EmberEUI64 value indicating the IEEE address from
+ *                     which the discovery request command frame was received.
+ *                     This parameter is non-NULL only if the status parameter
+ *                     is EMBER_SUCCESS.
+ *
+ * @param nodeCapabilities  The node capabilities of the node that issued the
+ *                          discovery request. This parameter is meaningful
+ *                          only if the status parameter is EMBER_SUCCESS.
+ *
+ * @param vendorInfo        A pointer to an ::EmberRf4ceVendorInfo struct
+ *                          containing the vendor information of the node that
+ *                          issued the discovery request. This parameter is
+ *                          non-NULL only if the status parameter is
+ *                          EMBER_SUCCESS.
+ *
+ * @param appInfo           A pointer to an ::EmberRf4ceApplicationInfo struct
+ *                          containing the application information of the node
+ *                          that issued the discovery request. This parameter is
+ *                          non-NULL only if the status parameter is
+ *                          EMBER_SUCCESS.
+ *
+ * @param searchDevType     The device type being discovered. If this is 0xFF,
+ *                          any type is being requested. This parameter is
+ *                          meaningful only if the status parameter is
+ *                          EMBER_SUCCESS.
+ */
+void emberRf4ceAutoDiscoveryResponseCompleteHandler(EmberStatus status,
+                                                    EmberEUI64 srcIeeeAddr,
+                                                    uint8_t nodeCapabilities,
+                                                    EmberRf4ceVendorInfo *vendorInfo,
+                                                    EmberRf4ceApplicationInfo *appInfo,
+                                                    uint8_t searchDevType)
+{
+}
+
+/** @brief A callback invoked by the ZigBee RF4CE stack when the originator or
+ * the recipient node has completed the pairing process.
+ *
+ * @param status        An ::EmberStatus value of EMBER_SUCCESS if the pairing
+ *                      process succeeded and a pairing link has been
+ *                      established. An ::EmberStatus value of
+ *                      EMBER_NO_RESPONSE if the originator has timed out
+ *                      waiting for the pair response or for the ping response
+ *                      during the link key exchange procedure. An ::EmberStatus
+ *                      value of EMBER_TABLE_FULL if a pair response was
+ *                      received at the originator indicating that the recipient
+ *                      device has no available entry in its pairing table.
+ *                      An ::EmberStatus value of EMBER_NOT_PERMITTED if a pair
+ *                      response was received at the originator indicating that
+ *                      the recipient device did not accept the pair request.
+ *                      An ::EmberStatus value of EMBER_SECURITY_TIMEOUT if the
+ *                      node has timed out during the link key exchange or
+ *                      recovery procedures. An ::EmberStatus value of
+ *                      EMBER_SECURITY_FAILURE if some other error occurred
+ *                      during the link key exchange or recovery procedures.
+ *                      Another ::EmberStatus value indicating the specific
+ *                      reason why the originator or the recipient node failed
+ *                      to deliver a command frame.
+ *
+ * @param pairingIndex  The index of the pairing table entry corresponding
+ *                      to the pairing link that was established during the
+ *                      pairing process. This field is meaningful only if the
+ *                      status parameter is EMBER_SUCCESS.
+ *
+ * @param vendorInfo    A pointer to an ::EmberRf4ceVendorInfo struct containing
+ *                      the vendor information of the peer node. This parameter
+ *                      is non-NULL only if the status parameter is
+ *                      EMBER_SUCCESS.
+ *
+ * @param appInfo       A pointer to an ::EmberRf4ceApplicationInfo struct
+ *                      containing the application information of the peer node.
+ *                      This parameter is non-NULL only if the status parameter
+ *                      is EMBER_SUCCESS.
+ */
+void emberRf4cePairCompleteHandler(EmberStatus status,
+                                   uint8_t pairingIndex,
+                                   EmberRf4ceVendorInfo *vendorInfo,
+                                   EmberRf4ceApplicationInfo *appInfo)
+{
+}
+
+/** @brief A callback invoked by the ZigBee RF4CE stack when a pair request has
+ * been received.
+ *
+ * @param status        An ::EmberStatus value of EMBER_SUCCESS if the request
+ *                      pairing is not a duplicate pairing and an unused entry
+ *                      in the pairing table is available. An ::EmberStatus
+ *                      value of EMBER_TABLE_FULL if the request pairing is not
+ *                      a duplicate pairing and the pairing table is full.
+ *                      An ::EmberStatus value of EMBER_DUPLICATE_ENTRY if the
+ *                      request pairing is a duplicate pairing. In this case,
+ *                      the stack will update the entry indicated by the
+ *                      pairingIndex parameter.
+ *
+ * @param pairingIndex  The index of the entry that will be used by the stack
+ *                      for the pairing link. If the status parameter is
+ *                      EMBER_TABLE_FULL this parameter is meaningless.
+ *
+ * @param srcIeeeAddr   An ::EmberEUI64 value indicating the source IEEE
+ *                      address of the incoming pair request command.
+ *
+ * @param nodeCapabilities  The node capabilities of requesting device.
+ *
+ * @param vendorInfo    The vendor information of the requesting device.
+ *
+ * @param appInfo       The application information of the requesting device.
+ *
+ * @param keyExchangeTransferCount  The number of transfers to be used to
+ *                                  exchange the link key with the pairing
+ *                                  originator, indicated in the incoming pair
+ *                                  request command.
+ *
+ * @return   true if the application accepts the pair, false otherwise.
+ */
+bool emberRf4cePairRequestHandler(EmberStatus status,
+                                     uint8_t pairingIndex,
+                                     EmberEUI64 srcIeeeAddr,
+                                     uint8_t nodeCapabilities,
+                                     EmberRf4ceVendorInfo *vendorInfo,
+                                     EmberRf4ceApplicationInfo *appInfo,
+                                     uint8_t keyExchangeTransferCount)
+{
+  return false;
+}
+
+/** @brief A callback invoked by the ZigBee RF4CE stack when an unpair command
+ * frame has been received. The stack will remove the pairing link indicated by
+ * the passed index.
+ *
+ * @param pairingIndex     The index of the pairing link to be removed.
+ *
+ * @return   An ::EmberStatus value of EMBER_SUCCESS if the unpairing process
+ * was successfully initiated. Another ::EmberStatus value indicating the
+ * specific error occurred otherwise.
+ */
+void emberRf4ceUnpairHandler(uint8_t pairingIndex)
+{
+}
+
+/** @brief A callback invoked by the ZigBee RF4CE stack when the unpair
+ * procedure has been completed. According to the RF4CE specs, during the unpair
+ * procedure, the stack sends an unpair command frame. If the command is not
+ * successfully delivered, the stack tries another RF4CE channel until the frame
+ * is received or the stack already tried all the RF4CE channels. Either way, at
+ * the end of the unpair process the pairing table entry is deleted and this
+ * callback is invoked.
+ *
+ * @param pairingIndex     The index of the removed pairing link.
+ */
+void emberRf4ceUnpairCompleteHandler(uint8_t pairingIndex)
+{
+}

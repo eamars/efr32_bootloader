@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-rf4ce-zrc11" name="Plugin Commands: ZigBee Remote Control 1.1 Profile">
+    <description>
+      The RF4CE ZRC 1.1 plugin contributes several commands to the application framework's CLI.  These commands are used for initiating the push-button pairing operation and for sending HDMI UI commands.
+    </description>
+  </group>
+  <command cli="plugin rf4ce-zrc11 pair originator" functionName="emberAfPluginRf4ceZrc11PairCommand" group="plugin-rf4ce-zrc11">
+    <description>
+      Initiate the push-button pairing operation as an originator.
+    </description>
+    <arg name="panId"         type="INT16U" description="The PAN ID of the destination device for the discovery." />
+    <arg name="nodeId"        type="INT16U" description="The network address of the destination device for the discovery." />
+    <arg name="searchDevType" type="INT8U"  description="The device type to discovery." />
+  </command>
+  <command cli="plugin rf4ce-zrc11 pair recipient" functionName="emberAfPluginRf4ceZrc11PairCommand" group="plugin-rf4ce-zrc11">
+    <description>
+      Initiate the push-button pairing operation as a recipient.
+    </description>
+  </command>
+  <command cli="plugin rf4ce-zrc11 press" functionName="emberAfPluginRf4ceZrc11PressCommand" group="plugin-rf4ce-zrc11">
+    <description>
+      Send User Control Pressed command.
+    </description>
+    <arg name="pairingIndex"     type="INT8U"        description="The index of the entry in the pairing table to which to send the command." />
+    <arg name="rcCommandCode"    type="INT8U"        description="The HDMI CEC operand [UI Command]." />
+    <arg name="rcCommandPayload" type="OCTET_STRING" description="The additional operands, if any, required by the HDMI CEC command." />
+    <arg name="atomic"           type="BOOLEAN"      description="TRUE if the user control is atomic or FALSE if it should repeat." />
+  </command>
+  <command cli="plugin rf4ce-zrc11 release" functionName="emberAfPluginRf4ceZrc11ReleaseCommand" group="plugin-rf4ce-zrc11">
+    <description>
+      Send User Control Released command.
+    </description>
+    <arg name="pairingIndex"  type="INT8U" description="The index of the entry in the pairing table to which to send the command." />
+    <arg name="rcCommandCode" type="INT8U" description="The HDMI CEC operand [UI Command]." />
+  </command>
+  <command cli="plugin rf4ce-zrc11 discovery" functionName="emberAfPluginRf4ceZrc11DiscoveryCommand" group="plugin-rf4ce-zrc11">
+    <description>
+      Send Command Discovery Request command.
+    </description>
+    <arg name="pairingIndex" type="INT8U" description="The index of the entry in the pairing table to which to send the command." />
+  </command>
+</cli>

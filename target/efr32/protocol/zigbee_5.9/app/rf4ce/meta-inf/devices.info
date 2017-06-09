@@ -1,0 +1,152 @@
+# Architectures
+
+device "EM3XX SoC" {
+  required:hal-library
+  required:multi-network-stub-library
+  required:packet-validate-stub-library
+  required:rail-library
+  required:rf4ce-stack-library
+  required:serial
+  required:stack-minimal-library
+  required:zll-stub-library
+
+  recommended:adc
+  recommended:antenna-stub
+  recommended:button
+  recommended:buzzer
+  recommended:cli
+  recommended:command-interpreter2
+  recommended:debug-basic-library
+  recommended:debug-extended-library
+  recommended:debug-print
+  recommended:diagnostic
+  recommended:ember-minimal-printf
+  recommended:heartbeat
+  recommended:idle-sleep
+  recommended:led
+  recommended:main
+  recommended:mfglib-library
+  recommended:network-interface
+  recommended:sim-eeprom1
+
+  optional:antenna
+  optional:button-stub
+  optional:buzzer-stub
+  optional:debug-basic-stub-library
+  optional:debug-extended-stub-library
+  optional:diagnostic-stub
+  optional:led-stub
+  optional:low-voltage-shutdown
+  optional:mfglib-stub-library
+  optional:sim-eeprom2
+  optional:sim-eeprom2-1to2-upgrade
+  optional:sim-eeprom2-1to2-upgrade-stub
+  optional:standard-printf-support
+
+  prohibited:aes-software
+  prohibited:byte-utilities
+  prohibited:event-control-host
+  prohibited:ezsp
+  prohibited:gateway-legacy
+  prohibited:stm32f103ret-library
+  prohibited:unix-library
+}
+
+device "Host with NCP" {
+  recommended:byte-utilities
+  recommended:cli
+  recommended:command-interpreter2
+  recommended:debug-print
+  recommended:event-control-host
+  recommended:ezsp
+  recommended:main
+  recommended:network-interface
+  recommended:serial
+
+  prohibited:antenna
+  prohibited:debug-basic-library
+  prohibited:debug-basic-stub-library
+  prohibited:debug-extended-library
+  prohibited:debug-extended-stub-library
+  prohibited:diagnostic
+  prohibited:diagnostic-stub
+  prohibited:hal-library
+  prohibited:idle-sleep
+  prohibited:low-voltage-shutdown
+  prohibited:mfglib-library
+  prohibited:mfglib-stub-library
+  prohibited:multi-network-stub-library
+  prohibited:packet-validate-stub-library
+  prohibited:rail-library
+  prohibited:rf4ce-stack-library
+  prohibited:sim-eeprom1
+  prohibited:sim-eeprom2
+  prohibited:sim-eeprom2-1to2-upgrade
+  prohibited:sim-eeprom2-1to2-upgrade-stub
+  prohibited:stack-minimal-library
+  prohibited:zll-stub-library
+}
+
+device "STM32F103RET Host" {
+  required:stm32f103ret-library
+
+  recommended:adc
+  recommended:button
+  recommended:buzzer
+  recommended:ember-minimal-printf
+  recommended:heartbeat
+  recommended:led
+
+  optional:button-stub
+  optional:buzzer-stub
+  optional:antenna-stub
+  optional:led-stub
+  optional:standard-printf-support
+
+  prohibited:unix-library
+}
+
+device "Unix Host" {
+  required:unix-library
+
+  recommended:gateway-legacy
+
+  prohibited:adc
+  prohibited:button
+  prohibited:buzzer
+  prohibited:led
+  prohibited:stm32f103ret-library
+}
+
+# RF4CE profiles.
+
+device "GDP" {
+  required:rf4ce-gdp
+  required:rf4ce-profile
+
+  optional:rf4ce-gdp-identification-client
+  optional:rf4ce-gdp-identification-server
+}
+
+device "ZRC 1.1" {
+  required:rf4ce-profile
+  required:rf4ce-zrc11
+
+  prohibited:rf4ce-zrc20
+}
+
+device "ZRC 2.0" {
+  required:rf4ce-gdp
+  required:rf4ce-profile
+  required:rf4ce-zrc20
+
+  optional:rf4ce-zrc20-action-mapping-client
+  optional:rf4ce-zrc20-action-mapping-server
+
+  prohibited:rf4ce-zrc11
+}
+
+device "MSO" {
+  required:rf4ce-mso
+  required:rf4ce-profile
+}

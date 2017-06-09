@@ -1,0 +1,7 @@
+# this folder is used to store archieve and object files
+
+!obj/*.o
+!obj/*.obj
+
+!archive/*.a
+!archive/*.ar

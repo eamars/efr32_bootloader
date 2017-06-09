@@ -1,0 +1,55 @@
+#include PLATFORM_HEADER
+#include EMBER_AF_API_EMBER_TYPES
+
+/** @brief Main Init
+ *
+ * This function is called when the application starts and can be used to
+ * perform any additional initialization required at system startup.
+ */
+void emberAfMainInitCallback(void)
+{
+}
+
+/** @brief Main Tick
+ *
+ * This function is called in each iteration of the main application loop and
+ * can be used to perform periodic functions.  The frequency with which this
+ * function is called depends on how quickly the main loop runs.  If the
+ * application blocks at any time during the main loop, this function will not
+ * be called until execution resumes.  On SoC platforms, sleeping and idling
+ * will block.  On Unix hosts, process yielding (e.g., via select) will block.
+ */
+void emberAfMainTickCallback(void)
+{
+}
+
+/** @brief Stack Status
+ *
+ * This function is called when the stack status changes.  This callbacks
+ * provides applications an opportunity to be notified of changes to the stack
+ * status and take appropriate action.
+ *
+ * @param status   Ver.: always
+ */
+void emberAfStackStatusCallback(EmberStatus status)
+{
+}
+
+/** @brief Ncp Init
+ *
+ * This function is called when the network coprocessor is being initialized,
+ * either at startup or upon reset.  It provides applications on opportunity to
+ * perform additional configuration of the NCP.  The function is always called
+ * twice when the NCP is initialized.  In the first invocation, memoryAllocation
+ * will be true and the application should only issue EZSP commands that affect
+ * memory allocation on the NCP.  For example, tables on the NCP can be resized
+ * in the first call.  In the second invocation, memoryAllocation will be false
+ * and the application should only issue EZSP commands that do not affect memory
+ * allocation.  For example, tables on the NCP can be populated in the second
+ * call.  This callback is not called on SoCs.
+ *
+ * @param memoryAllocation   Ver.: always
+ */
+void emberAfNcpInitCallback(bool memoryAllocation)
+{
+}

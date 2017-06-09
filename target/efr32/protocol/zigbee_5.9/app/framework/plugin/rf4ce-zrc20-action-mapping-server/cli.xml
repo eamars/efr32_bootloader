@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-rf4ce-zrc20-action-mapping-server" name="Plugin Commands: ZigBee Remote Control 2.0 Action Mapping Server">
+    <description>
+      The RF4CE ZRC 2.0 Action Mapping Server plugin contributes several commands to the application framework's CLI.
+    </description>
+  </group>
+  <command cli="plugin rf4ce-zrc20-action-mapping-server set-flags" functionName="emberAfPluginRf4ceZrc20ActionMappingServerSetFlagsCommand" group="plugin-rf4ce-zrc20-action-mapping-server">
+    <description>
+      This command transfers the mappingFlags member of the action mapping
+      structure and stores it temporarily.
+    </description>
+    <arg name="mappingFlags"   type="INT8U"  description="Mapping Flags." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-action-mapping-server set-rf" functionName="emberAfPluginRf4ceZrc20ActionMappingServerSetRfCommand" group="plugin-rf4ce-zrc20-action-mapping-server">
+    <description>
+      This command transfers the rfConfig, rf4ceTxOptions and actionData members
+      of the action mapping structure and stores them temporarily.
+    </description>
+    <arg name="rfConfig"       type="INT8U"         description="The RF config." />
+    <arg name="rf4ceTxOptions" type="INT8U"         description="The RF4CE TX options." />
+    <arg name="actionData"     type="OCTET_STRING"  description="The action data." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-action-mapping-server set-ir" functionName="emberAfPluginRf4ceZrc20ActionMappingServerSetIrCommand" group="plugin-rf4ce-zrc20-action-mapping-server">
+    <description>
+      This command transfers the irConfig, irVendorId and irCode members of the
+      action mapping structure and stores them temporarily.
+    </description>
+    <arg name="irConfig"   type="INT8U"         description="The IR config." />
+    <arg name="irVendorId" type="INT16U"        description="The IR vendor ID." />
+    <arg name="irCode"     type="OCTET_STRING"  description="The IR code." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-action-mapping-server set" functionName="emberAfPluginRf4ceZrc20ActionMappingServerSetCommand" group="plugin-rf4ce-zrc20-action-mapping-server">
+    <description>
+      This command takes the temporarily stored members of the action mapping
+      structure transferred by set-flags, set-rf and set-ir commands and remaps
+      the action specified by actionDeviceType, actionBank and actionCode on the
+      server.
+    </description>
+    <arg name="actionDeviceType" type="INT8U"  description="Action Device Type." />
+    <arg name="actionBank"       type="INT8U"  description="Action Bank." />
+    <arg name="actionCode"       type="INT8U"  description="Action Code." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-action-mapping-server reset" functionName="emberAfPluginRf4ceZrc20ActionMappingServerResetCommand" group="plugin-rf4ce-zrc20-action-mapping-server">
+    <description>
+      Restore default action of the mappable action on the server.
+    </description>
+    <arg name="actionDeviceType" type="INT8U"  description="Action Device Type." />
+    <arg name="actionBank"       type="INT8U"  description="Action Bank." />
+    <arg name="actionCode"       type="INT8U"  description="Action Code." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-action-mapping-server reset-all" functionName="emberAfPluginRf4ceZrc20ActionMappingServerResetAllCommand" group="plugin-rf4ce-zrc20-action-mapping-server">
+    <description>
+      Restore all actions to default on the server.
+    </description>
+  </command>
+  <command cli="plugin rf4ce-zrc20-action-mapping-server get" functionName="emberAfPluginRf4ceZrc20ActionMappingServerGetCommand" group="plugin-rf4ce-zrc20-action-mapping-server">
+    <description>
+      Get action mapping from the action mapping server.
+    </description>
+    <arg name="actionDeviceType" type="INT8U"  description="Action Device Type." />
+    <arg name="actionBank"       type="INT8U"  description="Action Bank." />
+    <arg name="actionCode"       type="INT8U"  description="Action Code." />
+  </command>
+</cli>

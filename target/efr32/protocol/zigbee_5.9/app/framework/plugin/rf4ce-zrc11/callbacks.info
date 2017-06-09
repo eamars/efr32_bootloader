@@ -1,0 +1,64 @@
+#include PLATFORM_HEADER
+#include EMBER_AF_API_EMBER_TYPES
+#include EMBER_AF_API_RF4CE_PROFILE
+#include EMBER_AF_API_RF4CE_ZRC11
+
+/** @brief Pairing Complete
+ *
+ * This function is called by the RF4CE ZRC plugin when the push-button pairing
+ * operation completes.  If status is ::EMBER_SUCCESS, pairing was successful
+ * and pairingIndex indicates the index in the pairing table for the remote node
+ * while eui64, vendorInfo, and applicationInfo contain information about the
+ * remote node itself.  Otherwise, status indicates the reason for failure and
+ * the other arguments are meaningless.
+ *
+ * @param status The status of the push-button pairing operation.  Ver.: always
+ * @param pairingIndex The index of the pairing entry.  Ver.: always
+ * @param eui64 The ::EmberEUI64 of the remote node.  Ver.: always
+ * @param vendorInfo The vendor information of the remote node.  Ver.: always
+ * @param applicationInfo The application information of the remote node.  Ver.:
+ * always
+ */
+void emberAfPluginRf4ceZrc11PairingCompleteCallback(EmberStatus status,
+                                                    uint8_t pairingIndex,
+                                                    const EmberEUI64 eui64,
+                                                    const EmberRf4ceVendorInfo *vendorInfo,
+                                                    const EmberRf4ceApplicationInfo *applicationInfo)
+{
+}
+
+/** @brief User Control
+ *
+ * This function is called by the RF4CE ZRC plugin when a user control starts or
+ * stops.  If the type of the record is
+ * ::EMBER_AF_RF4CE_ZRC_COMMAND_USER_CONTROL_PRESSED, the application should
+ * execute the requested operation repeatedly at some application-specific rate.
+ *  When the repetition should stop, the plugin will call the callback again
+ * with the type set to ::EMBER_AF_RF4CE_ZRC_COMMAND_USER_CONTROL_RELEASED.
+ * ::EMBER_AF_RF4CE_ZRC_COMMAND_USER_CONTROL_REPEATED is a special case of
+ * ::EMBER_AF_RF4CE_ZRC_COMMAND_USER_CONTROL_PRESSED and means that the pressed
+ * command from the originator was not received and that the originator is still
+ * triggering the action.  The application should process a repeat type the same
+ * as a pressed type, but may wish to perform additional operations to
+ * compensate for missed commands.
+ *
+ * @param record The user control record.  Ver.: always
+ */
+void emberAfPluginRf4ceZrc11UserControlCallback(const EmberAfRf4ceZrcUserControlRecord *record)
+{
+}
+
+/** @brief Command Discovery Response
+ *
+ * This function is called by the RF4CE ZRC plugin when a Command Discovery
+ * Response message is received by the device.
+ *
+ * @param status An ::EmberStatus value indicating that the command discovery
+ * process succeeded or the failure reason.  Ver.: always
+ * @param commandsSupported The 256-bit field indicating which user control
+ * commands are supported.  Ver.: always
+ */
+ void emberAfPluginRf4ceZrc11CommandDiscoveryResponseCallback(EmberStatus status,
+                                                              const EmberAfRf4ceZrcCommandsSupported *commandsSupported)
+{
+}

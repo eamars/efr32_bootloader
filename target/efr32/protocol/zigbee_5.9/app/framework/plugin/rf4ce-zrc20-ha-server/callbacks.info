@@ -1,0 +1,22 @@
+
+/** @brief Ha Action Sent
+ *
+ * This function is called by the HA server plugin once the HA action is sent
+ * to the ZCL network.
+ *
+ * @param type Outgoing message type. Ver.: always
+ * @param indexOrDestination Binding index. Ver.: always
+ * @param apsFrame APS frame pointer. Ver.: always
+ * @param msgLen Message length. Ver.: always
+ * @param message Message pointer. Ver.: always
+ * @param status Status. Ver.: always
+ */
+void emberAfPluginRf4ceZrc20HaServerHaActionSentCallback(EmberOutgoingMessageType type,
+                                                         uint16_t indexOrDestination,
+                                                         EmberApsFrame*apsFrame,
+                                                         uint16_t msgLen,
+                                                         uint8_t*message,
+                                                         EmberStatus status)
+{
+  return EMBER_INVALID_CALL;
+}

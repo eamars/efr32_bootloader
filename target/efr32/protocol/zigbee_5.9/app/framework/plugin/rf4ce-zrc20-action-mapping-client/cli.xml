@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-rf4ce-zrc20-action-mapping-client" name="Plugin Commands: ZigBee Remote Control 2.0 Action Mapping Client">
+    <description>
+      The RF4CE ZRC 2.0 Action Mapping Client plugin contributes several commands to the application framework's CLI.
+    </description>
+  </group>
+  <command cli="plugin rf4ce-zrc20-action-mapping-client clear-all" functionName="emberAfPluginRf4ceZrc20ActionMappingClientClearAllCommand" group="plugin-rf4ce-zrc20-action-mapping-client">
+    <description>
+      Clear all action mapping entries.
+    </description>
+  </command>
+  <command cli="plugin rf4ce-zrc20-action-mapping-client clear" functionName="emberAfPluginRf4ceZrc20ActionMappingClientClearCommand" group="plugin-rf4ce-zrc20-action-mapping-client">
+    <description>
+      Clear action mapping entry.
+    </description>
+    <arg name="pairingIndex"     type="INT8U"  description="Pairing Index." />
+    <arg name="actionDeviceType" type="INT8U"  description="Action Device Type." />
+    <arg name="actionBank"       type="INT8U"  description="Action Bank." />
+    <arg name="actionCode"       type="INT8U"  description="Action Code." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-action-mapping-client get" functionName="emberAfPluginRf4ceZrc20ActionMappingClientGetCommand" group="plugin-rf4ce-zrc20-action-mapping-client">
+    <description>
+      Get an action mapping entry.
+    </description>
+    <arg name="pairingIndex"     type="INT8U"  description="Pairing Index." />
+    <arg name="actionDeviceType" type="INT8U"  description="Action Device Type." />
+    <arg name="actionBank"       type="INT8U"  description="Action Bank." />
+    <arg name="actionCode"       type="INT8U"  description="Action Code." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-action-mapping-client set-flags" functionName="emberAfPluginRf4ceZrc20ActionMappingClientSetFlagsCommand" group="plugin-rf4ce-zrc20-action-mapping-client">
+    <description>
+      All members of the action mapping structure have to be transferred before
+      an entry can be added to the client. This command transfers the
+      mappingFlags field and stores it temporarily.
+      This command shall be followed by the set-rf command.
+    </description>
+    <arg name="mappingFlags" type="INT8U"  description="Mapping Flags." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-action-mapping-client set-rf" functionName="emberAfPluginRf4ceZrc20ActionMappingClientSetRfCommand" group="plugin-rf4ce-zrc20-action-mapping-client">
+    <description>
+      All members of the action mapping structure have to be transferred before
+      an entry can be added to the client. This command transfers the following
+      fields: rfConfig, rf4ceTxOptions and actionData and stores them
+      temporarily. 
+      This command shall be followed by the set-ir command.
+    </description>
+    <arg name="rfConfig"        type="INT8U"         description="The RF config." />
+    <arg name="rf4ceTxOptions"  type="INT8U"         description="The RF4CE TX options." />
+    <arg name="actionData"      type="OCTET_STRING"  description="The action data." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-action-mapping-client set-ir" functionName="emberAfPluginRf4ceZrc20ActionMappingClientSetIrCommand" group="plugin-rf4ce-zrc20-action-mapping-client">
+    <description>
+      All members of the action mapping structure have to be transferred before
+      an entry can be added to the client. This command transfers the following
+      fields: irConfig, irVendorId and irCode and stores them temporarily.
+      This command shall be followed by the set command.
+    </description>
+    <arg name="irConfig"    type="INT8U"         description="The IR config." />
+    <arg name="irVendorId"  type="INT16U"        description="The IR vendor ID." />
+    <arg name="irCode"      type="OCTET_STRING"  description="The IR code." />
+  </command>
+  <command cli="plugin rf4ce-zrc20-action-mapping-client set" functionName="emberAfPluginRf4ceZrc20ActionMappingClientSetCommand" group="plugin-rf4ce-zrc20-action-mapping-client">
+    <description>
+      All members of the action mapping structure have to be transferred before
+      an entry can be added to the client. This command takes all temporarily
+      stored fields transferred by set-flags, set-rf and set-ir commands, looks
+      up the mappable action entry specified by the pairing index, action device
+      type, action bank and action code and sets its action mapping entry on the
+      client.
+    </description>
+    <arg name="pairingIndex"     type="INT8U"  description="Pairing Index." />
+    <arg name="actionDeviceType" type="INT8U"  description="Action Device Type." />
+    <arg name="actionBank"       type="INT8U"  description="Action Bank." />
+    <arg name="actionCode"       type="INT8U"  description="Action Code." />
+  </command>
+</cli>

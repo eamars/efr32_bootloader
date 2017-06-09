@@ -1,0 +1,208 @@
+#ISD afv6
+# ISD version: 4.13.0.201703051517-309
+
+# Application configuration
+appId: rf4ce
+architecture: em357
+deviceName: controller-zrc20
+generationDirectory: PATH(ISC_RELATIVE):.
+
+# Devices
+device: EM3XX SoC
+device: GDP
+device: ZRC 2.0
+
+# Plugin configuration
+appPlugin: accelerometer-led=false
+appPlugin: adc=true
+appPlugin: aes-cmac=false
+appPlugin: aes-software=false
+appPlugin: antenna=false
+appPlugin: antenna-stub=true
+appPlugin: battery-monitor=false
+appPlugin: bulb-pwm-driver=false
+appPlugin: button=true
+appPlugin: button-interface=false
+appPlugin: button-stub=false
+appPlugin: buzzer=true
+appPlugin: buzzer-stub=false
+appPlugin: byte-utilities=false
+appPlugin: cjson=false
+appPlugin: cli=true
+appPlugin: coexistence=false
+appPlugin: command-interpreter2=true
+appPlugin: debug-basic-library=true
+appPlugin: debug-basic-stub-library=false
+appPlugin: debug-extended-library=true
+appPlugin: debug-extended-stub-library=false
+appPlugin: debug-print=true
+appPlugin: diagnostic=true
+appPlugin: diagnostic-stub=false
+appPlugin: ember-minimal-printf=true
+appPlugin: event-control-host=false
+appPlugin: ext-device=false
+appPlugin: ezsp=false
+appPlugin: ezsp-spi=false
+appPlugin: ezsp-uart=false
+appPlugin: ezsp-usb=false
+appPlugin: fem-control=false
+appPlugin: gateway-legacy=false
+appPlugin: generic-interrupt-control=false
+appPlugin: glib=false
+appPlugin: gpio-sensor=false
+appPlugin: hal-library=true
+appPlugin: heartbeat=true
+appPlugin: humidity-si7021-stub=false
+appPlugin: i2c-driver=false
+appPlugin: i2c-driver-stub=false
+appPlugin: idle-sleep=true
+appPlugin: illuminance-si1141-stub=false
+appPlugin: infrared-led=false
+appPlugin: key-matrix=false
+appPlugin: led=true
+appPlugin: led-blink=false
+appPlugin: led-stub=false
+appPlugin: linked-list=false
+appPlugin: low-voltage-shutdown=false
+appPlugin: main=true
+appPlugin: mfglib-library=false
+appPlugin: mfglib-stub-library=false
+appPlugin: microphone-codec-msadpcm=false
+appPlugin: microphone-imaadpcm=false
+appPlugin: mpsi=false
+appPlugin: mpsi-ipc=false
+appPlugin: mpsi-storage=false
+appPlugin: multi-network-stub-library=true
+appPlugin: network-interface=true
+appPlugin: occupancy-pyd1698=false
+appPlugin: occupancy-pyd1698-stub=false
+appPlugin: packet-validate-stub-library=true
+appPlugin: paho.mqtt.c=false
+appPlugin: psstore=false
+appPlugin: rail-library=true
+appPlugin: rf4ce-gdp=true
+appPlugin: rf4ce-gdp-identification-client=true
+appPlugin: rf4ce-gdp-identification-server=false
+appPlugin: rf4ce-mso=false
+appPlugin: rf4ce-mso-ir-rf-database-originator=false
+appPlugin: rf4ce-mso-ir-rf-database-recipient=false
+appPlugin: rf4ce-profile=true
+appPlugin: rf4ce-stack-library=true
+appPlugin: rf4ce-target-communication=false
+appPlugin: rf4ce-zrc11=false
+appPlugin: rf4ce-zrc20=true
+appPlugin: rf4ce-zrc20-action-mapping-client=true
+appPlugin: rf4ce-zrc20-action-mapping-server=false
+appPlugin: rf4ce-zrc20-ha-client=true
+appPlugin: sb1-gesture-sensor=false
+appPlugin: serial=true
+appPlugin: sim-eeprom1=true
+appPlugin: sim-eeprom2=false
+appPlugin: sim-eeprom2-1to2-upgrade=false
+appPlugin: sim-eeprom2-1to2-upgrade-stub=false
+appPlugin: slot-manager=false
+appPlugin: stack-minimal-library=true
+appPlugin: standard-printf-support=false
+appPlugin: stm32f103ret-library=false
+appPlugin: tamper-switch=false
+appPlugin: temperature-si7053-stub=false
+appPlugin: transport-mqtt=false
+appPlugin: unix-library=false
+appPlugin: zll-stub-library=true
+
+# Setup configurations
+{setupId:additionalFiles
+PATH(ISC_RELATIVE):controller-zrc20-implementation.c
+}
+{setupId:boardHeader
+}
+{setupId:bookkeeping
+}
+{setupId:bootloader
+}
+{setupId:callbackConfiguration
+emberAfMainInitCallback:false
+emberAfStackStatusCallback:false
+halButtonIsr:false
+emberAfPluginIdleSleepOkToSleepCallback:false
+emberAfPluginRf4ceGdpBindingCompleteCallback:false
+}
+{setupId:commandLineConfiguration
+on
+}
+{setupId:debugConfiguration
+on
+area name off
+appSerial=1
+}
+{setupId:eventConfiguration
+networkEventControl,networkEventHandler
+bindingEventControl,bindingEventHandler
+powerEventControl,powerEventHandler
+}
+{setupId:genConfig
+}
+{setupId:halOptions
+}
+{setupId:hwConfig
+active=false
+}
+{setupId:information
+\{key:description
+RF4CE ZRC2.0 Sample Applications
+
+The ZRC2.0 controller and target applications demonstrate basic RF4CE network functionality and ZRC2.0 application functionality.  This application acts as a generic remote control.  It utilizes the RF4CE Profile plugin to provide core application-level RF4CE functionality and the RF4CE GDP and ZRC2.0 plugins to provide ZRC2.0-specific behavior.
+
+At startup, the controller will automatically start network operations.  Once the network is up, the application disables its receiver to conserve power.  This is representative of a device that is generally a transmit-only device that only acts when directed by the user.
+
+Pressing button 0 will cause the device to initiate the binding process to discovery, pair, and validate with a target.  This is intended to represent the end user pressing a dedicated binding button on a remote.
+
+The RF4CE GDP and RF4CE ZRC2.0 plugins manage discovery, pairing, and validation and notify the application when binding completes.  If the binding completes successfully, the controller can begin sending actions to the target.  When actions are sent, the RF4CE ZRC2.0 plugin will keep track of timing in order to automatically repeat actions for keys that are held down.
+
+Pressing button 1 will cause the device to transmit a power action over the air to the most recently bound device.  This is intended to represent the end user pressing the power button on a remote.
+
+Both the controller and the target provide feedback by playing tunes.  A rising two-tone tune indicates a successful operation while a falling two-tone tune indicates a failure.  A brief tone indicates that the device has performed a long-running action and is waiting for a result.
+
+All application code is contained in the controller-zrc20-implementation.c files within the application directory.
+
+To use each application:
+1. Load the included application configuration file (i.e., the .isc file) into Simplicity Studio.
+2. Enter a name and location for the application in the pop-up window.
+3. Generate the application's header and project/workspace files by clicking on the "Generate" button in Simplicity Studio.
+4. Load the generated project file into the appropriate compiler and build the project.
+5. Load the binary image onto a device using Simplicity Studio.
+\}
+}
+{setupId:macros
+}
+{setupId:rf4ce
+nodeCapabilities=14
+vendorId=65521
+vendorString=
+userString=
+deviceTypes=[254]
+profileIds=[]
+power=3
+}
+{setupId:rf4ceMso
+}
+{setupId:rf4ceZrc
+actionCodesTx:0/32,0/33,0/34,0/35,0/36,0/37,0/38,0/39,0/40,0/41,0/48,0/49,0/64,0/65,0/66,0/67,128/32,128/33,128/34
+homeAutomationSupported:128/32
+mappableActions:2/0/64,2/0/65,2/0/66,2/0/67
+}
+{setupId:serial
+}
+{setupId:template
+}
+{setupId:token
+}
+
+# Plugin options
+pluginOption(em357): EMBER_RF4CE_CONTROLLER_ONLY,true
+pluginOption(em357): NO_SCAN,true
+pluginOption(em357): EMBER_AF_PLUGIN_RF4CE_GDP_POLL_SUPPORT,PollClient
+pluginOption(em357): EMBER_AF_PLUGIN_RF4CE_GDP_IDENTIFICATION_SUPPORT,IdentificationClient
+pluginOption(em357): EMBER_AF_PLUGIN_RF4CE_GDP_IDENTIFICATION_CAPABILITIES,14
+pluginOption(em357): EMBER_AF_PLUGIN_RF4CE_ZRC20_ACTION_MAPPING_SUPPORT,ActionMappingClient
+pluginOption(em357): EMBER_AF_PLUGIN_RF4CE_ZRC20_INFORM_ABOUT_SUPPORTED_ACTIONS,true

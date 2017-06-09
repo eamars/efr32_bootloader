@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-rf4ce-gdp" name="Plugin Commands: Generic Device Profile">
+    <description>
+      The RF4CE GDP plugin contributes several commands to the application framework's CLI.
+    </description>
+  </group>
+  <command cli="plugin rf4ce-gdp push-button" functionName="emberAfPluginRf4ceGdpPushButtonCommand" group="plugin-rf4ce-gdp">
+    <description>
+      Set or clear the "push-button stimulus received" flag.
+    </description>
+    <arg name="setPending" type="BOOLEAN" description="0 to clear the flag or any other value to set it." />
+  </command>
+  <command cli="plugin rf4ce-gdp initiate-key-exchange" functionName="emberAfPluginRf4ceGdpInitiateKeyExchangeCommand" group="plugin-rf4ce-gdp">
+    <description>
+      Initiate key exchange.
+    </description>
+    <arg name="pairingIndex" type="INT8U" description="The index of the entry in the pairing table with which to initiate key exchange." />
+  </command>
+  <command cli="plugin rf4ce-gdp set-validation" functionName="emberAfPluginRf4ceGdpSetValidationCommand" group="plugin-rf4ce-gdp">
+    <description>
+      Accept or reject the validation.
+    </description>
+    <arg name="success" type="BOOLEAN" description="0 if validation has failed or any other value if it succeeded." />
+  </command>
+  <command cli="plugin rf4ce-gdp push-attribute" functionName="emberAfPluginRf4ceGdpPushAttributeCommand" group="plugin-rf4ce-gdp">
+    <description>
+      Send a Push Attributes command.
+    </description>
+    <arg name="pairingIndex" type="INT8U"        description="The index of the entry in the pairing table to which to send the command." />
+    <arg name="profileId"    type="INT8U"        description="The profile id." />
+    <arg name="vendorId"     type="INT16U"       description="The vendor id." />
+    <arg name="attributeId"  type="INT8U"        description="The attribute id." />
+    <arg name="entryId"      type="INT16U"       description="The entry id." />
+    <arg name="value"        type="OCTET_STRING" description="The value." />
+  </command>
+  <command cli="plugin rf4ce-gdp identify" functionName="emberAfPluginRf4ceGdpIdentifyCommand" group="plugin-rf4ce-gdp">
+    <description>
+      Send an Identify command.
+    </description>
+    <arg name="pairingIndex" type="INT8U"  description="The index of the entry in the pairing table to which to send the command." />
+    <arg name="vendorId"     type="INT16U" description="The vendor id." />
+    <arg name="flags"        type="INT8U"  description="The identify flags." />
+    <arg name="timeS"        type="INT16U" description="The identify time in seconds." />
+  </command>
+</cli>

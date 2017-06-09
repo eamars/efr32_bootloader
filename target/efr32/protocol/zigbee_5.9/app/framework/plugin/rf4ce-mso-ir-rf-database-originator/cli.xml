@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<cli>
+  <group id="plugin-rf4ce-mso-ir-rf-database-originator" name="Plugin Commands: RF4CE Multiple System Operators IR-RF Database Originator">
+    <description>
+      The RF4CE MSO IR-RF Database Originator plugin contributes several commands to the application framework's CLI.
+    </description>
+  </group>
+  <command cli="plugin rf4ce-mso-ir-rf-database-originator set-flags" functionName="emberAfRf4ceMsoIrRfDatabaseOriginatorSetFlagsCommand" group="plugin-rf4ce-mso-ir-rf-database-originator">
+    <description>
+      Set the flags of the IR-RF database element.
+    </description>
+    <arg name="flags" type="INT8U" description="The flags." />
+  </command>
+  <command cli="plugin rf4ce-mso-ir-rf-database-originator set-pressed" functionName="emberAfRf4ceMsoIrRfDatabaseOriginatorSetPressedCommand" group="plugin-rf4ce-mso-ir-rf-database-originator">
+    <description>
+      Set the RF pressed descriptor of the IR-RF database element.
+    </description>
+    <arg name="rfConfig"  type="INT8U"        description="The RF config." />
+    <arg name="txOptions" type="INT8U"        description="The TX options." />
+    <arg name="payload"   type="OCTET_STRING" description="The payload." />
+  </command>
+  <command cli="plugin rf4ce-mso-ir-rf-database-originator set-repeated" functionName="emberAfRf4ceMsoIrRfDatabaseOriginatorSetRepeatedCommand" group="plugin-rf4ce-mso-ir-rf-database-originator">
+    <description>
+      Set the RF repeated descriptor of the IR-RF database element.
+    </description>
+    <arg name="rfConfig"  type="INT8U"        description="The RF config." />
+    <arg name="txOptions" type="INT8U"        description="The TX options." />
+    <arg name="payload"   type="OCTET_STRING" description="The payload." />
+  </command>
+  <command cli="plugin rf4ce-mso-ir-rf-database-originator set-released" functionName="emberAfRf4ceMsoIrRfDatabaseOriginatorSetReleasedCommand" group="plugin-rf4ce-mso-ir-rf-database-originator">
+    <description>
+      Set the RF released descriptor of the IR-RF database element.
+    </description>
+    <arg name="rfConfig"  type="INT8U"        description="The RF config." />
+    <arg name="txOptions" type="INT8U"        description="The TX options." />
+    <arg name="payload"   type="OCTET_STRING" description="The payload." />
+  </command>
+  <command cli="plugin rf4ce-mso-ir-rf-database-originator set-ir" functionName="emberAfRf4ceMsoIrRfDatabaseOriginatorSetIrCommand" group="plugin-rf4ce-mso-ir-rf-database-originator">
+    <description>
+      Set the IR descriptor of the IR-RF database element.
+    </description>
+    <arg name="irConfig" type="INT8U"        description="The IR config." />
+    <arg name="irCode"   type="OCTET_STRING" description="The IR code." />
+  </command>
+  <command cli="plugin rf4ce-mso-ir-rf-database-originator set" functionName="emberAfRf4ceMsoIrRfDatabaseOriginatorSetCommand" group="plugin-rf4ce-mso-ir-rf-database-originator">
+    <description>
+      Set the IR-RF database element.
+    </description>
+    <arg name="keyCode" type="INT8U" description="The key code." />
+  </command>
+  <command cli="plugin rf4ce-mso-ir-rf-database-originator clear" functionName="emberAfRf4ceMsoIrRfDatabaseOriginatorClearCommand" group="plugin-rf4ce-mso-ir-rf-database-originator">
+    <description>
+      Clear the IR-RF database element.
+    </description>
+    <arg name="keyCode" type="INT8U" description="The key code." />
+  </command>
+  <command cli="plugin rf4ce-mso-ir-rf-database-originator clear-all" functionName="emberAfRf4ceMsoIrRfDatabaseOriginatorClearAllCommand" group="plugin-rf4ce-mso-ir-rf-database-originator">
+    <description>
+      Clear all IR-RF database elements.
+    </description>
+  </command>
+</cli>
