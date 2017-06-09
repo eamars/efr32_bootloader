@@ -1,1 +1,0 @@
-#define EMBER_HEAP_SIZE 30000
