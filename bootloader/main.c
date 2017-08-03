@@ -4,9 +4,24 @@
  */
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include "em_chip.h"
+#include "io_device.h"
 #include "em_device.h"
+#include "em_msc.h"
+#include "uart_device.h"
+#include "communication.h"
+#include "bootloader_config.h"
+#include "bootloader_api.h"
 
 #define USER_APPLICATION_ADDR 0x100UL
+
+// function that is implemented in another file
+extern void comm_cb_inst(const void *handler, uint8_t *data, uint8_t size);
+extern void comm_cb_data(uint16_t block_offset, uint8_t *data, uint8_t size);
+
+// global variables
+bootloader_config_t bootloader_config;
 
 /**
  * @brief Execute interrupt vector table aligned at specific address
@@ -62,14 +77,37 @@ void binary_exec(void *addr, bool loader)
 	}
 }
 
-
-
 int main(void)
 {
-	binary_exec((void *) USER_APPLICATION_ADDR, false);
+	CHIP_Init();
+
+	// initialize flash driver
+	MSC_Init();
+
+	uart_device_init();
+	io_device * uart_device = get_uart_io_device();
+
+	// create communication module
+	communication_t comm;
+
+	// initialize communication module (send and receive program)
+	communication_init(&comm, uart_device, comm_cb_data, comm_cb_inst);
+
+	// initialize flash driver
+	MSC_Init();
+
+	// initialize bootloader config
+	bootloader_config.bootloader_mode = BOOTLOADER_WAIT_FOR_BYTES;
+	bootloader_config.base_addr = 0xffffffff;
+	bootloader_config.block_size_exp = 0;
+	stack32_init(&bootloader_config.base_addr_stack, 2);
+
 
 	while (1)
 	{
-
+		while (communication_ready(&comm))
+		{
+			communication_receive(&comm);
+		}
 	}
 }

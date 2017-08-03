@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "em_device.h"
+#include "em_core.h"
 #include "irq.h"
 
 /** Symbols defined by linker script.  These are all VMAs except those
@@ -202,6 +203,20 @@ irq_handler_t dynamic_vector_table[] =
 };
 
 /**
+ * @brief Tiny loader that is aligned at 0x0, where MCU starts fetching instruction from FLASH
+ *
+ * The FLASH is not stable (code aligned at 0x0 has higher chance to be corrupted). Hence, a tiny loader
+ * that jump to normal loader at latter location can be considered as an better choice.
+ */
+__attribute__ ((section(".tiny_loader"))) __attribute__ ((naked))
+void tiny_loader(void)
+{
+	asm volatile (
+		"bl loader\n"
+	);
+}
+
+/**
  * @brief Simple loader that set stack pointer and program counter prior to executing any code
  *
  * Since EFR32 will not automatically load static interrupt vector table, this function will load
@@ -221,8 +236,8 @@ void loader(void)
 		"ldr sp, [r0]\n"            // set stack pointer from static interrupt vector table
 		"ldr r0, [r0, #4]\n"        // load address of Reset_Handler (1 word offset from SP) from static interrupt vector table
 		"blx r0\n"                  // branch to Reset_Handler
-		:
-		: "i" ((uint32_t) &static_vector_table)
+	:
+	: "i" ((uint32_t) &static_vector_table)
 	);
 
 	// should never execute beyond this point
@@ -240,14 +255,11 @@ void loader(void)
 __attribute__ ((naked))
 void Reset_Handler (void)
 {
-	// enter critical section
-	__disable_irq();
-
 	// Use static vector table for handling core fault event when coping variables
 	SCB->VTOR = (uint32_t) &static_vector_table & SCB_VTOR_TBLOFF_Msk;
 
-	// exit critical section
-	__enable_irq();
+	// initialize floating point co-processor
+	SystemInit();
 
 	// copy initialized data
 	for (register uint32_t *pSrc = &__etext, *pDest = &__data_start__; pDest < &__data_end__; )
@@ -261,17 +273,16 @@ void Reset_Handler (void)
 		*pDest++ = 0x0UL;
 	}
 
-	// enter critical section
-	__disable_irq();
-
 	// Remap the exception table into SRAM to allow dynamic allocation.
 	SCB->VTOR = (uint32_t) &dynamic_vector_table & SCB_VTOR_TBLOFF_Msk;
 
-	// exit critical section
-	__enable_irq();
-
-	// initialize floating point co-processor
-	SystemInit();
+	// set stack pointer
+	asm volatile (
+		"ldr r0, =%0\n"
+		"ldr sp, [r0]\n"
+		:
+		: "i" ((uint32_t) &dynamic_vector_table)
+	);
 
 	// Initialise C library.
 	__libc_init_array ();

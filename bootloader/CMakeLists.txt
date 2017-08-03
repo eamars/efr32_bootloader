@@ -1,13 +1,37 @@
 MESSAGE("ENTER ${CMAKE_CURRENT_SOURCE_DIR}")
 
-# override linker flags
-SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -T${TARGET_ROOT_DIRECTORY}/scripts/efr32mg12p_bootloader.ld")
+# override build flags
+SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -mfloat-abi=softfp")
+SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -mfloat-abi=softfp")
+SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -mfloat-abi=softfp -T${TARGET_ROOT_DIRECTORY}/scripts/efr32mg12p_bootloader.ld -Wl,--Map=symbols.map,--gc-sections")
 
 # override executable
 SET(HATCH_EXECUTABLE "WG_BOOTLOADER")
 
+# include definitions
+ADD_DEFINITIONS(
+		-DEFR32MG12P432F1024GL125=1
+		-DBTL_CONFIG_FILE="bootloader_config.h"
+)
+
+SET(TARGET_SPECIFIC_INCLUDE_DIRECTORY
+		"${TARGET_SPECIFIC_INCLUDE_DIRECTORY}"
+
+		${TARGET_ROOT_DIRECTORY}/platform/Device/SiliconLabs/efr32mg12p/Include
+		${TARGET_ROOT_DIRECTORY}/platform/bootloader
+		${TARGET_ROOT_DIRECTORY}/platform/bootloader/driver
+		)
+
 # Collect all source file
-FILE (GLOB BL_SRC *.c)
+FILE (GLOB LOCAL_SRC *.c)
+
+SET(EXT_SRC
+		${TARGET_ROOT_DIRECTORY}/platform/bootloader/driver/btl_driver_uart.c
+		${TARGET_ROOT_DIRECTORY}/platform/bootloader/driver/btl_driver_delay.c
+		)
+
+# include configurations from current folder
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
 # add dependency
 ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/target ${CMAKE_CURRENT_BINARY_DIR}/__target)
@@ -22,11 +46,9 @@ INCLUDE_DIRECTORIES(${BOARD_SPECIFIC_INCLUDE_DIRECTORY})
 INCLUDE_DIRECTORIES(${CMSIS_INCLUDE_DIRECTORY})
 
 # build source code as library
-ADD_EXECUTABLE (${HATCH_EXECUTABLE}.${ELF_EXTENSION} ${BL_SRC})
-
+ADD_EXECUTABLE (${HATCH_EXECUTABLE}.${ELF_EXTENSION} ${LOCAL_SRC} ${EXT_SRC})
 ADD_DEPENDENCIES(${HATCH_EXECUTABLE}.${ELF_EXTENSION} target)
-
-TARGET_LINK_LIBRARIES(${HATCH_EXECUTABLE}.${ELF_EXTENSION} target)
+TARGET_LINK_LIBRARIES(${HATCH_EXECUTABLE}.${ELF_EXTENSION} efr32mg12p common emlib emdrv drivers)
 
 # include size command
 INCLUDE("${PROJECT_SOURCE_DIR}/cmake/size.cmake")
