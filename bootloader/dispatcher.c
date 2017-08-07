@@ -9,7 +9,7 @@
 #include "bootloader_api.h"
 #include "command_handler.h"
 
-static bl_inst_handler_entry inst_handler_table[] =
+static const bl_inst_handler_entry inst_handler_table[] =
 {
 		{ INST_SET_BASE_ADDR, inst_set_base_addr },
 		{ INST_GET_BASE_ADDR, inst_get_base_addr },
@@ -29,7 +29,7 @@ static bl_inst_handler_entry inst_handler_table[] =
 
 void bl_instruction_dispacher(bootloader_instruction_t inst, const communication_t *comm, uint8_t *payload, uint8_t size)
 {
-	for (bl_inst_handler_entry * entry = &inst_handler_table[0]; entry->inst != INST_INVALID; entry++)
+	for (const bl_inst_handler_entry * entry = &inst_handler_table[0]; entry->inst != INST_INVALID; entry++)
 	{
 		if (entry->inst == inst)
 		{

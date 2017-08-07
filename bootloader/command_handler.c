@@ -188,7 +188,7 @@ void inst_get_block_exp(const communication_t *comm, uint8_t *data, uint8_t size
 
 void inst_branch_to_addr(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	// if there is no address to boot, then use pre-configured base address、
+	// if there is no address to boot, then use previous configured base address、
 	if (size == 0)
 	{
 		reboot_to_addr(bootloader_config.base_addr, true);

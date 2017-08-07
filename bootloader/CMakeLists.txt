@@ -1,9 +1,9 @@
 MESSAGE("ENTER ${CMAKE_CURRENT_SOURCE_DIR}")
 
 # override build flags
-SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -mfloat-abi=softfp")
-SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -mfloat-abi=softfp")
-SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -mfloat-abi=softfp -T${TARGET_ROOT_DIRECTORY}/scripts/efr32mg12p_bootloader.ld -Wl,--Map=symbols.map,--gc-sections")
+SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -mfloat-abi=softfp -Os")
+SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -mfloat-abi=softfp -Os")
+SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --specs=nano.specs -mfloat-abi=softfp -T${TARGET_ROOT_DIRECTORY}/scripts/efr32mg12p_bootloader.ld -Wl,--Map=symbols.map,--gc-sections")
 
 # override executable
 SET(HATCH_EXECUTABLE "WG_BOOTLOADER")
@@ -20,6 +20,8 @@ SET(TARGET_SPECIFIC_INCLUDE_DIRECTORY
 		${TARGET_ROOT_DIRECTORY}/platform/Device/SiliconLabs/efr32mg12p/Include
 		${TARGET_ROOT_DIRECTORY}/platform/bootloader
 		${TARGET_ROOT_DIRECTORY}/platform/bootloader/driver
+		${TARGET_ROOT_DIRECTORY}/platform/bootloader/api
+		${TARGET_ROOT_DIRECTORY}/platform/bootloader/core
 		)
 
 # Collect all source file
@@ -48,7 +50,7 @@ INCLUDE_DIRECTORIES(${CMSIS_INCLUDE_DIRECTORY})
 # build source code as library
 ADD_EXECUTABLE (${HATCH_EXECUTABLE}.${ELF_EXTENSION} ${LOCAL_SRC} ${EXT_SRC})
 ADD_DEPENDENCIES(${HATCH_EXECUTABLE}.${ELF_EXTENSION} target)
-TARGET_LINK_LIBRARIES(${HATCH_EXECUTABLE}.${ELF_EXTENSION} efr32mg12p common emlib emdrv drivers)
+TARGET_LINK_LIBRARIES(${HATCH_EXECUTABLE}.${ELF_EXTENSION} efr32mg12p common emlib emdrv drivers c)
 
 # include size command
 INCLUDE("${PROJECT_SOURCE_DIR}/cmake/size.cmake")

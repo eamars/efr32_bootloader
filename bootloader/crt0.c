@@ -211,7 +211,7 @@ irq_handler_t dynamic_vector_table[] =
 __attribute__ ((section(".tiny_loader"))) __attribute__ ((naked))
 void tiny_loader(void)
 {
-	asm volatile (
+	__ASM (
 		"bl loader\n"
 	);
 }
@@ -231,13 +231,12 @@ void tiny_loader(void)
 __attribute__ ((section(".loader"))) __attribute__ ((naked))
 void loader(void)
 {
-	asm volatile (
+	__ASM (
 		"ldr r0, =%0\n"             // load absolute address from static interrupt vector table
 		"ldr sp, [r0]\n"            // set stack pointer from static interrupt vector table
 		"ldr r0, [r0, #4]\n"        // load address of Reset_Handler (1 word offset from SP) from static interrupt vector table
 		"blx r0\n"                  // branch to Reset_Handler
-	:
-	: "i" ((uint32_t) &static_vector_table)
+	:: "i" ((uint32_t) &static_vector_table) : "r0", "r1"
 	);
 
 	// should never execute beyond this point
@@ -275,14 +274,6 @@ void Reset_Handler (void)
 
 	// Remap the exception table into SRAM to allow dynamic allocation.
 	SCB->VTOR = (uint32_t) &dynamic_vector_table & SCB_VTOR_TBLOFF_Msk;
-
-	// set stack pointer
-	asm volatile (
-		"ldr r0, =%0\n"
-		"ldr sp, [r0]\n"
-		:
-		: "i" ((uint32_t) &dynamic_vector_table)
-	);
 
 	// Initialise C library.
 	__libc_init_array ();

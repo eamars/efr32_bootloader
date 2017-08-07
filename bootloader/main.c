@@ -9,76 +9,29 @@
 #include "em_device.h"
 #include "em_cmu.h"
 #include "em_chip.h"
-#include "io_device.h"
+#include "em_rmu.h"
 #include "em_gpio.h"
 #include "em_msc.h"
+
+#include "io_device.h"
 #include "uart_device.h"
 #include "communication.h"
 #include "bootloader_config.h"
 #include "bootloader_api.h"
+#include "btl_reset.h"
+#include "btl_reset_info.h"
+
+#include "simgpbr.h"
 
 #define USER_APPLICATION_ADDR 0x100UL
 
 // function that is implemented in another file
 extern void comm_cb_inst(const void *handler, uint8_t *data, uint8_t size);
 extern void comm_cb_data(uint16_t block_offset, uint8_t *data, uint8_t size);
+extern uint32_t __CRASHINFO__begin;
 
 // global variables
 bootloader_config_t bootloader_config;
-
-/**
- * @brief Execute interrupt vector table aligned at specific address
- * @param addr address of target interrupt vector table
- */
-__attribute__ ((naked))
-void _binary_exec(void *addr __attribute__((unused)))
-{
-	asm volatile (
-		"mov r1, r0\n"			// r0 is the first argument
-		"ldr r0, [r1, #4]\n"	// load the address of static interrupt vector with offset 4 (Reset_handler)
-		"ldr sp, [r1]\n"		// reset stack pointer
-		"blx r0\n"				// branch to Reset_handler
-	);
-}
-
-void binary_exec(void *addr)
-{
-	// disable global interrupts
-	__disable_irq();
-
-	// disable irqs
-	for (register uint32_t i = 0; i < 8; i++)
-	{
-		NVIC->ICER[i] = 0xFFFFFFFF;
-	}
-	for (register uint32_t i = 0; i < 8; i++)
-	{
-		NVIC->ICPR[i] = 0xFFFFFFFF;
-	}
-
-	// flush registers and memories
-	__DSB();	// data memory barrier @see __DSB()
-	__ISB();	// instruction memory barrier @__ISB()
-
-	// change vector table
-	SCB->VTOR = ((uint32_t) addr & SCB_VTOR_TBLOFF_Msk);
-
-	// barriers
-	__DSB();
-	__ISB();
-
-	// enable interrupts
-	__enable_irq();
-
-	// load stack and pc
-	_binary_exec(addr);
-
-	// should never run beyond this point
-	while (1)
-	{
-
-	}
-}
 
 void bootloader(void)
 {
@@ -152,6 +105,57 @@ bool is_button_override(void)
 	return pressed;
 }
 
+bool is_sw_reset(void)
+{
+	uint16_t reset_reason = 0;
+
+	// map reset cause structure to the begin of crash info memory
+	BootloaderResetCause_t * reset_cause = (BootloaderResetCause_t *) &__CRASHINFO__begin;
+
+	// if the signature is valid, then use reset reason direction
+	if (reset_cause->signature == BOOTLOADER_RESET_SIGNATURE_VALID)
+	{
+		reset_reason = reset_cause->reason;
+	}
+
+	// otherwise assign some reason
+	else
+	{
+		// if the signature is not set
+		if (reset_cause->signature == 0)
+		{
+			reset_reason = BOOTLOADER_RESET_REASON_BOOTLOAD;
+			if (reset_cause->reason != 1)
+			{
+				reset_reason = BOOTLOADER_RESET_REASON_UNKNOWN;
+			}
+		}
+		else
+		{
+			reset_reason = BOOTLOADER_RESET_REASON_UNKNOWN;
+		}
+	}
+
+	// enter the bootloader only if the reboot is requested by application (not any hardware failure)
+	if (RMU->RSTCAUSE & RMU_RSTCAUSE_SYSREQRST)
+	{
+		// depending on reset reason, we will decide whether to enter bootloader
+		switch(reset_reason)
+		{
+			case BOOTLOADER_RESET_REASON_BOOTLOAD:
+			case BOOTLOADER_RESET_REASON_FORCE:
+			case BOOTLOADER_RESET_REASON_UPGRADE:
+			case BOOTLOADER_RESET_REASON_BADAPP:
+				return true;
+
+			default:
+				break;
+		}
+	}
+
+	return false;
+}
+
 int main(void)
 {
 	// set high frequency clock
@@ -166,7 +170,35 @@ int main(void)
 		bootloader();
 	}
 
-	binary_exec((void *) 0x100);
+	// check if other request to boot into bootloader
+	if (is_sw_reset())
+	{
+		bootloader();
+	}
+
+	// in this step we need to boot to application
+	// if specific bit in gbpr is set, we are going to boot to specific address, otherwise we are going to boot to default
+	// application
+	if (simgbpr_is_valid())
+	{
+		// bit 0 indicates boot to specific address
+		if (simgpbr_get(0UL))
+		{
+			uint32_t vtor_addr = simgpbr_get(1UL);
+
+			// clear the entry for gpbr
+			simgpbr_set(0UL, 0UL);
+			simgpbr_set(1UL, 0UL);
+
+			branch_to_addr(vtor_addr);
+		}
+	}
+
+	// depending on the last boot partition, unless there is special request that requires to boot to other partition,
+	// (has handled in previous case, the bootloader should boot the application to its last boot address, or default
+	// address. 
+
+	// otherwise boot to default application (broken)
 
 	while (1)
 	{
