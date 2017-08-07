@@ -15,7 +15,6 @@ from lib.ioserial import IOSerial
 from lib.firmwarepackage import FirmwarePackage
 from lib.firmwareupdater import SerialDevice
 from lib.sip import SerialInterfaceProtocol
-from lib.bootloader import Bootloader
 from lib.simpleupdater import SimpleUpdater, Errno
 
 
@@ -24,7 +23,7 @@ class SerialUartDevice(SerialDevice):
         SerialDevice.__init__(self)
 
         self.uart_device = IOSerial(port)
-        self.uart_device.blockAttach()
+        self.uart_device.blockingAttach()
 
     def read(self):
         return self.uart_device.readchar(0.001)
@@ -37,6 +36,7 @@ class SerialUartDevice(SerialDevice):
 
     def disconnect(self):
         self.uart_device.detach()
+
 
 
 def main():

@@ -1,6 +1,8 @@
 import sys
-from progressbar import ProgressBar # pip install progressbar
 import time
+from progressbar import ProgressBar # pip install progressbar
+from lib.bootloader import Bootloader
+
 
 BLOCK_SIZE_EXPONENTIAL = 7
 POLL_PERIOD = 0.01
@@ -38,7 +40,7 @@ class SimpleUpdater():
         return "".join(reversed([s1[i:i+2] for i in range(0, len(s1), 2)]))
 
     def __write(self, data):
-        self.device.write(data)
+        self.device.write(data.encode("ascii"))
 
     def writePacket(self, command, payload_len, payload):
         """Include packet index and transmit over serial interface"""
@@ -68,7 +70,7 @@ class SimpleUpdater():
                     sys.exit(Errno.DEVICE_DISCONNECTED)
 
             # read from serial if the device is remained connected
-            ch = self.device.read()
+            ch = self.device.read().decode("ascii")
 
             # read nothing
             if ch == '':
@@ -85,6 +87,7 @@ class SimpleUpdater():
                             self.__isLastPacket = False
                             sys.exit(Errno.NO_ERROR)
                         else:
+                            pass
                             print("Device failed to response")
                             sys.exit(Errno.DEVICE_NO_RESPONSE)
 
@@ -104,3 +107,82 @@ class SimpleUpdater():
                     self.__packetIndex += 1
                     self.__isPacketAcked = False
                     break
+
+    def main(self):
+        print(self.firmware)
+        for base, size, program in self.firmware:
+            # set base address
+            print("Setting base address", end='')
+            self.writePacket(
+                Bootloader.COMM_INST,
+                5,
+                "{:02x}{}".format(
+                    Bootloader.INST_SET_BASE_ADDR,
+                    self.__toLittleEndianHexString("{:08x}".format(base)),
+                )
+            )
+            print("--done")
+
+            # erase flash pages
+            print("Erasing flash", end='')
+            erase_flash_seg = 32768
+            start_addr = base
+            end_addr = base + erase_flash_seg # 32k
+
+            while end_addr < base + size:
+                self.writePacket(
+                    Bootloader.COMM_INST,
+                    9,
+                    "{:02x}{}{}".format(
+                        Bootloader.INST_ERASE_RANGE,
+                        self.__toLittleEndianHexString("{:08x}".format(start_addr)),
+                        self.__toLittleEndianHexString("{:08x}".format(end_addr)),
+                    )
+                )
+
+                start_addr += erase_flash_seg
+                end_addr += erase_flash_seg
+            print("--done")
+
+            # set block exponential
+            print("Setting block exponential", end='')
+            self.writePacket(
+                Bootloader.COMM_INST,
+                2,
+                "{:02x}{:02x}".format(
+                    Bootloader.INST_SET_BLOCK_EXP,
+                    BLOCK_SIZE_EXPONENTIAL
+                )
+            )
+            print("--done")
+
+            codeSize = len(program)
+            for codeIndex, codeLine in enumerate(program):
+
+                # send program data
+                payload = "{}{}".format(
+                    self.__toLittleEndianHexString("{:04x}".format(codeIndex)),
+                    "".join(['{:02x}'.format(byte) for byte in codeLine])
+                )
+                self.writePacket(Bootloader.COMM_DATA, len(payload) // 2, payload)
+
+                # print progress bar
+                self.__progressBar.update(codeIndex * 100 // codeSize)
+
+
+        # boot to region
+        self.__isLastPacket = True
+        self.writePacket(Bootloader.COMM_INST, 5, "{:02x}{}".format(
+            Bootloader.INST_BRANCH_TO_ADDR,
+            self.__toLittleEndianHexString("{:08x}".format(self.firmware.reboot_to_addr)))
+        )
+
+        # wait for device to disconnect
+        counter = 10
+        while self.device.isConnected():
+            counter -= 1
+            if counter == 0:
+                break
+            time.sleep(0.5)
+
+        print("You are not suppose to be here, device failed to reboot")

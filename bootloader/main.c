@@ -5,9 +5,12 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
+
+#include "em_device.h"
+#include "em_cmu.h"
 #include "em_chip.h"
 #include "io_device.h"
-#include "em_device.h"
+#include "em_gpio.h"
 #include "em_msc.h"
 #include "uart_device.h"
 #include "communication.h"
@@ -38,7 +41,7 @@ void _binary_exec(void *addr __attribute__((unused)))
 	);
 }
 
-void binary_exec(void *addr, bool loader)
+void binary_exec(void *addr)
 {
 	// disable global interrupts
 	__disable_irq();
@@ -77,10 +80,8 @@ void binary_exec(void *addr, bool loader)
 	}
 }
 
-int main(void)
+void bootloader(void)
 {
-	CHIP_Init();
-
 	// initialize flash driver
 	MSC_Init();
 
@@ -92,9 +93,6 @@ int main(void)
 
 	// initialize communication module (send and receive program)
 	communication_init(&comm, uart_device, comm_cb_data, comm_cb_inst);
-
-	// initialize flash driver
-	MSC_Init();
 
 	// initialize bootloader config
 	bootloader_config.bootloader_mode = BOOTLOADER_WAIT_FOR_BYTES;
@@ -109,5 +107,69 @@ int main(void)
 		{
 			communication_receive(&comm);
 		}
+	}
+}
+
+bool is_button_override(void)
+{
+	bool pressed;
+
+	// Enable GPIO clock
+	CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_GPIO;
+
+	// Since the button may have decoupling caps, they may not be charged
+	// after a power-on and could give a false positive result. To avoid
+	// this issue, drive the output as an output for a short time to charge
+	// them up as quickly as possible.
+	GPIO_PinModeSet(BTL_GPIO_ACTIVATION_PORT,
+	                BTL_GPIO_ACTIVATION_PIN,
+	                gpioModePushPull,
+	                BTL_GPIO_ACTIVATION_POLARITY);
+	for (volatile int i = 0; i < 100; i++);
+
+	// Reconfigure as an input with pull(up|down) to read the button state
+	GPIO_PinModeSet(BTL_GPIO_ACTIVATION_PORT,
+	                BTL_GPIO_ACTIVATION_PIN,
+	                gpioModeInputPull,
+	                BTL_GPIO_ACTIVATION_POLARITY);
+
+	// We have to delay again here so that if the button is depressed the
+	// cap has time to discharge again after being charged up by the above delay
+	for (volatile int i = 0; i < 500; i++);
+
+	pressed = GPIO_PinInGet(BTL_GPIO_ACTIVATION_PORT, BTL_GPIO_ACTIVATION_PIN)
+	          != BTL_GPIO_ACTIVATION_POLARITY;
+
+	// Disable GPIO pin
+	GPIO_PinModeSet(BTL_GPIO_ACTIVATION_PORT,
+	                BTL_GPIO_ACTIVATION_PIN,
+	                gpioModeDisabled,
+	                BTL_GPIO_ACTIVATION_POLARITY);
+
+	// Disable GPIO clock
+	CMU->HFBUSCLKEN0 &= ~CMU_HFBUSCLKEN0_GPIO;
+
+	return pressed;
+}
+
+int main(void)
+{
+	// set high frequency clock
+	SystemCoreClock = SystemHfrcoFreq;
+
+	// runtime patch
+	CHIP_Init();
+
+	// check if button is pressed
+	if (is_button_override())
+	{
+		bootloader();
+	}
+
+	binary_exec((void *) 0x100);
+
+	while (1)
+	{
+
 	}
 }

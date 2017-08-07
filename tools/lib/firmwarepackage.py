@@ -14,7 +14,7 @@ from prettytable import PrettyTable # pip install prettytable
 from lib.bootloader import Bootloader
 
 class FirmwarePackage:
-    table = PrettyTable(["Description", "Version", "Partition", "MD5 Checksum"])
+    table = PrettyTable(["Description", "Version", "Base Address", "Size", "MD5 Checksum"])
 
     def __init__(self, path, block_size=2**7):
         # open update package
@@ -27,7 +27,7 @@ class FirmwarePackage:
             #     "description": "Hatch Firmware",
             #     "file": "manifest.json",
             #     "fingerprint": "",
-            #     "reboot_to_region": 0,
+            #     "reboot_to_addr": 0,
             #     "version": {
             #         "major": "0",
             #         "minor": "1",
@@ -39,7 +39,7 @@ class FirmwarePackage:
             #             "description": "Hatch_FW_A",
             #             "file": "WG_FIRMWARE_REGION_A.bin",
             #             "fingerprint": "609d826bf8f59cec0f3d108b6e21b577",
-            #             "region": 0,
+            #             "base": 0,
             #             "version": {
             #                 "major": "0",
             #                 "minor": "1",
@@ -53,15 +53,15 @@ class FirmwarePackage:
                 self.program_list = []
                 manifest = json.loads(manifest_file.read().decode('utf-8'))
 
-                self.reboot_to_region = manifest["reboot_to_region"]
+                self.reboot_to_addr = manifest["reboot_to_addr"]
 
                 for file in manifest["contains"]:
                     version_dict = file["version"]
                     version_string = "{}.{}.{}-{}".format(version_dict["major"], version_dict["minor"], version_dict["patch"], version_dict["revision"])
                     description_string = file["description"]
-                    partition = int(file["region"])
-                    partition_string = Bootloader.region_lookup_table[partition]
+                    base = int(file["base"])
                     file_name = file["file"]
+                    size = file["size"]
                     fingerprint_string = file["fingerprint"]
 
                     # read binary
@@ -75,10 +75,10 @@ class FirmwarePackage:
                             program.append(p)
 
                     # add program to program list
-                    self.program_list.append((partition, program))
+                    self.program_list.append((base, size, program))
 
                     # print summary
-                    self.table.add_row([description_string, version_string, partition_string, fingerprint_string])
+                    self.table.add_row([description_string, version_string, hex(base), size, fingerprint_string])
 
     def __repr__(self):
         return str(self)
@@ -87,7 +87,7 @@ class FirmwarePackage:
         return self.table.__str__()
 
     def __getitem__(self, item):
-        return (self.program_list[item][0], self.program_list[item][1])
+        return (self.program_list[item][0], self.program_list[item][1], self.program_list[item][2])
 
 
 

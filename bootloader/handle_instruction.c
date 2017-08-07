@@ -9,12 +9,7 @@
 #include <stdlib.h> // atoi
 
 
-
 #include "bootloader_api.h"
-
-
-
-
 #include "dispatcher.h"
 
 

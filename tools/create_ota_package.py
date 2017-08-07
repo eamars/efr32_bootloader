@@ -14,28 +14,10 @@ import subprocess
 import hashlib
 import argparse
 
-class Manifest:
-    description = "description"
-    file = "file"
-    fingerprint = "fingerprint"
-    version = "version"
-    contains = "contains"
-    reboot_to_region = "reboot_to_region"
-
-    properties = {
-
-    }
-
-    def __init__(self, description, file, fingerprint, reboot_to_region, version, contains):
-        self.properties[self.description] = description
-        self.properties[self.file] = file
-        self.properties[self.fingerprint] = fingerprint
-        self.properties[self.reboot_to_region] = reboot_to_region
-        self.properties[self.version] = version.dump()
-        self.properties[self.contains] = [b.dump() for b in contains]
-
-    def dump(self):
-        return self.properties
+MANIFEST_MAJOR = 1
+MANIFEST_MINIOR = 0
+MANIFEST_PATCH = 0
+MANIFEST_REVISION = 0
 
 class Version:
     major = "major"
@@ -43,11 +25,8 @@ class Version:
     patch = "patch"
     revision = "revision"
 
-    properties = {
-
-    }
-
     def __init__(self, major, minor, patch, revision):
+        self.properties = {}
         self.properties[self.major] = major
         self.properties[self.minor] = minor
         self.properties[self.patch] = patch
@@ -56,20 +35,20 @@ class Version:
     def dump(self):
         return self.properties
 
+
 class BinaryExecutable:
     description = "description"
     file = "file"
     fingerprint = "fingerprint"
-    base = 0x0
+    base = "base"
     version = "version"
+    size = "size"
 
-    properties = {
-
-    }
-
-    def __init__(self, description, file, fingerprint, base, version):
+    def __init__(self, description, file, size, fingerprint, base, version):
+        self.properties = {}
         self.properties[self.description] = description
         self.properties[self.file] = file
+        self.properties[self.size] = size
         self.properties[self.fingerprint] = fingerprint
         self.properties[self.base] = base
         self.properties[self.version] = version.dump()
@@ -77,12 +56,34 @@ class BinaryExecutable:
     def dump(self):
         return self.properties
 
-def create_zip_package(description, file, output_dir, fingerprint, base, version):
+
+class Manifest:
+    description = "description"
+    file = "file"
+    fingerprint = "fingerprint"
+    version = "version"
+    contains = "contains"
+    reboot_to_addr = "reboot_to_addr"
+
+    def __init__(self, description, file, fingerprint, reboot_to_addr, contains):
+        self.properties = {}
+        self.properties[self.description] = description
+        self.properties[self.file] = file
+        self.properties[self.fingerprint] = fingerprint
+        self.properties[self.reboot_to_addr] = reboot_to_addr
+        self.properties[self.version] = Version(MANIFEST_MAJOR, MANIFEST_MINIOR, MANIFEST_PATCH, MANIFEST_REVISION).dump()
+        self.properties[self.contains] = [b.dump() for b in contains]
+
+    def dump(self):
+        return self.properties
+
+
+def create_zip_package(description, file, output_dir, size, fingerprint, base, reboot_to_addr, version):
     # create binary information
-    binary = BinaryExecutable(description, file.split("/")[-1], fingerprint, base, version)
+    binary = BinaryExecutable(description, file.split("/")[-1], size, fingerprint, base, version)
 
     # create manifest
-    manifest = Manifest("Hatch Firmware", "manifest.json", "", base, version, [binary])
+    manifest = Manifest("Hatch Firmware", "manifest.json", "", reboot_to_addr, [binary])
 
     # create zip
     zip = zipfile.ZipFile("{}/update_{}.zip".format(output_dir, description.lower()), "w", zipfile.ZIP_DEFLATED)
@@ -93,7 +94,7 @@ def create_zip_package(description, file, output_dir, fingerprint, base, version
     zip.close()
 
 
-def main(description, file, output_dir, base):
+def main(description, file, output_dir, base, reboot_to_addr):
     repo_version = subprocess.check_output(["git", "describe", "--always", "--long"]).decode("utf-8").strip()
 
     # get major, minor, patch, revision from version string
@@ -123,7 +124,10 @@ def main(description, file, output_dir, base):
     m.update(binary)
     md5string = m.hexdigest()
 
-    create_zip_package(description, file, output_dir, md5string, base, version)
+    # get total size for the code
+    size = len(binary)
+
+    create_zip_package(description, file, output_dir, size, md5string, base, reboot_to_addr, version)
 
 
 
@@ -142,8 +146,10 @@ if __name__ == "__main__":
     parser.add_argument("-b", "--base", nargs=1, type=int,
         help="base address of the firmware")
 
+    parser.add_argument("-r", "--reboot_to_addr", nargs=1, type=int)
+
     args = parser.parse_args()
 
-    main(args.description[0], args.file[0], args.output[0], args.base[0])
+    main(args.description[0], args.file[0], args.output[0], args.base[0], args.reboot_to_addr[0])
 
 

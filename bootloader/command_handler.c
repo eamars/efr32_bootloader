@@ -239,6 +239,7 @@ void inst_erase_range(const communication_t *comm, uint8_t *data, uint8_t size)
 	uint8_to_uint32(data + 4, &end_addr);
 
 	assert((end_addr - start_addr) >= FLASH_PAGE_SIZE);
+	assert(end_addr <= FLASH_BASE + FLASH_SIZE);
 
 	// align the base address down to nearest flash page boundry
 	start_addr = (start_addr / FLASH_PAGE_SIZE) * FLASH_PAGE_SIZE;
