@@ -174,7 +174,7 @@ bool is_boot_request_override(uint32_t * app_addr)
 
 bool is_prev_app_valid(uint32_t * app_addr)
 {
-	return false;
+	return true;
 }
 
 void clear_boot_request(void)

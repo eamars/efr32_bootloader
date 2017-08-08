@@ -62,7 +62,8 @@ int main(void)
 	app_addr = INVALID_BASE_ADDR;
 	if (is_prev_app_valid(&app_addr))
 	{
-		branch_to_addr(app_addr);
+		// TODO: for debug purpose, we will branch to the magic address anyway
+		branch_to_addr(0x100UL);
 	}
 
 	// otherwise boot to bootloader
