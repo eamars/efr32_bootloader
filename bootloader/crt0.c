@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
-#include <drivers/bootloader_api/application_header.h>
+
 #include "em_device.h"
 #include "em_core.h"
 #include "irq.h"

@@ -23,8 +23,10 @@ void bootloader(void);
 
 bool is_button_override(void);
 bool is_sw_reset(void);
-bool is_request_override(uint32_t * app_addr);
+bool is_boot_request_override(uint32_t * app_addr);
 bool is_prev_app_valid(uint32_t * app_addr);
+
+void clear_boot_request(void);
 
 #ifdef __cplusplus
 }

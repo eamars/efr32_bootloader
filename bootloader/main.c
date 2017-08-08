@@ -50,8 +50,9 @@ int main(void)
 	// if there is no request to boot to bootloader, we then check if there is special request for booting into
 	// specific application
 	uint32_t app_addr = INVALID_BASE_ADDR;
-	if (is_request_override(&app_addr))
+	if (is_boot_request_override(&app_addr))
 	{
+		clear_boot_request();
 		branch_to_addr(app_addr);
 	}
 

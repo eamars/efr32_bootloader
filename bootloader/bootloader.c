@@ -153,7 +153,7 @@ bool is_sw_reset(void)
 	return false;
 }
 
-bool is_request_override(uint32_t * app_addr)
+bool is_boot_request_override(uint32_t * app_addr)
 {
 	// map reset cause structure to the begin of crash info memory
 	ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__CRASHINFO__begin;
@@ -175,4 +175,13 @@ bool is_request_override(uint32_t * app_addr)
 bool is_prev_app_valid(uint32_t * app_addr)
 {
 	return false;
+}
+
+void clear_boot_request(void)
+{
+	// map reset cause structure to the begin of crash info memory
+	ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__CRASHINFO__begin;
+
+	reset_cause->app_signature = 0UL;
+	reset_cause->app_addr = INVALID_BASE_ADDR;
 }
