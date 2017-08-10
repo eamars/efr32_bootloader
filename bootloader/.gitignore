@@ -1,0 +1,5 @@
+# do not ignore static library
+!static/*.o
+
+# ignore auto generated file
+header_block.c

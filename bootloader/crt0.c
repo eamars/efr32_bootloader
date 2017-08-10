@@ -25,6 +25,7 @@ extern uint32_t __zero_table_end__;
 extern uint32_t __bss_start__;
 extern uint32_t __bss_end__;
 extern uint32_t __StackTop;
+extern uint32_t __AAT__begin;
 
 /*----------------------------------------------------------------------------
   Internal References
@@ -105,103 +106,78 @@ void TRNG0_IRQHandler(void) __attribute__ ((weak, alias("Default_Handler")));
 /* This needs to be carefully aligned.   */
 __attribute__ ((section(".dynamic_vectors")))
 irq_handler_t dynamic_vector_table[] =
-		{
-				// cortex m4 interrupt vectors
-				(irq_handler_t)&__StackTop,               /*      Initial Stack Pointer     */
-				Reset_Handler,                            /*      Reset Handler             */
-				NMI_Handler,                              /*      NMI Handler               */
-				HardFault_Handler,                        /*      Hard Fault Handler        */
-				MemManage_Handler,                        /*      MPU Fault Handler         */
-				BusFault_Handler,                         /*      Bus Fault Handler         */
-				UsageFault_Handler,                       /*      Usage Fault Handler       */
-				Default_Handler,                          /*      Reserved                  */
-				Default_Handler,                          /*      Reserved                  */
-				Default_Handler,                          /*      Reserved                  */
-				Default_Handler,                          /*      Reserved                  */
-				SVC_Handler,                              /*      SVCall Handler            */
-				DebugMon_Handler,                         /*      Debug Monitor Handler     */
-				Default_Handler,                          /*      Reserved                  */
-				PendSV_Handler,                           /*      PendSV Handler            */
-				SysTick_Handler,                          /*      SysTick Handler           */
-
-				// external interrupts
-				EMU_IRQHandler,                       /*  0 - EMU       */
-				FRC_PRI_IRQHandler,                       /*  1 - FRC_PRI       */
-				WDOG0_IRQHandler,                       /*  2 - WDOG0       */
-				WDOG1_IRQHandler,                       /*  3 - WDOG1       */
-				FRC_IRQHandler,                       /*  4 - FRC       */
-				MODEM_IRQHandler,                       /*  5 - MODEM       */
-				RAC_SEQ_IRQHandler,                       /*  6 - RAC_SEQ       */
-				RAC_RSM_IRQHandler,                       /*  7 - RAC_RSM       */
-				BUFC_IRQHandler,                       /*  8 - BUFC       */
-				LDMA_IRQHandler,                       /*  9 - LDMA       */
-				GPIO_EVEN_IRQHandler,                       /*  10 - GPIO_EVEN       */
-				TIMER0_IRQHandler,                       /*  11 - TIMER0       */
-				USART0_RX_IRQHandler,                       /*  12 - USART0_RX       */
-				USART0_TX_IRQHandler,                       /*  13 - USART0_TX       */
-				ACMP0_IRQHandler,                       /*  14 - ACMP0       */
-				ADC0_IRQHandler,                       /*  15 - ADC0       */
-				IDAC0_IRQHandler,                       /*  16 - IDAC0       */
-				I2C0_IRQHandler,                       /*  17 - I2C0       */
-				GPIO_ODD_IRQHandler,                       /*  18 - GPIO_ODD       */
-				TIMER1_IRQHandler,                       /*  19 - TIMER1       */
-				USART1_RX_IRQHandler,                       /*  20 - USART1_RX       */
-				USART1_TX_IRQHandler,                       /*  21 - USART1_TX       */
-				LEUART0_IRQHandler,                       /*  22 - LEUART0       */
-				PCNT0_IRQHandler,                       /*  23 - PCNT0       */
-				CMU_IRQHandler,                       /*  24 - CMU       */
-				MSC_IRQHandler,                       /*  25 - MSC       */
-				CRYPTO0_IRQHandler,                       /*  26 - CRYPTO0       */
-				LETIMER0_IRQHandler,                       /*  27 - LETIMER0       */
-				AGC_IRQHandler,                       /*  28 - AGC       */
-				PROTIMER_IRQHandler,                       /*  29 - PROTIMER       */
-				RTCC_IRQHandler,                       /*  30 - RTCC       */
-				SYNTH_IRQHandler,                       /*  31 - SYNTH       */
-				CRYOTIMER_IRQHandler,                       /*  32 - CRYOTIMER       */
-				RFSENSE_IRQHandler,                       /*  33 - RFSENSE       */
-				FPUEH_IRQHandler,                       /*  34 - FPUEH       */
-				SMU_IRQHandler,                       /*  35 - SMU       */
-				WTIMER0_IRQHandler,                       /*  36 - WTIMER0       */
-				WTIMER1_IRQHandler,                       /*  37 - WTIMER1       */
-				PCNT1_IRQHandler,                       /*  38 - PCNT1       */
-				PCNT2_IRQHandler,                       /*  39 - PCNT2       */
-				USART2_RX_IRQHandler,                       /*  40 - USART2_RX       */
-				USART2_TX_IRQHandler,                       /*  41 - USART2_TX       */
-				I2C1_IRQHandler,                       /*  42 - I2C1       */
-				USART3_RX_IRQHandler,                       /*  43 - USART3_RX       */
-				USART3_TX_IRQHandler,                       /*  44 - USART3_TX       */
-				VDAC0_IRQHandler,                       /*  45 - VDAC0       */
-				CSEN_IRQHandler,                       /*  46 - CSEN       */
-				LESENSE_IRQHandler,                       /*  47 - LESENSE       */
-				CRYPTO1_IRQHandler,                       /*  48 - CRYPTO1       */
-				TRNG0_IRQHandler,                       /*  49 - TRNG0       */
-				Default_Handler,                          /*  50 - Reserved      */
-		};
-
-/**
- * @brief Generic Application header
- */
-__attribute__ ((section(".header")))
-const ExtendedApplicationHeaderTable_t static_application_header_table =
 {
-		.basic_application_header_table = {
-				.stack_top = &__StackTop,
-				.reset_handler = Reset_Handler,
-				.nmi_handler = NMI_Handler,
-				.hardfault_handler = HardFault_Handler,
-				.type = BOOTLOADER_ADDRESS_TABLE_TYPE,
-				.version = (uint16_t) 0x0,
-				.vector_table = dynamic_vector_table
-		},
+		// cortex m4 interrupt vectors
+		(irq_handler_t)&__StackTop,               /*      Initial Stack Pointer     */
+		Reset_Handler,                            /*      Reset Handler             */
+		NMI_Handler,                              /*      NMI Handler               */
+		HardFault_Handler,                        /*      Hard Fault Handler        */
+		MemManage_Handler,                        /*      MPU Fault Handler         */
+		BusFault_Handler,                         /*      Bus Fault Handler         */
+		UsageFault_Handler,                       /*      Usage Fault Handler       */
+		Default_Handler,                          /*      Reserved                  */
+		Default_Handler,                          /*      Reserved                  */
+		Default_Handler,                          /*      Reserved                  */
+		Default_Handler,                          /*      Reserved                  */
+		SVC_Handler,                              /*      SVCall Handler            */
+		DebugMon_Handler,                         /*      Debug Monitor Handler     */
+		Default_Handler,                          /*      Reserved                  */
+		PendSV_Handler,                           /*      PendSV Handler            */
+		SysTick_Handler,                          /*      SysTick Handler           */
 
-		.basic_app_header_table_crc = 0x0UL,
-		.ext_header_version = 0x0UL,
-		.app_total_size = 0x0UL,
-		.header_size = sizeof(ExtendedApplicationHeaderTable_t),
-		.app_version = 0x0UL,
-		.timestamp = 0x0UL
+		// external interrupts
+		EMU_IRQHandler,                       /*  0 - EMU       */
+		FRC_PRI_IRQHandler,                       /*  1 - FRC_PRI       */
+		WDOG0_IRQHandler,                       /*  2 - WDOG0       */
+		WDOG1_IRQHandler,                       /*  3 - WDOG1       */
+		FRC_IRQHandler,                       /*  4 - FRC       */
+		MODEM_IRQHandler,                       /*  5 - MODEM       */
+		RAC_SEQ_IRQHandler,                       /*  6 - RAC_SEQ       */
+		RAC_RSM_IRQHandler,                       /*  7 - RAC_RSM       */
+		BUFC_IRQHandler,                       /*  8 - BUFC       */
+		LDMA_IRQHandler,                       /*  9 - LDMA       */
+		GPIO_EVEN_IRQHandler,                       /*  10 - GPIO_EVEN       */
+		TIMER0_IRQHandler,                       /*  11 - TIMER0       */
+		USART0_RX_IRQHandler,                       /*  12 - USART0_RX       */
+		USART0_TX_IRQHandler,                       /*  13 - USART0_TX       */
+		ACMP0_IRQHandler,                       /*  14 - ACMP0       */
+		ADC0_IRQHandler,                       /*  15 - ADC0       */
+		IDAC0_IRQHandler,                       /*  16 - IDAC0       */
+		I2C0_IRQHandler,                       /*  17 - I2C0       */
+		GPIO_ODD_IRQHandler,                       /*  18 - GPIO_ODD       */
+		TIMER1_IRQHandler,                       /*  19 - TIMER1       */
+		USART1_RX_IRQHandler,                       /*  20 - USART1_RX       */
+		USART1_TX_IRQHandler,                       /*  21 - USART1_TX       */
+		LEUART0_IRQHandler,                       /*  22 - LEUART0       */
+		PCNT0_IRQHandler,                       /*  23 - PCNT0       */
+		CMU_IRQHandler,                       /*  24 - CMU       */
+		MSC_IRQHandler,                       /*  25 - MSC       */
+		CRYPTO0_IRQHandler,                       /*  26 - CRYPTO0       */
+		LETIMER0_IRQHandler,                       /*  27 - LETIMER0       */
+		AGC_IRQHandler,                       /*  28 - AGC       */
+		PROTIMER_IRQHandler,                       /*  29 - PROTIMER       */
+		RTCC_IRQHandler,                       /*  30 - RTCC       */
+		SYNTH_IRQHandler,                       /*  31 - SYNTH       */
+		CRYOTIMER_IRQHandler,                       /*  32 - CRYOTIMER       */
+		RFSENSE_IRQHandler,                       /*  33 - RFSENSE       */
+		FPUEH_IRQHandler,                       /*  34 - FPUEH       */
+		SMU_IRQHandler,                       /*  35 - SMU       */
+		WTIMER0_IRQHandler,                       /*  36 - WTIMER0       */
+		WTIMER1_IRQHandler,                       /*  37 - WTIMER1       */
+		PCNT1_IRQHandler,                       /*  38 - PCNT1       */
+		PCNT2_IRQHandler,                       /*  39 - PCNT2       */
+		USART2_RX_IRQHandler,                       /*  40 - USART2_RX       */
+		USART2_TX_IRQHandler,                       /*  41 - USART2_TX       */
+		I2C1_IRQHandler,                       /*  42 - I2C1       */
+		USART3_RX_IRQHandler,                       /*  43 - USART3_RX       */
+		USART3_TX_IRQHandler,                       /*  44 - USART3_TX       */
+		VDAC0_IRQHandler,                       /*  45 - VDAC0       */
+		CSEN_IRQHandler,                       /*  46 - CSEN       */
+		LESENSE_IRQHandler,                       /*  47 - LESENSE       */
+		CRYPTO1_IRQHandler,                       /*  48 - CRYPTO1       */
+		TRNG0_IRQHandler,                       /*  49 - TRNG0       */
+		Default_Handler,                          /*  50 - Reserved      */
 };
-
 
 /**
  * @brief Tiny loader that is aligned at 0x0, where MCU starts fetching instruction from FLASH
@@ -237,7 +213,7 @@ void loader(void)
 		"ldr sp, [r0]\n"            // set stack pointer from static interrupt vector table
 		"ldr r0, [r0, #4]\n"        // load address of Reset_Handler (1 word offset from SP) from static interrupt vector table
 		"blx r0\n"                  // branch to Reset_Handler
-	:: "i" ((uint32_t) &static_application_header_table) : "r0", "r1"
+	:: "i" ((uint32_t) &__AAT__begin) : "r0", "r1"
 	);
 
 	// should never execute beyond this point
@@ -256,7 +232,7 @@ __attribute__ ((naked))
 void Reset_Handler (void)
 {
 	// Use static vector table for handling core fault event when coping variables
-	SCB->VTOR = (uint32_t) &static_application_header_table & SCB_VTOR_TBLOFF_Msk;
+	SCB->VTOR = (uint32_t) &__AAT__begin & SCB_VTOR_TBLOFF_Msk;
 
 	// initialize floating point co-processor
 	SystemInit();
@@ -274,7 +250,8 @@ void Reset_Handler (void)
 	}
 
 	// Remap the exception table into SRAM to allow dynamic allocation.
-	SCB->VTOR = (uint32_t) static_application_header_table.basic_application_header_table.vector_table & SCB_VTOR_TBLOFF_Msk;
+	SCB->VTOR = ((uint32_t) (*((ExtendedApplicationHeaderTable_t *) &__AAT__begin)).basic_application_header_table.vector_table)
+	            & SCB_VTOR_TBLOFF_Msk;
 
 	// Initialise C library.
 	__libc_init_array ();

@@ -24,6 +24,9 @@ SET(TARGET_SPECIFIC_INCLUDE_DIRECTORY
 		${TARGET_ROOT_DIRECTORY}/platform/bootloader/core
 		)
 
+# add configure file
+CONFIGURE_FILE(header_block.c.in header_block.c)
+
 # Collect all source file
 FILE (GLOB LOCAL_SRC *.c)
 

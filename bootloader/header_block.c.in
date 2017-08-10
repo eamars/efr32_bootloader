@@ -1,0 +1,36 @@
+/**
+ * Auto generated header block structure
+ */
+
+#include "application_header.h"
+#include "em_device.h"
+
+extern uint32_t __StackTop;
+extern irq_handler_t dynamic_vector_table[];
+
+/**
+ * @brief Generic Application header
+ */
+__attribute__ ((section(".aat")))
+const ExtendedApplicationHeaderTable_t static_application_header_table =
+{
+		.basic_application_header_table = {
+				.stack_top = &__StackTop,
+				.reset_handler = Reset_Handler,
+				.nmi_handler = NMI_Handler,
+				.hardfault_handler = HardFault_Handler,
+				.type = BOOTLOADER_ADDRESS_TABLE_TYPE,
+				.version = (uint16_t) 0x0,
+				.vector_table = dynamic_vector_table
+		},
+
+		.basic_app_header_table_crc = 0x0UL,
+		.ext_header_version = 0x0UL,
+		.app_total_size = 0x0UL,
+		.header_size = sizeof(ExtendedApplicationHeaderTable_t),
+		.app_version_major = ${VERSION_MAJOR},
+		.app_version_minor = ${VERSION_MINOR},
+		.app_version_patch = ${VERSION_PATCH},
+		.app_version_build = ${VERSION_BUILD},
+		.timestamp = 0x0UL
+};
