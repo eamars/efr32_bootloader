@@ -109,6 +109,7 @@ function(git_describe _var)
 	#endif()
 
 	#message(STATUS "Arguments to execute_process: ${ARGN}")
+	SET(ARGN ${ARGN} --long)
 
 	execute_process(COMMAND
 		"${GIT_EXECUTABLE}"
