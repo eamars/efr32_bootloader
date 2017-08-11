@@ -20,12 +20,12 @@ const ExtendedApplicationHeaderTable_t static_application_header_table =
 				.nmi_handler = NMI_Handler,
 				.hardfault_handler = HardFault_Handler,
 				.type = BOOTLOADER_ADDRESS_TABLE_TYPE,
-				.version = (uint16_t) 0x0,
+				.version = BASIC_HEADER_VERSION
 				.vector_table = dynamic_vector_table
 		},
 
 		.basic_app_header_table_crc = 0x0UL,
-		.ext_header_version = 0x0UL,
+		.ext_header_version = EXTENDED_HEADER_VERSION,
 		.app_total_size = 0x0UL,
 		.header_size = sizeof(ExtendedApplicationHeaderTable_t),
 		.app_version_major = ${VERSION_MAJOR},

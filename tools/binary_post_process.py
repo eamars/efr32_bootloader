@@ -4,116 +4,120 @@
 @file binary_post_process.py
 @brief Add hash and length information to binary file, allow integrity of executable to be verified on device
 @author Ran Bao (ran.bao@wirelessguard.co.nz)
-@date March, 2017
+@date Aug, 2017
 """
 
-import hashlib
+import struct
+import datetime
 import argparse
+from lib.crc import crc32, CRC32_START
 
-zero = 0
+AAT_BEGIN_ADDR = 0x100
+BASIC_HEADER_SIZE = 24
 
-class Application:
-    header_addr = (0x00, 0x20)
-    version_string_addr = (0x20, 0x40)
-    code_addr = 0x40
+class ApplicationHeader:
+    template = "<IIIIHHIIIIIII"
 
-class Bootloader:
-    header_addr = (0x1c, 0x3c)
-    version_string_addr = (0x3c, 0x5c)
-    code_addr = 0x5c
+    def __init__(self):
+        # basic application header
+        self.stack_top = 0
+        self.reset_handler = 0
+        self.nmi_handler = 0
+        self.hardfault_handler = 0
 
-class Partition:
-    def __init__(self, offset):
-        self.header_addr = (offset + 0x00, offset + 0x20)
-        self.version_string_addr = (offset + 0x20, offset + 0x40)
-        self.code_addr = offset + 0x40
+        # extended application header
+        self.type = 0
+        self.version = 0
+        self.vector_table = 0
 
-def dscrc8_byte(crc, value):
-    crc = crc ^ value
-    for i in range(8):
-        if crc & 0x01:
-            crc = (crc >> 1) ^ 0x8c
-        else:
-            crc >>= 1
-    return crc
+        self.basic_app_header_table_crc = 0
+        self.ext_header_version = 0
+        self.app_total_size = 0
+        self.header_size = 0
+
+        self.app_version = 0
+        self.timestamp = 0
+
+    def pack(self):
+        return struct.pack(self.template,
+                           self.stack_top,
+                           self.reset_handler,
+                           self.nmi_handler,
+                           self.hardfault_handler,
+                           self.type,
+                           self.version,
+                           self.vector_table,
+                           self.basic_app_header_table_crc,
+                           self.ext_header_version,
+                           self.app_total_size,
+                           self.header_size,
+                           self.app_version,
+                           self.timestamp)
+
+    def unpack(self, binary):
+        fmt_size = struct.calcsize(self.template)
+        buffer = struct.unpack(self.template, binary[:fmt_size])
+
+        self.stack_top = buffer[0]
+        self.reset_handler = buffer[1]
+        self.nmi_handler = buffer[2]
+        self.hardfault_handler = buffer[3]
+
+        self.type = buffer[4]
+        self.version = buffer[5]
+        self.vector_table = buffer[6]
+
+        self.basic_app_header_table_crc = buffer[7]
+        self.ext_header_version = buffer[8]
+
+        self.app_total_size = buffer[9]
+        self.header_size = buffer[10]
+
+        self.app_version = buffer[11]
+        self.timestamp = buffer[12]
+
+    def __len__(self):
+        return struct.calcsize(self.template)
 
 
-def binary_post_process(file, offset, partitionindex):
-    # open file
-    fp = open(file, "rb")
-    binary = fp.read()
-    fp.close()
 
-    partition = Partition(offset)
+def main(path):
+    with open(path, "r+b") as fp:
+        firmware = fp.read()
 
-    # extract footprint and version information from binary
-    header = binary[partition.header_addr[0]:partition.header_addr[1]]
-    version_string = binary[partition.version_string_addr[0]:partition.version_string_addr[1]]
-    code = binary[partition.code_addr:]
+    # create header instance
+    aat = ApplicationHeader()
 
-    # if the header is not empty (possibly the linker script went wrong)
-    if header != zero.to_bytes(0x20, byteorder="little"):
-        print("Wrong binary file is being post processed!")
-        exit(-1)
+    # extract header
+    header = firmware[AAT_BEGIN_ADDR: AAT_BEGIN_ADDR + len(aat)]
 
-    # calculate the total length of the code
-    total_length = len(binary)
-    total_length_bytes = total_length.to_bytes(4, byteorder="little")
+    # decode header
+    aat.unpack(header)
 
-    header_length = 64 # bytes
-    header_length_bytes = header_length.to_bytes(1, byteorder="little")
+    # fill the basic_app_header_table_crc
+    crcVal = CRC32_START
+    for index in range(AAT_BEGIN_ADDR, AAT_BEGIN_ADDR + BASIC_HEADER_SIZE):
+        crcVal = crc32(firmware[index], crcVal)
+    aat.basic_app_header_table_crc = crcVal
 
-    # calculate hash of version_string
-    crc = 0
-    for byte in version_string:
-        crc = dscrc8_byte(crc, byte)
+    # set app total size
+    aat.app_total_size = len(firmware)
 
-    crc_bytes = crc.to_bytes(1, byteorder="little")
+    # set timestamp for post process
+    aat.timestamp = int(datetime.datetime.utcnow().timestamp())
 
-    # hash code
-    m = hashlib.md5()
-    m.update(code)
-    hash_bytes = m.digest()
+    # write back
+    fp.seek(AAT_BEGIN_ADDR)
+    fp.write(aat.pack())
 
-    # write to binary file
-    fp = open(file, "r+b")
-
-    # write total length (0x0-0x4)
-    fp.seek(partition.header_addr[0] + 0x0)
-    fp.write(total_length_bytes)
-
-    # write header length (0x4-0x8)
-    fp.seek(partition.header_addr[0] + 0x4)
-    fp.write(header_length_bytes)
-
-    # write crc for version string
-    fp.seek(partition.header_addr[0] + 0x5)
-    fp.write(crc_bytes)
-
-    # write firmware partition index (0=A, 1=B)
-    fp.seek(partition.header_addr[0] + 0x6)
-    fp.write(partitionindex.to_bytes(1, byteorder="little"))
-    
-    # 0x7 reserved
-
-    # write hash
-    fp.seek(partition.header_addr[0] + 0x10)
-    fp.write(hash_bytes)
-
-    fp.close()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-f", "--file", nargs=1, type=str,
-        help="file to be processed")
+                        help="path to the file to be processed")
 
-    parser.add_argument("-o", "--offset", nargs=1, default=0x00, type=int,
-        help="the relative offset of program header address")
-
-    parser.add_argument("-p", "--partition", nargs=1, type=int,
-        help="partition to be written: [0]: Application Region A. [1]: Application Region B. [2]: Bootloader Region. [3]: Reserved Region")
 
     args = parser.parse_args()
 
-    binary_post_process(args.file[0], args.offset[0], args.partition[0])
+    main(args.file[0])

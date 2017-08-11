@@ -151,5 +151,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     main(args.description[0], args.file[0], args.output[0], args.base[0], args.reboot_to_addr[0])
-
-
