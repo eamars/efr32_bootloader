@@ -85,30 +85,32 @@ def main(path):
     with open(path, "r+b") as fp:
         firmware = fp.read()
 
-    # create header instance
-    aat = ApplicationHeader()
+        # create header instance
+        aat = ApplicationHeader()
 
-    # extract header
-    header = firmware[AAT_BEGIN_ADDR: AAT_BEGIN_ADDR + len(aat)]
+        # extract header
+        header = firmware[AAT_BEGIN_ADDR: AAT_BEGIN_ADDR + len(aat)]
 
-    # decode header
-    aat.unpack(header)
+        # decode header
+        aat.unpack(header)
 
-    # fill the basic_app_header_table_crc
-    crcVal = CRC32_START
-    for index in range(AAT_BEGIN_ADDR, AAT_BEGIN_ADDR + BASIC_HEADER_SIZE):
-        crcVal = crc32(firmware[index], crcVal)
-    aat.basic_app_header_table_crc = crcVal
+        # fill the basic_app_header_table_crc
+        crcVal = CRC32_START
+        for index in range(AAT_BEGIN_ADDR, AAT_BEGIN_ADDR + BASIC_HEADER_SIZE):
+            crcVal = crc32(firmware[index], crcVal)
+        aat.basic_app_header_table_crc = crcVal
 
-    # set app total size
-    aat.app_total_size = len(firmware)
+        # set app total size
+        aat.app_total_size = len(firmware)
 
-    # set timestamp for post process
-    aat.timestamp = int(datetime.datetime.utcnow().timestamp())
+        # set timestamp for post process
+        aat.timestamp = int(datetime.datetime.utcnow().timestamp())
 
-    # write back
-    fp.seek(AAT_BEGIN_ADDR)
-    fp.write(aat.pack())
+        # write back
+        fp.seek(AAT_BEGIN_ADDR)
+        fp.write(aat.pack())
+
+        fp.close()
 
 
 if __name__ == "__main__":
