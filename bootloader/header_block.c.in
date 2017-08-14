@@ -20,7 +20,7 @@ const ExtendedApplicationHeaderTable_t static_application_header_table =
 				.nmi_handler = NMI_Handler,
 				.hardfault_handler = HardFault_Handler,
 				.type = BOOTLOADER_ADDRESS_TABLE_TYPE,
-				.version = BASIC_HEADER_VERSION
+				.version = BASIC_HEADER_VERSION,
 				.vector_table = dynamic_vector_table
 		},
 
