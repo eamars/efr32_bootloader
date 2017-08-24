@@ -188,7 +188,7 @@ irq_handler_t dynamic_vector_table[] =
 __attribute__ ((section(".tiny_loader"))) __attribute__ ((naked))
 void tiny_loader(void)
 {
-	__ASM (
+	__ASM volatile (
 		"bl loader\n"
 	);
 }
@@ -208,12 +208,12 @@ void tiny_loader(void)
 __attribute__ ((section(".loader"))) __attribute__ ((naked))
 void loader(void)
 {
-	__ASM (
+	__ASM volatile (
 		"ldr r0, =%0\n"             // load absolute address from static interrupt vector table
 		"ldr sp, [r0]\n"            // set stack pointer from static interrupt vector table
 		"ldr r0, [r0, #4]\n"        // load address of Reset_Handler (1 word offset from SP) from static interrupt vector table
 		"blx r0\n"                  // branch to Reset_Handler
-	:: "i" ((uint32_t) &__AAT__begin) : "r0", "r1"
+		:: "i" ((uint32_t) &__AAT__begin) : "r0", "r1"
 	);
 
 	// should never execute beyond this point

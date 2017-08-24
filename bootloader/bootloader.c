@@ -31,6 +31,9 @@ extern uint32_t __CRASHINFO__begin;
 // global variables
 bootloader_config_t bootloader_config;
 
+// blue led state
+bool blue_led_state = 0;
+
 void bootloader(void)
 {
 	// initialize flash driver
@@ -55,6 +58,13 @@ void bootloader(void)
 	{
 		while (communication_ready(&comm))
 		{
+			// Blue LED
+			GPIO_PinModeSet(gpioPortA,
+			                2,
+			                gpioModeInputPull,
+			                (uint32_t) blue_led_state);
+			blue_led_state = !blue_led_state;
+
 			communication_receive(&comm);
 		}
 	}

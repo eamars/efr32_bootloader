@@ -45,6 +45,16 @@ bool is_valid_address(uint32_t address)
 		return true;
 	}
 
+	// for EFR32:
+#ifdef BOOTLOADER_PRESENT
+#define BOOTLOADER_FLASH_BASE 0xFE10000
+#define BOOTLOADER_FLASH_SIZE 0x8000
+	if (address >= BOOTLOADER_FLASH_BASE && address < (BOOTLOADER_FLASH_BASE + BOOTLOADER_FLASH_SIZE))
+	{
+		return true;
+	}
+#endif
+
 	return false;
 }
 
@@ -129,7 +139,7 @@ void inst_pop_base_addr(const communication_t *comm, uint8_t *data, uint8_t size
 	assert(size == 0);
 
 	// pop previously pushed base address
-	bootloader_config.base_addr = stack32_pop(&(bootloader_config.base_addr_stack));
+	// bootloader_config.base_addr = stack32_pop(&(bootloader_config.base_addr_stack));
 }
 
 void inst_set_block_exp(const communication_t *comm, uint8_t *data, uint8_t size)

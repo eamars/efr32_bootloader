@@ -1,8 +1,8 @@
 MESSAGE("ENTER ${CMAKE_CURRENT_SOURCE_DIR}")
 
 # override build flags
-SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -mfloat-abi=softfp -Os")
-SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -mfloat-abi=softfp -Os")
+SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -mfloat-abi=softfp")
+SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -mfloat-abi=softfp")
 SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --specs=nano.specs -mfloat-abi=softfp -T${TARGET_ROOT_DIRECTORY}/scripts/efr32mg12p_bootloader.ld -Wl,--Map=symbols.map,--gc-sections")
 
 # override executable
