@@ -4,16 +4,21 @@
  * @author Ran Bao
  * @date Aug, 2017
  */
-
-
+#include <string.h>
 #include <drivers/bootloader_api/bootloader_api.h>
+#include <platform/bootloader/api/btl_reset_info.h>
+
+#include BOARD_HEADER
 #include "bootloader.h"
 #include "bootloader_config.h"
 #include "bootloader_api.h"
 
 #include "em_device.h"
-#include "em_msc.h"
+#include "em_cmu.h"
+#include "em_chip.h"
+#include "em_rmu.h"
 #include "em_gpio.h"
+#include "em_msc.h"
 
 #include "btl_reset.h"
 #include "btl_reset_info.h"
@@ -21,11 +26,14 @@
 #include "io_device.h"
 #include "communication.h"
 #include "uart_device.h"
+#include "eeprom_cat24c16.h"
+
 
 
 // function that is implemented in another file
 extern void comm_cb_inst(const void *handler, uint8_t *data, uint8_t size);
 extern void comm_cb_data(uint16_t block_offset, uint8_t *data, uint8_t size);
+extern bool is_valid_address(uint32_t address);
 extern uint32_t __CRASHINFO__begin;
 
 // global variables
@@ -34,8 +42,31 @@ bootloader_config_t bootloader_config;
 // blue led state
 bool blue_led_state = 0;
 
+
+
 void bootloader(void)
 {
+	// runtime patch
+	CHIP_Init();
+
+	// enable clock to the GPIO to allow input to be configured
+	CMU_ClockEnable(cmuClock_GPIO, true);
+
+	// Anode
+	GPIO_PinModeSet(gpioPortA,
+	                0,
+	                gpioModePushPull,
+	                1);
+
+	// enable logic shifter
+	GPIO_PinModeSet(gpioPortC,
+	                8,
+	                gpioModePushPull,
+	                1);
+
+	// enable systick
+	SysTick_Config(CMU_ClockFreqGet( cmuClock_CORE ) / 1000);
+
 	// initialize flash driver
 	MSC_Init();
 
@@ -184,7 +215,46 @@ bool is_boot_request_override(uint32_t * app_addr)
 
 bool is_prev_app_valid(uint32_t * app_addr)
 {
-	return true;
+#if BOARD_HATCH == 1
+	// initialize i2c driver and eeprom driver here
+	i2cdrv_t i2c_device;
+	eeprom_cat24c16_t eeprom_device;
+	ExtendedBootloaderResetCause_t reset_cause;
+
+	// initialize i2c driver
+	memset(&i2c_device, 0x0, sizeof(i2cdrv_t));
+	i2cdrv_init(&i2c_device,
+	            PIO_DEF(BSP_I2C_SDA_PORT, BSP_I2C_SDA_PIN),
+	            PIO_DEF(BSP_I2C_SCL_PORT, BSP_I2C_SCL_PIN),
+	            PIO_DEF(BSP_I2C_EN_PORT, BSP_I2C_EN_PIN)
+	);
+
+	// initialize eeprom driver
+	memset(&eeprom_device, 0x0, sizeof(eeprom_cat24c16_t));
+	eeprom_cat24c16_init(&eeprom_device, &i2c_device, PIO_DEF(BSP_EEPROM_EN_PORT, BSP_EEPROM_EN_PIN));
+
+	// read 16bytes from first page
+	memset(&reset_cause, 0x0, sizeof(ExtendedBootloaderResetCause_t));
+	eeprom_cat24c16_selective_read(&eeprom_device, 0x0, sizeof(ExtendedBootloaderResetCause_t), (uint8_t *) &reset_cause);
+
+	// read reset cause, make sure address falls within valid flash range
+	if (reset_cause.basicResetCause.signature == BOOTLOADER_RESET_SIGNATURE_VALID &&
+		reset_cause.basicResetCause.reason == BOOTLOADER_RESET_REASON_GO &&
+	    reset_cause.app_signature == APP_SIGNATURE &&
+	    is_valid_address(reset_cause.app_addr))
+	{
+		// verify the CRC?
+
+		// set address
+		*app_addr = reset_cause.app_addr;
+
+		return true;
+	}
+
+	return false;
+#else
+	return false;
+#endif
 }
 
 void clear_boot_request(void)

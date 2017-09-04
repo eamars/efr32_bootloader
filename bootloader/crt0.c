@@ -249,9 +249,15 @@ void Reset_Handler (void)
 		*pDest++ = 0x0UL;
 	}
 
-	// Remap the exception table into SRAM to allow dynamic allocation.
+	// remap the exception table into SRAM to allow dynamic allocation.
 	SCB->VTOR = ((uint32_t) (*((ExtendedApplicationHeaderTable_t *) &__AAT__begin)).basic_application_header_table.vector_table)
 	            & SCB_VTOR_TBLOFF_Msk;
+
+	// initialize stack pointer
+	{
+		register uint32_t * sp __asm ("sp");
+		sp = (uint32_t *) *((ExtendedApplicationHeaderTable_t *) &__AAT__begin)->basic_application_header_table.vector_table;
+	}
 
 	// Initialise C library.
 	__libc_init_array ();

@@ -50,29 +50,7 @@ void SysTick_Handler(void)
 
 int main(void)
 {
-	// set high frequency clock
-	SystemCoreClock = SystemHFXOClockGet();
-
-	// runtime patch
-	CHIP_Init();
-
-	// enable clock to the GPIO to allow input to be configured
-	CMU_ClockEnable(cmuClock_GPIO, true);
-
-	// Anode
-	GPIO_PinModeSet(gpioPortA,
-	                0,
-	                gpioModePushPull,
-	                1);
-
-	// enable logic shifter
-	GPIO_PinModeSet(gpioPortC,
-	                8,
-	                gpioModePushPull,
-	                1);
-
-	// enable systick
-	SysTick_Config(CMU_ClockFreqGet( cmuClock_CORE ) / 1000);
+	uint32_t app_addr;
 
 	// check if button is pressed
 	if (is_button_override())
@@ -88,7 +66,7 @@ int main(void)
 
 	// if there is no request to boot to bootloader, we then check if there is special request for booting into
 	// specific application
-	uint32_t app_addr = INVALID_BASE_ADDR;
+	app_addr = INVALID_BASE_ADDR;
 	if (is_boot_request_override(&app_addr))
 	{
 		clear_boot_request();
@@ -101,8 +79,7 @@ int main(void)
 	app_addr = INVALID_BASE_ADDR;
 	if (is_prev_app_valid(&app_addr))
 	{
-		// TODO: for debug purpose, we will branch to the magic address anyway
-		branch_to_addr(USER_APPLICATION_ADDR);
+		branch_to_addr(app_addr);
 	}
 
 	// otherwise boot to bootloader
