@@ -83,6 +83,8 @@ int main(void)
 	}
 
 	// otherwise boot to bootloader
+	bootloader();
+
 	// trap here
 
 	while (1)
