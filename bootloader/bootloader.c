@@ -5,8 +5,6 @@
  * @date Aug, 2017
  */
 #include <string.h>
-#include <drivers/bootloader_api/bootloader_api.h>
-#include <platform/bootloader/api/btl_reset_info.h>
 
 #include BOARD_HEADER
 #include "bootloader.h"
