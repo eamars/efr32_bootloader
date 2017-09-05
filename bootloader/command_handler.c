@@ -4,13 +4,16 @@
  * @author Ran Bao
  * @date Aug, 2017
  */
+#include BOARD_HEADER
+#include <stdint.h>
+#include <stdbool.h>
+#include <stddef.h>
 
-#include <assert.h>
-#include "command_handler.h"
 #include "em_device.h"
 #include "em_system.h"
 #include "em_msc.h"
 
+#include "command_handler.h"
 #include "convert.h"
 #include "bootloader_api.h"
 #include "sip.h"
@@ -60,7 +63,7 @@ bool is_valid_address(uint32_t address)
 
 void inst_set_base_addr(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	assert(size == 4);
+	APP_ASSERT(size == 4);
 
 	uint32_t received_base_addr = 0xffffffff;
 
@@ -68,7 +71,7 @@ void inst_set_base_addr(const communication_t *comm, uint8_t *data, uint8_t size
 	uint8_to_uint32(data, &received_base_addr);
 
 	// sanity check: make sure the base addr falls within flash or sram
-	assert(is_valid_address(received_base_addr));
+	APP_ASSERT(is_valid_address(received_base_addr));
 
 	// store base address
 	bootloader_config.base_addr = received_base_addr;
@@ -76,7 +79,7 @@ void inst_set_base_addr(const communication_t *comm, uint8_t *data, uint8_t size
 
 void inst_get_base_addr(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	assert(size == 0);
+	APP_ASSERT(size == 0);
 
 	uint8_t base_addr_array[4];
 	sip_t sip;
@@ -128,7 +131,7 @@ void inst_get_base_addr(const communication_t *comm, uint8_t *data, uint8_t size
 
 void inst_push_base_addr(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	assert(size == 0);
+	APP_ASSERT(size == 0);
 
 	// push current bootloader address to stack
 	stack32_push(&(bootloader_config.base_addr_stack), bootloader_config.base_addr);
@@ -136,7 +139,7 @@ void inst_push_base_addr(const communication_t *comm, uint8_t *data, uint8_t siz
 
 void inst_pop_base_addr(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	assert(size == 0);
+	APP_ASSERT(size == 0);
 
 	// pop previously pushed base address
 	// bootloader_config.base_addr = stack32_pop(&(bootloader_config.base_addr_stack));
@@ -144,7 +147,7 @@ void inst_pop_base_addr(const communication_t *comm, uint8_t *data, uint8_t size
 
 void inst_set_block_exp(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	assert(size == 1);
+	APP_ASSERT(size == 1);
 
 	// read block exponential
 	bootloader_config.block_size_exp = data[0];
@@ -152,7 +155,7 @@ void inst_set_block_exp(const communication_t *comm, uint8_t *data, uint8_t size
 
 void inst_get_block_exp(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	assert(size == 0);
+	APP_ASSERT(size == 0);
 
 	sip_t sip;
 	crc8_t crc8 = 0;
@@ -207,7 +210,7 @@ void inst_branch_to_addr(const communication_t *comm, uint8_t *data, uint8_t siz
 		// otherwise, use address specified in command
 	else
 	{
-		assert(size == 4);
+		APP_ASSERT(size == 4);
 
 		uint32_t received_base_addr = 0xffffffff;
 
@@ -215,7 +218,7 @@ void inst_branch_to_addr(const communication_t *comm, uint8_t *data, uint8_t siz
 		uint8_to_uint32(data, &received_base_addr);
 
 		// sanity check: make sure the base addr falls within flash or sram
-		assert(is_valid_address(received_base_addr));
+		APP_ASSERT(is_valid_address(received_base_addr));
 
 		// branch to address
 		reboot_to_addr(received_base_addr, true);
@@ -224,7 +227,7 @@ void inst_branch_to_addr(const communication_t *comm, uint8_t *data, uint8_t siz
 
 void inst_erase_page(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	assert(size == 2);
+	APP_ASSERT(size == 2);
 
 	// convert 2 byte block array to uint16 value
 	uint16_t pages_to_erase = 0;
@@ -239,7 +242,7 @@ void inst_erase_page(const communication_t *comm, uint8_t *data, uint8_t size)
 
 void inst_erase_range(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	assert(size == 8);
+	APP_ASSERT(size == 8);
 
 	// read start and finish address
 	uint32_t start_addr = 0;
@@ -248,8 +251,8 @@ void inst_erase_range(const communication_t *comm, uint8_t *data, uint8_t size)
 	uint8_to_uint32(data + 0, &start_addr);
 	uint8_to_uint32(data + 4, &end_addr);
 
-	assert((end_addr - start_addr) >= FLASH_PAGE_SIZE);
-	assert(end_addr <= FLASH_BASE + FLASH_SIZE);
+	APP_ASSERT((end_addr - start_addr) >= FLASH_PAGE_SIZE);
+	APP_ASSERT(end_addr <= FLASH_BASE + FLASH_SIZE);
 
 	// align the base address down to nearest flash page boundry
 	start_addr = (start_addr / FLASH_PAGE_SIZE) * FLASH_PAGE_SIZE;
@@ -264,7 +267,7 @@ void inst_erase_range(const communication_t *comm, uint8_t *data, uint8_t size)
 
 void inst_query_proto_ver(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	assert(size == 0);
+	APP_ASSERT(size == 0);
 
 	uint16_t bl_proto_ver = BL_PROTO_VER;
 	uint8_t bl_proto_ver_array[2];
@@ -317,7 +320,7 @@ void inst_query_proto_ver(const communication_t *comm, uint8_t *data, uint8_t si
 
 void inst_reboot(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	assert(size == 0);
+	APP_ASSERT(size == 0);
 
 	// TODO: Maybe we have better way to implement this?
 	NVIC_SystemReset();
@@ -330,7 +333,7 @@ void inst_query_device_info(const communication_t *comm, uint8_t *data, uint8_t 
 
 void inst_query_chip_info(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	assert(size == 0);
+	APP_ASSERT(size == 0);
 
 	uint64_t unique_id = SYSTEM_GetUnique();
 	uint8_t unique_id_array[8];

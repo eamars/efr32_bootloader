@@ -214,6 +214,8 @@ bool is_boot_request_override(uint32_t * app_addr)
 bool is_prev_app_valid(uint32_t * app_addr)
 {
 #if BOARD_HATCH == 1
+	bool valid_app = false;
+
 	// initialize i2c driver and eeprom driver here
 	i2cdrv_t i2c_device;
 	eeprom_cat24c16_t eeprom_device;
@@ -233,11 +235,11 @@ bool is_prev_app_valid(uint32_t * app_addr)
 
 	// read 16bytes from first page
 	memset(&reset_cause, 0x0, sizeof(ExtendedBootloaderResetCause_t));
-	eeprom_cat24c16_selective_read(&eeprom_device, 0x0, sizeof(ExtendedBootloaderResetCause_t), (uint8_t *) &reset_cause);
+	eeprom_cat24c16_selective_read(&eeprom_device, 0x0, sizeof(ExtendedBootloaderResetCause_t), &reset_cause);
 
 	// read reset cause, make sure address falls within valid flash range
 	if (reset_cause.basicResetCause.signature == BOOTLOADER_RESET_SIGNATURE_VALID &&
-		reset_cause.basicResetCause.reason == BOOTLOADER_RESET_REASON_GO &&
+	    reset_cause.basicResetCause.reason == BOOTLOADER_RESET_REASON_GO &&
 	    reset_cause.app_signature == APP_SIGNATURE &&
 	    is_valid_address(reset_cause.app_addr))
 	{
@@ -246,12 +248,23 @@ bool is_prev_app_valid(uint32_t * app_addr)
 		// set address
 		*app_addr = reset_cause.app_addr;
 
-		return true;
+		valid_app = true;
 	}
 
-	return false;
+	// disable eeprom
+	eeprom_cat24c16_deinit(&eeprom_device);
+
+	// disable i2c
+	i2cdrv_deinit(&i2c_device);
+
+	// disable GPIO clock
+	CMU_ClockEnable(cmuClock_GPIO, false);
+
+	return valid_app;
 #else
-	return false;
+	// make up the AAT address for non-hatch device
+	*app_addr = 0x100;
+	return true;
 #endif
 }
 
