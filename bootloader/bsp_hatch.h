@@ -57,4 +57,11 @@
 #define BSP_I2C_SDA_PIN         6
 #define BSP_I2C_SDA_PORT        gpioPortF
 
+// override debug macros for driver
+#include <assert.h>
+#define DRV_ASSERT(x) assert((x))
+
+// override debug macro for apps
+#define APP_ASSERT(x) assert((x))
+
 #endif //EFR32_BOOTLOADER_BSP_HATCH_H_H
