@@ -1,18 +1,53 @@
 /**
- * Auto generated header block structure
+ * @brief Auto generated header block structure
+ * @author Ran Ban (ran.bao@wirelessguard.co.nz)
+ *
+ * TEMPLATE: header_block.c.in
+ *
+ * DO NOT MODIFY THIS FILE!
  */
-
+#ifdef PLATFORM_HEADER
+	#include PLATFORM_HEADER
+#endif
 #include "application_header.h"
 #include "em_device.h"
 
+
+/**
+ * @brief Define necessary build macros
+ */
+#ifndef VAR_AT_SEGMENT
+#define VAR_AT_SEGMENT(__variableDeclaration, __segmentName) \
+  __variableDeclaration __attribute__ ((section(__segmentName)))
+#endif
+
+#ifndef NO_STRIPPING
+#define NO_STRIPPING __attribute__((used))
+#endif
+
+#ifndef __AAT__
+#define __AAT__ ".aat"                // Application address table
+#endif
+
+
+/**
+ * @brief __StackTop is defined in linker script, where being used as a place holder indicating the address of start
+ *        address of global stack
+ */
 extern uint32_t __StackTop;
+
+/**
+ * @brief dynamic_vector_table is defined in crt0.c and will be copied into SRAM
+ */
 extern irq_handler_t dynamic_vector_table[];
 
 /**
  * @brief Generic Application header
+ *
+ * The header block is placed at .aat, as defined in linker script. The start and end address can be obtained by
+ * _AAT_SEGMENT_BEGIN and _AAT_SEGMENT_END
  */
-__attribute__ ((section(".aat")))
-const ExtendedApplicationHeaderTable_t static_application_header_table =
+VAR_AT_SEGMENT(NO_STRIPPING const ExtendedApplicationHeaderTable_t static_application_header_table, __AAT__) =
 {
 		.basic_application_header_table = {
 				.stack_top = &__StackTop,
@@ -28,9 +63,9 @@ const ExtendedApplicationHeaderTable_t static_application_header_table =
 		.ext_header_version = EXTENDED_HEADER_VERSION,
 		.app_total_size = 0x0UL,
 		.header_size = sizeof(ExtendedApplicationHeaderTable_t),
-		.app_version_major = ${VERSION_MAJOR},
-		.app_version_minor = ${VERSION_MINOR},
-		.app_version_patch = ${VERSION_PATCH},
-		.app_version_build = ${VERSION_BUILD},
+		.app_version_major = (uint8_t) ${VERSION_MAJOR},
+		.app_version_minor = (uint8_t) ${VERSION_MINOR},
+		.app_version_patch = (uint8_t) ${VERSION_PATCH},
+		.app_version_build = (uint8_t) ${VERSION_BUILD},
 		.timestamp = 0x0UL
 };
