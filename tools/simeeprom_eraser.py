@@ -69,7 +69,7 @@ class SimEEPROMEraser():
             9,
             "{:02x}{}{}".format(
                 Bootloader.INST_ERASE_RANGE,
-                self.__toLittleEndianHexString("{:08X}".format(0x0FE000)),
+                self.__toLittleEndianHexString("{:08X}".format(0x0FE000)),  # Version 1 SimEEPROM address
                 self.__toLittleEndianHexString("{:08X}".format(0x100000)),
             )
         )
