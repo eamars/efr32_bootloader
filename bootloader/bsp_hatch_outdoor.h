@@ -79,7 +79,7 @@
   {                                                                                 \
     emuPowerConfig_DcdcToDvdd,   /* DCDC to DVDD */                                 \
     emuDcdcMode_LowNoise,        /* Low-niose mode in EM0 */                        \
-    1800,                        /* Nominal output voltage for DVDD mode, 1.8V  */  \
+    3000,                        /* Nominal output voltage for DVDD mode, 1.8V  */  \
     15,                          /* Nominal EM0/1 load current of less than 15mA */ \
     10,                          /* Nominal EM2/3/4 load current less than 10uA  */ \
     200,                         /* Maximum average current of 200mA
@@ -128,21 +128,24 @@
  * @brief Port A peripherals
  */
 
-// LED Anode on PA0
-#define BSP_LED_EN_PIN      0
-#define BSP_LED_EN_PORT     gpioPortA
+// CPS GPIO signal for mode control
+#define BSP_CPS_PIN             0
+#define BSP_CPS_PORT            gpioPortA
+// LED Anode on PA1
+#define BSP_LED_EN_PIN          1
+#define BSP_LED_EN_PORT         gpioPortA
 
-// Green LED on PA1
-#define BSP_LED_GREEN_PIN   1
-#define BSP_LED_GREEN_PORT  gpioPortA
+// Green LED on PA2
+#define BSP_LED_GREEN_PIN       2
+#define BSP_LED_GREEN_PORT      gpioPortA
 
-// Blue LED on PA2
-#define BSP_LED_BLUE_PIN    2
-#define BSP_LED_BLUE_PORT   gpioPortA
+// Blue LED on PA3
+#define BSP_LED_BLUE_PIN        3
+#define BSP_LED_BLUE_PORT       gpioPortA
 
-// Temperature Alert interrupt on PA5
-#define BSP_TEMP_ALERT_INT_PIN  5
-#define BSP_TEMP_ALERT_INT_PORT gpioPortA
+// Temperature Alert on PA5
+#define BSP_TEMP_ALERT_INT_PIN      5
+#define BSP_TEMP_ALERT_INT_PORT     gpioPortA
 
 
 
@@ -152,12 +155,12 @@
 
 // Battery ADC on PB11 (CH27)
 // adcPosSelAPORT3YCH27 or adcPosSelAPORT4XCH27
-#define BSP_BAT_ADC_PIN     11
-#define BSP_BAT_ADC_PORT    gpioPortB
+#define BSP_BAT_ADC_PIN         11
+#define BSP_BAT_ADC_PORT        gpioPortB
 
-// Battery monitor enable pin
-#define BSP_BAT_MON_EN_PIN     12
-#define BSP_BAT_MON_EN_PORT    gpioPortB
+// Battery monitor threshold on PB12
+#define BSP_BAT_MON_EN_PIN         12
+#define BSP_BAT_MON_EN_PORT        gpioPortB
 
 // User button on PB13
 #define BSP_USER_BUTTON_PIN     13
@@ -173,47 +176,50 @@
 #define BSP_USB_DETECT_PORT     gpioPortC
 
 // USB Load Switch on PC7
-#define BSP_USB_DETECT_EN_PIN     7
-#define BSP_USB_DETECT_EN_PORT    gpioPortC
+#define BSP_USB_DETECT_EN_PIN   7
+#define BSP_USB_DETECT_EN_PORT  gpioPortC
 
 // UART Level Shifter (3v3 to 5v) on PC8
 #define BSP_UART_LS_EN_PIN      8
 #define BSP_UART_LS_EN_PORT     gpioPortC
 
 // USART0 RX on PC9
-#define BSP_USART0_RX_LOC      _USART_ROUTELOC0_RXLOC_LOC13
-#define BSP_USART0_RX_PIN      9
-#define BSP_USART0_RX_PORT     gpioPortC
+#define BSP_USART0_RX_LOC       _USART_ROUTELOC0_RXLOC_LOC13
+#define BSP_USART0_RX_PIN       9
+#define BSP_USART0_RX_PORT      gpioPortC
 
 // USART TX on PC10
-#define BSP_USART0_TX_LOC      _USART_ROUTELOC0_TXLOC_LOC15
-#define BSP_USART0_TX_PIN      10
-#define BSP_USART0_TX_PORT     gpioPortC
+#define BSP_USART0_TX_LOC       _USART_ROUTELOC0_TXLOC_LOC15
+#define BSP_USART0_TX_PIN       10
+#define BSP_USART0_TX_PORT      gpioPortC
 
 // EEPROM Load Switch on PC11
-#define BSP_EEPROM_EN_PIN      11
-#define BSP_EEPROM_EN_PORT     gpioPortC
+#define BSP_EEPROM_EN_PIN       11
+#define BSP_EEPROM_EN_PORT      gpioPortC
 
 
 /**
  * @brief Port D peripherals
  */
+// ANT_SEL controll antenna switch in PD11
+#define BSP_ANT_SEL_PIN         11
+#define BSP_ANT_SEL_PORT        gpioPortD
 
-// LDC Interrupt on PD12
-#define BSP_LDC_INT_PIN         12
-#define BSP_LDC_INT_PORT        gpioPortD
+// LDC CSD on PD12
+#define BSP_CSD_PIN             12
+#define BSP_CSD_PORT            gpioPortD
 
-// LDC Clock Enable on PD13
-#define BSP_LDC_CLK_EN_PIN      13
-#define BSP_LDC_CLK_EN_PORT     gpioPortD
+// CRX on PD13
+#define BSP_CRX_PIN             13
+#define BSP_CRX_PORT            gpioPortD
 
-// LDC Shutdown on PD14
-#define BSP_LDC_SD_PIN          14
-#define BSP_LDC_SD_PORT        gpioPortD
+// CHL on PD14
+#define BSP_CHL_PIN             14
+#define BSP_CHL_PORT            gpioPortD
 
-// LDC Load Switch on PD15
-#define BSP_LDC_EN_PIN     15
-#define BSP_LDC_EN_PORT    gpioPortD
+// CTX on PD15
+#define BSP_CTX_PIN             15
+#define BSP_CTX_PORT            gpioPortD
 
 
 /**
@@ -255,8 +261,8 @@
 #define BSP_I2C_SDA_PORT        gpioPortF
 
 // IMU Load Switch on PF 7
-#define BSP_IMU_EN_PIN     7
-#define BSP_IMU_EN_PORT    gpioPortF
+#define BSP_IMU_EN_PIN          7
+#define BSP_IMU_EN_PORT         gpioPortF
 
 // override debug macros for driver
 #include <assert.h>

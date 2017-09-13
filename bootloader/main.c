@@ -20,34 +20,6 @@
 #include "bootloader.h"
 #include "bootloader_api.h"
 
-
-#define USER_APPLICATION_ADDR 0x100UL
-
-
-volatile uint32_t systick_counter = 0UL;
-
-// Blink LED related
-uint32_t led_counter = 0;
-bool green_led_state = 0;
-
-void SysTick_Handler(void)
-{
-	systick_counter += 1;
-
-	if (systick_counter >= led_counter)
-	{
-		led_counter += 1000;
-
-		// Green LED
-		GPIO_PinModeSet(gpioPortA,
-		                1,
-		                gpioModeInputPull,
-		                (uint32_t) green_led_state);
-
-		green_led_state = !green_led_state;
-	}
-}
-
 int main(void)
 {
 	uint32_t app_addr;

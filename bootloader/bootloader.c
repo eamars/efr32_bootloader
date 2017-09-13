@@ -37,10 +37,33 @@ extern uint32_t __CRASHINFO__begin;
 // global variables
 bootloader_config_t bootloader_config;
 
-// blue led state
-bool blue_led_state = 0;
+// Blink LED related
+static uint32_t led_counter = 0;
+static bool green_led_state = 0;
+static bool blue_led_state = 0;
 
+// systick counter
+static volatile uint32_t systick_counter = 0UL;
 
+void SysTick_Handler(void)
+{
+	systick_counter += 1;
+
+	if (systick_counter >= led_counter)
+	{
+		led_counter += 1000;
+
+#if (BOARD_DEV == 1 || BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1)
+		// Green LED
+		GPIO_PinModeSet(BSP_LED0_PORT,
+		                BSP_LED0_PIN,
+		                gpioModeInputPull,
+		                (uint32_t) green_led_state);
+#endif
+
+		green_led_state = !green_led_state;
+	}
+}
 
 void bootloader(void)
 {
@@ -50,17 +73,20 @@ void bootloader(void)
 	// enable clock to the GPIO to allow input to be configured
 	CMU_ClockEnable(cmuClock_GPIO, true);
 
-	// Anode
-	GPIO_PinModeSet(gpioPortA,
-	                0,
+#if (BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1)
+	// only valid for hatch and hatch outdoor
+	// LED Anode
+	GPIO_PinModeSet(BSP_LED_EN_PORT,
+	                BSP_LED_EN_PIN,
 	                gpioModePushPull,
 	                1);
 
 	// enable logic shifter
-	GPIO_PinModeSet(gpioPortC,
-	                8,
+	GPIO_PinModeSet(BSP_UART_LS_EN_PORT,
+	                BSP_UART_LS_EN_PIN,
 	                gpioModePushPull,
 	                1);
+#endif
 
 	// enable systick
 	SysTick_Config(CMU_ClockFreqGet( cmuClock_CORE ) / 1000);
@@ -87,12 +113,14 @@ void bootloader(void)
 	{
 		while (communication_ready(&comm))
 		{
+#if (BOARD_DEV == 1 || BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1)
 			// Blue LED
-			GPIO_PinModeSet(gpioPortA,
-			                2,
+			GPIO_PinModeSet(BSP_LED1_PORT,
+			                BSP_LED1_PIN,
 			                gpioModeInputPull,
 			                (uint32_t) blue_led_state);
 			blue_led_state = !blue_led_state;
+#endif
 
 			communication_receive(&comm);
 		}
@@ -213,7 +241,7 @@ bool is_boot_request_override(uint32_t * app_addr)
 
 bool is_prev_app_valid(uint32_t * app_addr)
 {
-#if BOARD_HATCH == 1
+#if (BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1)
 	bool valid_app = false;
 
 	// initialize i2c driver and eeprom driver here
@@ -261,9 +289,16 @@ bool is_prev_app_valid(uint32_t * app_addr)
 	CMU_ClockEnable(cmuClock_GPIO, false);
 
 	return valid_app;
-#else
-	// make up the AAT address for non-hatch device
-	*app_addr = 0x100;
+
+#elif BOARD_DEV == 1
+	// make up the AAT address for development board
+	*app_addr = 0x100UL;
+	return true;
+
+#elif BOARD_NCP == 1
+	// make up the AAT address for network co-processor
+	// the application address starts at 0x0UL
+	*app_addr = 0x0UL;
 	return true;
 #endif
 }
