@@ -12,10 +12,14 @@
  * any purpose, you must agree to the terms of that agreement.
  *
  ******************************************************************************/
-#ifndef HATCH_BOARD_H_
-#define HATCH_BOARD_H_
+#ifndef BOARD_HATCH_H_
+#define BOARD_HATCH_H_
 
 #include "pio_defs.h"
+
+// Board hardware specification
+#define HATCH_HARDWARE_REV 0x0
+#define HATCH_HARDWARE_PRODUCT_ID 0x1
 
 // -----------------------------------------------------------------------------
 /* BUTTON */
@@ -265,4 +269,4 @@
 // override debug macro for apps
 #define APP_ASSERT(x) assert((x))
 
-#endif //HATCH_BOARD_H_
+#endif //BOARD_HATCH_H_

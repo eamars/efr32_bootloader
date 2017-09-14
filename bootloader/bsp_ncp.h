@@ -12,8 +12,14 @@
  * any purpose, you must agree to the terms of that agreement.
  *
  ******************************************************************************/
-#ifndef BRD4161A_H
-#define BRD4161A_H
+#ifndef BOARD_NCP_H_
+#define BOARD_NCP_H_
+
+#include "pio_defs.h"
+
+// Board hardware specification
+#define HATCH_HARDWARE_REV 0x0
+#define HATCH_HARDWARE_PRODUCT_ID 0x3
 
 // -----------------------------------------------------------------------------
 /* BUTTON */
@@ -204,4 +210,4 @@
 // override debug macro for apps
 #define APP_ASSERT(x) assert((x))
 
-#endif //BRD4161A_H
+#endif //BOARD_NCP_H_
