@@ -129,6 +129,7 @@ void bootloader(void)
 
 bool is_button_override(void)
 {
+#if (BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1 || BOARD_NCP == 1 || BOARD_DEV == 1)
 	bool pressed;
 
 	// Enable GPIO clock
@@ -167,6 +168,10 @@ bool is_button_override(void)
 	CMU->HFBUSCLKEN0 &= ~CMU_HFBUSCLKEN0_GPIO;
 
 	return pressed;
+#else
+	// if no button present, then we skip the button override
+	return false;
+#endif
 }
 
 bool is_sw_reset(void)
@@ -295,11 +300,13 @@ bool is_prev_app_valid(uint32_t * app_addr)
 	*app_addr = 0x100UL;
 	return true;
 
-#elif BOARD_NCP == 1
+#elif BOARD_NCP || BOARD_NCP_MODULE == 1
 	// make up the AAT address for network co-processor
 	// the application address starts at 0x0UL
 	*app_addr = 0x0UL;
 	return true;
+#else
+#error "Unknown board"
 #endif
 }
 
