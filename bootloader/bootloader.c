@@ -300,10 +300,14 @@ bool is_prev_app_valid(uint32_t * app_addr)
 	*app_addr = 0x100UL;
 	return true;
 
-#elif BOARD_NCP || BOARD_NCP_MODULE == 1
+#elif BOARD_NCP
 	// make up the AAT address for network co-processor
 	// the application address starts at 0x0UL
 	*app_addr = 0x0UL;
+	return true;
+#elif BOARD_NCP_MODULE == 1
+	// For testing purpose, we load firmware at 0x100
+	*app_addr = 0x100UL;
 	return true;
 #else
 #error "Unknown board"
