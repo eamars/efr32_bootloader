@@ -307,7 +307,7 @@ bool is_prev_app_valid(uint32_t * app_addr)
 	return true;
 #elif BOARD_NCP_MODULE == 1
 	// For testing purpose, we load firmware at 0x100
-	*app_addr = 0x100UL;
+	*app_addr = 0x0UL;
 	return true;
 #else
 #error "Unknown board"
