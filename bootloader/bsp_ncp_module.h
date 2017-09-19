@@ -69,7 +69,7 @@
   {                                                                                 \
     emuPowerConfig_DcdcToDvdd,   /* DCDC to DVDD */                                 \
     emuDcdcMode_LowNoise,        /* Low-niose mode in EM0 */                        \
-    1800,                        /* Nominal output voltage for DVDD mode, 1.8V  */  \
+    3000,                        /* Nominal output voltage for DVDD mode, 1.8V  */  \
     15,                          /* Nominal EM0/1 load current of less than 15mA */ \
     10,                          /* Nominal EM2/3/4 load current less than 10uA  */ \
     200,                         /* Maximum average current of 200mA
@@ -79,7 +79,7 @@
     emuDcdcLnCompCtrl_1u0F,      /* 1uF DCDC capacitor */                               \
   }
 // Do not enable bypass mode
-#define HAL_DCDC_BYPASS  0
+#define HAL_DCDC_BYPASS  1
 
 
 // -----------------------------------------------------------------------------
@@ -93,6 +93,20 @@
 #define HAL_PA_2P4_POWER       190
 #define HAL_PA_2P4_OFFSET      0
 #define HAL_PA_2P4_RAMP        10
+
+// SPINCP on USART1
+#define BSP_SPINCP_USART_PORT       1
+#define BSP_USART1_MISO_LOC         BSP_USART1_RX_LOC
+#define BSP_USART1_MOSI_LOC         BSP_USART1_TX_LOC
+
+// NHOST interrupt
+#define BSP_SPINCP_NHOSTINT_PIN     BSP_INT_OUT_PIN
+#define BSP_SPINCP_NHOSTINT_PORT    BSP_INT_OUT_PORT
+
+// NWAKE
+#define BSP_SPINCP_NWAKE_PIN        BSP_WAKE_PIN
+#define BSP_SPINCP_NWAKE_PORT       BSP_WAKE_PORT
+
 
 // -----------------------------------------------------------------------------
 /* USART0 */
@@ -128,25 +142,44 @@
 #define BSP_USART0_RX_PIN      12
 #define BSP_USART0_RX_PORT     gpioPortB
 
+// USART1 RX on PB12
+#define BSP_USART1_RX_LOC      _USART_ROUTELOC0_RXLOC_LOC6
+#define BSP_USART1_RX_PIN      12
+#define BSP_USART1_RX_PORT     gpioPortB
+
 // USART0 CLK on PB13
 #define BSP_USART0_CLK_LOC      _USART_ROUTELOC0_CLKLOC_LOC6
 #define BSP_USART0_CLK_PIN      13
 #define BSP_USART0_CLK_PORT     gpioPortB
 
+// USART1 CLK on PB13
+#define BSP_USART1_CLK_LOC      _USART_ROUTELOC0_CLKLOC_LOC6
+#define BSP_USART1_CLK_PIN      13
+#define BSP_USART1_CLK_PORT     gpioPortB
+
 /**
  * @brief Port C peripherals
  */
-
 
 // USART0 TX on PC10
 #define BSP_USART0_TX_LOC      _USART_ROUTELOC0_TXLOC_LOC15
 #define BSP_USART0_TX_PIN      10
 #define BSP_USART0_TX_PORT     gpioPortC
 
+// USART1 TX on PC10
+#define BSP_USART1_TX_LOC      _USART_ROUTELOC0_TXLOC_LOC15
+#define BSP_USART1_TX_PIN      10
+#define BSP_USART1_TX_PORT     gpioPortC
+
 // USART0 CS on PC11
 #define BSP_USART0_CS_LOC       _USART_ROUTELOC0_CSLOC_LOC13
 #define BSP_USART0_CS_PIN       11
 #define BSP_USART0_CS_PORT      gpioPortC
+
+// USART1 CS on PC11
+#define BSP_USART1_CS_LOC       _USART_ROUTELOC0_CSLOC_LOC13
+#define BSP_USART1_CS_PIN       11
+#define BSP_USART1_CS_PORT      gpioPortC
 
 // override debug macros for driver
 #include <assert.h>
