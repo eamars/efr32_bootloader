@@ -5,6 +5,7 @@
  * @date Aug, 2017
  */
 #include <string.h>
+#include <platform/bootloader/api/btl_reset_info.h>
 
 #include BOARD_HEADER
 #include "bootloader.h"
@@ -174,12 +175,12 @@ bool is_button_override(void)
 #endif
 }
 
-bool is_sw_reset(void)
+bool is_boot_to_bootloader(void)
 {
 	uint16_t reset_reason = 0;
 
 	// map reset cause structure to the begin of crash info memory
-	BootloaderResetCause_t * reset_cause = (BootloaderResetCause_t *) &__CRASHINFO__begin;
+	const BootloaderResetCause_t * reset_cause = (BootloaderResetCause_t *) &__CRASHINFO__begin;
 
 	// if the signature is valid, then use reset reason direction
 	if (reset_cause->signature == BOOTLOADER_RESET_SIGNATURE_VALID)
@@ -225,10 +226,10 @@ bool is_sw_reset(void)
 	return false;
 }
 
-bool is_boot_request_override(uint32_t * app_addr)
+bool is_boot_to_app(uint32_t * app_addr)
 {
 	// map reset cause structure to the begin of crash info memory
-	ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__CRASHINFO__begin;
+	const ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__CRASHINFO__begin;
 
 	if (reset_cause->basicResetCause.signature == BOOTLOADER_RESET_SIGNATURE_VALID &&
 		reset_cause->basicResetCause.reason == BOOTLOADER_RESET_REASON_GO &&
@@ -244,7 +245,7 @@ bool is_boot_request_override(uint32_t * app_addr)
 }
 
 
-bool is_prev_app_valid(uint32_t * app_addr)
+bool is_boot_to_prev_app(uint32_t * app_addr)
 {
 #if (BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1)
 	bool valid_app = false;

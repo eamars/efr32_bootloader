@@ -3,20 +3,7 @@
  *
  */
 #include <stdint.h>
-#include <stdbool.h>
-#include <stdio.h>
 
-#include "em_device.h"
-#include "em_cmu.h"
-#include "em_chip.h"
-#include "em_rmu.h"
-#include "em_gpio.h"
-#include "em_msc.h"
-
-#include "io_device.h"
-#include "uart_device.h"
-#include "communication.h"
-#include "bootloader_config.h"
 #include "bootloader.h"
 #include "bootloader_api.h"
 
@@ -31,7 +18,7 @@ int main(void)
 	}
 
 	// check if other request to boot into bootloader
-	if (is_sw_reset())
+	if (is_boot_to_bootloader())
 	{
 		bootloader();
 	}
@@ -39,7 +26,7 @@ int main(void)
 	// if there is no request to boot to bootloader, we then check if there is special request for booting into
 	// specific application
 	app_addr = INVALID_BASE_ADDR;
-	if (is_boot_request_override(&app_addr))
+	if (is_boot_to_app(&app_addr))
 	{
 		clear_boot_request();
 		branch_to_addr(app_addr);
@@ -49,7 +36,7 @@ int main(void)
 	// (has handled in previous case, the bootloader should boot the application to its last boot address, or default
 	// address.
 	app_addr = INVALID_BASE_ADDR;
-	if (is_prev_app_valid(&app_addr))
+	if (is_boot_to_prev_app(&app_addr))
 	{
 		branch_to_addr(app_addr);
 	}
