@@ -151,6 +151,15 @@
 
 // -----------------------------------------------------------------------------
 /* USART0 */
+// USART0 RX on PC9
+#define BSP_USART0_RX_LOC      _USART_ROUTELOC0_RXLOC_LOC0
+#define BSP_USART0_RX_PIN      1
+#define BSP_USART0_RX_PORT     gpioPortA
+
+// USART TX on PC10
+#define BSP_USART0_TX_LOC      _USART_ROUTELOC0_TXLOC_LOC0
+#define BSP_USART0_TX_PIN      0
+#define BSP_USART0_TX_PORT     gpioPortA
 
 // -----------------------------------------------------------------------------
 /* USART2 */
