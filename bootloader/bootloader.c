@@ -130,7 +130,7 @@ void bootloader(void)
 
 bool is_button_override(void)
 {
-#if (BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1 || BOARD_NCP == 1 || BOARD_DEV == 1)
+#if (BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1 || BOARD_NCP == 1 || BOARD_DEV == 1 || BOARD_NCP_PA == 1)
 	bool pressed;
 
 	// Enable GPIO clock
@@ -307,7 +307,13 @@ bool is_boot_to_prev_app(uint32_t * app_addr)
 	*app_addr = 0x0UL;
 	return true;
 #elif BOARD_NCP_MODULE == 1
-	// For testing purpose, we load firmware at 0x100
+	// make up the AAT address for network co-processor
+	// the application address starts at 0x0UL
+	*app_addr = 0x0UL;
+	return true;
+#elif BOARD_NCP_PA == 1
+	// make up the AAT address for network co-processor
+	// the application address starts at 0x0UL
 	*app_addr = 0x0UL;
 	return true;
 #else

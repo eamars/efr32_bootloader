@@ -79,12 +79,16 @@
 // MCU is wired for DCDC mode
 #define BSP_DCDC_PRESENT 1
 // Use emlib default DCDC initialization
+
+/**
+ * @brief We set EM0/1 DCDC threshold to 20, preventing any potential brown out issue in the circuit
+ */
 #define BSP_DCDC_INIT                                                               \
   {                                                                                 \
     emuPowerConfig_DcdcToDvdd,   /* DCDC to DVDD */                                 \
     emuDcdcMode_LowNoise,        /* Low-niose mode in EM0 */                        \
-    3000,                        /* Nominal output voltage for DVDD mode, 1.8V  */  \
-    15,                          /* Nominal EM0/1 load current of less than 15mA */ \
+    1800,                        /* Nominal output voltage for DVDD mode, 1.8V  */  \
+    20,                          /* Nominal EM0/1 load current of less than 20mA */ \
     10,                          /* Nominal EM2/3/4 load current less than 10uA  */ \
     200,                         /* Maximum average current of 200mA
                                     (assume strong battery or other power source) */      \
@@ -115,8 +119,8 @@
 // -----------------------------------------------------------------------------
 /* PA */
 #define HAL_PA_2P4_ENABLE      1
-#define HAL_PA_2P4_VOLTMODE    PA_VOLTMODE_VBAT
-#define HAL_PA_2P4_POWER       190
+#define HAL_PA_2P4_VOLTMODE    PA_VOLTMODE_DCDC
+#define HAL_PA_2P4_POWER       100
 #define HAL_PA_2P4_OFFSET      0
 #define HAL_PA_2P4_RAMP        10
 
@@ -135,6 +139,7 @@
 // CPS GPIO signal for mode control
 #define BSP_CPS_PIN             0
 #define BSP_CPS_PORT            gpioPortA
+
 // LED Anode on PA1
 #define BSP_LED_EN_PIN          1
 #define BSP_LED_EN_PORT         gpioPortA
@@ -209,7 +214,7 @@
 #define BSP_ANT_SEL_PIN         11
 #define BSP_ANT_SEL_PORT        gpioPortD
 
-// LDC CSD on PD12
+// CSD on PD12
 #define BSP_CSD_PIN             12
 #define BSP_CSD_PORT            gpioPortD
 
@@ -224,7 +229,8 @@
 // CTX on PD15
 #define BSP_CTX_PIN             15
 #define BSP_CTX_PORT            gpioPortD
-
+#define BSP_CTX_PRS_CH          4
+#define BSP_CTX_PRS_LOC         _PRS_ROUTELOC0_CH3LOC_LOC14
 
 /**
  * @brief Port F Peripherals
