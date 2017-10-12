@@ -249,6 +249,13 @@ bool is_boot_to_prev_app(uint32_t * app_addr)
 {
 #if (BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1)
 	bool valid_app = false;
+    
+    CMU_ClockEnable(cmuClock_GPIO, true);
+
+	GPIO_PinModeSet(BSP_IMU_EN_PORT,
+	                BSP_IMU_EN_PIN,
+	                gpioModePushPull,
+	                1);
 
 	// initialize i2c driver and eeprom driver here
 	i2cdrv_t i2c_device;
