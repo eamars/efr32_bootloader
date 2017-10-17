@@ -5,7 +5,6 @@
  * @date Aug, 2017
  */
 #include <string.h>
-#include <platform/bootloader/api/btl_reset_info.h>
 
 #include BOARD_HEADER
 #include "bootloader.h"
@@ -249,7 +248,7 @@ bool is_boot_to_prev_app(uint32_t * app_addr)
 {
 #if (BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1)
 	bool valid_app = false;
-    
+
     CMU_ClockEnable(cmuClock_GPIO, true);
 
 	GPIO_PinModeSet(BSP_IMU_EN_PORT,
