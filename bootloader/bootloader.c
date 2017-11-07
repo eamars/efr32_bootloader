@@ -247,60 +247,9 @@ bool is_boot_to_app(uint32_t * app_addr)
 bool is_boot_to_prev_app(uint32_t * app_addr)
 {
 #if (BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1)
-	bool valid_app = false;
-
-    CMU_ClockEnable(cmuClock_GPIO, true);
-
-	GPIO_PinModeSet(BSP_IMU_EN_PORT,
-	                BSP_IMU_EN_PIN,
-	                gpioModePushPull,
-	                1);
-
-	// initialize i2c driver and eeprom driver here
-	i2cdrv_t i2c_device;
-	eeprom_cat24c16_t eeprom_device;
-	ExtendedBootloaderResetCause_t reset_cause;
-
-	// initialize i2c driver
-	memset(&i2c_device, 0x0, sizeof(i2cdrv_t));
-	i2cdrv_init(&i2c_device,
-	            PIO_DEF(BSP_I2C_SDA_PORT, BSP_I2C_SDA_PIN),
-	            PIO_DEF(BSP_I2C_SCL_PORT, BSP_I2C_SCL_PIN),
-	            PIO_DEF(BSP_I2C_EN_PORT, BSP_I2C_EN_PIN)
-	);
-
-	// initialize eeprom driver
-	memset(&eeprom_device, 0x0, sizeof(eeprom_cat24c16_t));
-	eeprom_cat24c16_init(&eeprom_device, &i2c_device, PIO_DEF(BSP_EEPROM_EN_PORT, BSP_EEPROM_EN_PIN));
-
-	// read 16bytes from first page
-	memset(&reset_cause, 0x0, sizeof(ExtendedBootloaderResetCause_t));
-	eeprom_cat24c16_selective_read(&eeprom_device, 0x0, sizeof(ExtendedBootloaderResetCause_t), &reset_cause);
-
-	// read reset cause, make sure address falls within valid flash range
-	if (reset_cause.basicResetCause.signature == BOOTLOADER_RESET_SIGNATURE_VALID &&
-	    reset_cause.basicResetCause.reason == BOOTLOADER_RESET_REASON_GO &&
-	    reset_cause.app_signature == APP_SIGNATURE &&
-	    is_valid_address(reset_cause.app_addr))
-	{
-		// verify the CRC?
-
-		// set address
-		*app_addr = reset_cause.app_addr;
-
-		valid_app = true;
-	}
-
-	// disable eeprom
-	eeprom_cat24c16_deinit(&eeprom_device);
-
-	// disable i2c
-	i2cdrv_deinit(&i2c_device);
-
-	// disable GPIO clock
-	CMU_ClockEnable(cmuClock_GPIO, false);
-
-	return valid_app;
+	// TODO: Implement previously boot partition information in User Page flash partition
+	*app_addr = 0x100UL;
+	return true;
 
 #elif BOARD_DEV == 1
 	// make up the AAT address for development board
