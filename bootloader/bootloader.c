@@ -7,8 +7,8 @@
 #include <string.h>
 
 #include BOARD_HEADER
+#include PLATFORM_HEADER
 #include "bootloader.h"
-#include "bootloader_config.h"
 #include "bootloader_api.h"
 
 #include "em_device.h"
@@ -32,7 +32,6 @@
 extern void comm_cb_inst(const void *handler, uint8_t *data, uint8_t size);
 extern void comm_cb_data(uint16_t block_offset, uint8_t *data, uint8_t size);
 extern bool is_valid_address(uint32_t address);
-extern uint32_t __CRASHINFO__begin;
 
 // global variables
 bootloader_config_t bootloader_config;
@@ -129,7 +128,7 @@ void bootloader(void)
 
 bool is_button_override(void)
 {
-#if (BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1 || BOARD_NCP == 1 || BOARD_DEV == 1 || BOARD_NCP_PA == 1)
+#if (BOARD_HATCH_OUTDOOR_V2 == 1 || BOARD_DEV == 1)
 	bool pressed;
 
 	// Enable GPIO clock
@@ -179,7 +178,7 @@ bool is_boot_to_bootloader(void)
 	uint16_t reset_reason = 0;
 
 	// map reset cause structure to the begin of crash info memory
-	const BootloaderResetCause_t * reset_cause = (BootloaderResetCause_t *) &__CRASHINFO__begin;
+	const BootloaderResetCause_t * reset_cause = (BootloaderResetCause_t *) &__RESETINFO__begin;
 
 	// if the signature is valid, then use reset reason direction
 	if (reset_cause->signature == BOOTLOADER_RESET_SIGNATURE_VALID)
@@ -228,7 +227,7 @@ bool is_boot_to_bootloader(void)
 bool is_boot_to_app(uint32_t * app_addr)
 {
 	// map reset cause structure to the begin of crash info memory
-	const ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__CRASHINFO__begin;
+	const ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__RESETINFO__begin;
 
 	if (reset_cause->basicResetCause.signature == BOOTLOADER_RESET_SIGNATURE_VALID &&
 		reset_cause->basicResetCause.reason == BOOTLOADER_RESET_REASON_GO &&
@@ -246,40 +245,15 @@ bool is_boot_to_app(uint32_t * app_addr)
 
 bool is_boot_to_prev_app(uint32_t * app_addr)
 {
-#if (BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1)
-	// TODO: Implement previously boot partition information in User Page flash partition
-	*app_addr = 0x100UL;
-	return true;
+    *app_addr = 0x100UL;
 
-#elif BOARD_DEV == 1
-	// make up the AAT address for development board
-	*app_addr = 0x100UL;
-	return true;
-
-#elif BOARD_NCP
-	// make up the AAT address for network co-processor
-	// the application address starts at 0x0UL
-	*app_addr = 0x0UL;
-	return true;
-#elif BOARD_NCP_MODULE == 1
-	// make up the AAT address for network co-processor
-	// the application address starts at 0x0UL
-	*app_addr = 0x0UL;
-	return true;
-#elif BOARD_NCP_PA == 1
-	// make up the AAT address for network co-processor
-	// the application address starts at 0x0UL
-	*app_addr = 0x0UL;
-	return true;
-#else
-#error "Unknown board"
-#endif
+    return true;
 }
 
 void clear_boot_request(void)
 {
 	// map reset cause structure to the begin of crash info memory
-	ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__CRASHINFO__begin;
+	ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__RESETINFO__begin;
 
 	reset_cause->app_signature = 0UL;
 	reset_cause->app_addr = INVALID_BASE_ADDR;

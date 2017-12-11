@@ -15,6 +15,7 @@
 #ifndef BOARD_DEV_H_
 #define BOARD_DEV_H_
 
+
 // Board hardware specification
 #define HATCH_HARDWARE_REV 0x0
 #define HATCH_HARDWARE_PRODUCT_ID 0x0
@@ -120,24 +121,36 @@
 
 // -----------------------------------------------------------------------------
 /* PA */
-#define HAL_PA_2P4_ENABLE      1
-#define HAL_PA_2P4_VOLTMODE    PA_VOLTMODE_VBAT
-#define HAL_PA_2P4_POWER       190
-#define HAL_PA_2P4_OFFSET      0
-#define HAL_PA_2P4_RAMP        10
+#define HAL_PA_ENABLE                                 (1)
+
+#define HAL_PA_RAMP                                   (10)
+#define HAL_PA_2P4_LOWPOWER                           (0)
+#define HAL_PA_POWER                                  (252)
+#define HAL_PA_VOLTAGE                                (1800)
+#define HAL_PA_CURVE_HEADER                            "pa_curves_efr32.h"
 
 // -----------------------------------------------------------------------------
 /* PTI */
-#define HAL_PTI_ENABLE         1
-#define HAL_PTI_BAUD_RATE      1600000
-#define HAL_PTI_MODE           HAL_PTI_MODE_UART
-#define BSP_PTI_PRESENT        1
-#define BSP_PTI_DFRAME_LOC     6
-#define BSP_PTI_DFRAME_PORT    gpioPortB
-#define BSP_PTI_DFRAME_PIN     13
-#define BSP_PTI_DOUT_LOC       6
-#define BSP_PTI_DOUT_PORT      gpioPortB
-#define BSP_PTI_DOUT_PIN       12
+#define PORTIO_PTI_DFRAME_PIN                         (13)
+#define PORTIO_PTI_DFRAME_PORT                        (gpioPortB)
+#define PORTIO_PTI_DFRAME_LOC                         (6)
+
+#define PORTIO_PTI_DOUT_PIN                           (12)
+#define PORTIO_PTI_DOUT_PORT                          (gpioPortB)
+#define PORTIO_PTI_DOUT_LOC                           (6)
+
+#define HAL_PTI_ENABLE                                (1)
+
+#define BSP_PTI_DFRAME_PIN                            (13)
+#define BSP_PTI_DFRAME_PORT                           (gpioPortB)
+#define BSP_PTI_DFRAME_LOC                            (6)
+
+#define BSP_PTI_DOUT_PIN                              (12)
+#define BSP_PTI_DOUT_PORT                             (gpioPortB)
+#define BSP_PTI_DOUT_LOC                              (6)
+
+#define HAL_PTI_MODE                                  (HAL_PTI_MODE_UART)
+#define HAL_PTI_BAUD_RATE                             (1600000)
 
 // -----------------------------------------------------------------------------
 /* SPINCP */
@@ -151,12 +164,9 @@
 
 // -----------------------------------------------------------------------------
 /* USART0 */
-// USART0 RX on PC9
 #define BSP_USART0_RX_LOC      _USART_ROUTELOC0_RXLOC_LOC0
 #define BSP_USART0_RX_PIN      1
 #define BSP_USART0_RX_PORT     gpioPortA
-
-// USART TX on PC10
 #define BSP_USART0_TX_LOC      _USART_ROUTELOC0_TXLOC_LOC0
 #define BSP_USART0_TX_PIN      0
 #define BSP_USART0_TX_PORT     gpioPortA
@@ -210,8 +220,10 @@
 #define BSP_VCOM_TX_PORT     gpioPortA
 #define BSP_VCOM_USART       HAL_SERIAL_PORT_USART0
 
+
 // override debug macros for driver
 #include <assert.h>
+
 #define DRV_ASSERT(x) assert((x))
 
 // override debug macro for apps

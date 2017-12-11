@@ -18,7 +18,6 @@
 #include "bootloader_api.h"
 #include "sip.h"
 #include "dscrc8.h"
-#include "bootloader_config.h"
 #include "communication.h"
 #include "convert.h"
 #include "stack32.h"

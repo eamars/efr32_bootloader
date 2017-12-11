@@ -7,7 +7,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <common/io_device.h>
 #include "io_device.h"
 #include "btl_driver_uart.h"
 

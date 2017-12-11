@@ -31,7 +31,7 @@
 
 // User options for plugin GPIO activation, valid only if the board have at least one button
 #if (HAL_BUTTON_COUNT > 0)
-	#define BTL_GPIO_ACTIVATION_PORT BSP_BUTTON0_PORT
+#define BTL_GPIO_ACTIVATION_PORT BSP_BUTTON0_PORT
 	#define BTL_GPIO_ACTIVATION_PIN BSP_BUTTON0_PIN
 	#define BTL_GPIO_ACTIVATION_POLARITY 1
 #endif
