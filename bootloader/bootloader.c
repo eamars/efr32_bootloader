@@ -52,10 +52,9 @@ void SysTick_Handler(void)
 	{
 		led_counter += 1000;
 
-#if (BOARD_DEV == 1 || BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1)
-		// Green LED
-		GPIO_PinModeSet(BSP_LED0_PORT,
-		                BSP_LED0_PIN,
+#if (BOARD_DEV == 1 || BOARD_HATCH_OUTDOOR_V2 == 1)
+		GPIO_PinModeSet(BTL_LED0_PORT,
+		                BTL_LED0_PIN,
 		                gpioModeInputPull,
 		                (uint32_t) green_led_state);
 #endif
@@ -71,21 +70,6 @@ void bootloader(void)
 
 	// enable clock to the GPIO to allow input to be configured
 	CMU_ClockEnable(cmuClock_GPIO, true);
-
-#if (BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1)
-	// only valid for hatch and hatch outdoor
-	// LED Anode
-	GPIO_PinModeSet(BSP_LED_EN_PORT,
-	                BSP_LED_EN_PIN,
-	                gpioModePushPull,
-	                1);
-
-	// enable logic shifter
-	GPIO_PinModeSet(BSP_UART_LS_EN_PORT,
-	                BSP_UART_LS_EN_PIN,
-	                gpioModePushPull,
-	                1);
-#endif
 
 	// enable systick
 	SysTick_Config(CMU_ClockFreqGet( cmuClock_CORE ) / 1000);
@@ -112,10 +96,10 @@ void bootloader(void)
 	{
 		while (communication_ready(&comm))
 		{
-#if (BOARD_DEV == 1 || BOARD_HATCH == 1 || BOARD_HATCH_OUTDOOR == 1)
+#if (BOARD_DEV == 1 || BOARD_HATCH_OUTDOOR_V2 == 1)
 			// Blue LED
-			GPIO_PinModeSet(BSP_LED1_PORT,
-			                BSP_LED1_PIN,
+			GPIO_PinModeSet(BTL_LED1_PORT,
+			                BTL_LED1_PIN,
 			                gpioModeInputPull,
 			                (uint32_t) blue_led_state);
 			blue_led_state = !blue_led_state;

@@ -266,10 +266,6 @@ _kill (int pid __UNUSED__, int sig __UNUSED__)
 void
 _exit (int status __UNUSED__)
 {
-#ifndef NDEBUG
-    asm volatile ("bkpt #0");
-#endif
-
     while (1)
         continue;
 }

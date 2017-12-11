@@ -10,6 +10,7 @@ SET(HATCH_EXECUTABLE "wg_bootloader")
 
 # depending on boards, we apply different build definitons
 ADD_DEFINITIONS(
+		-D${BOARD}=1
 		-DCORTEXM3=1
 		-DCORTEXM3_EFM32_MICRO=1
 		-DCORTEXM3_EFR32=1
