@@ -63,10 +63,25 @@ void SysTick_Handler(void)
 	}
 }
 
+
+void store_reset_reason(void)
+{
+    uint32_t reset_reason;
+
+    ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__RESETINFO__begin;
+
+    reset_cause->basicResetCause.reason |= (uint16_t) (RMU_ResetCauseGet() & 0xffff);
+    RMU_ResetCauseClear();
+}
+
+
 void bootloader(void)
 {
 	// runtime patch
 	CHIP_Init();
+
+    // keep the reset reason
+    // store_reset_reason();
 
 	// enable clock to the GPIO to allow input to be configured
 	CMU_ClockEnable(cmuClock_GPIO, true);
