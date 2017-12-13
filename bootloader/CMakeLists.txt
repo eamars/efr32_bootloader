@@ -1,9 +1,9 @@
 MESSAGE("ENTER ${CMAKE_CURRENT_SOURCE_DIR}")
 
 # override build flags
-SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -mfloat-abi=softfp -Os")
-SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -mfloat-abi=softfp -Os")
-SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -Os --specs=nano.specs -mfloat-abi=softfp -T${TARGET_ROOT_DIRECTORY}/scripts/efr32mg12p_bootloader.ld -Wl,--Map=symbols.map,--gc-sections")
+SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -mfloat-abi=softfp")
+SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -mfloat-abi=softft")
+SET(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --specs=nano.specs -mfloat-abi=softfp -T${TARGET_ROOT_DIRECTORY}/scripts/efr32mg12p_bootloader.ld -Wl,--Map=symbols.map,--gc-sections")
 
 # override executable
 SET(HATCH_EXECUTABLE "wg_bootloader")
@@ -124,6 +124,7 @@ SET(EXT_SRC
 		${TARGET_ROOT_DIRECTORY}/platform/emlib/src/em_timer.c
 		${TARGET_ROOT_DIRECTORY}/platform/emlib/src/em_usart.c
 		${TARGET_ROOT_DIRECTORY}/platform/emlib/src/em_wdog.c
+		${TARGET_ROOT_DIRECTORY}/platform/emlib/src/em_dbg.c
 
 		${TARGET_ROOT_DIRECTORY}/platform/emdrv/dmadrv/src/dmadrv.c
 		${TARGET_ROOT_DIRECTORY}/platform/emdrv/gpiointerrupt/src/gpiointerrupt.c

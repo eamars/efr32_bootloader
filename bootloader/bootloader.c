@@ -17,6 +17,7 @@
 #include "em_rmu.h"
 #include "em_gpio.h"
 #include "em_msc.h"
+#include "em_dbg.h"
 
 #include "btl_reset.h"
 #include "btl_reset_info.h"
@@ -25,7 +26,7 @@
 #include "communication.h"
 #include "uart_device.h"
 #include "eeprom_cat24c16.h"
-
+#include "bits.h"
 
 
 // function that is implemented in another file
@@ -122,40 +123,135 @@ void bootloader(void)
     }
 }
 
+
+__attribute__ ((optimize("-O0")))
+void trap(void)
+{
+    // disable watchdog timer
+    BITS_CLEAR(WDOG0->CTRL, WDOG_CTRL_EN);
+    BITS_CLEAR(WDOG1->CTRL, WDOG_CTRL_EN);
+
+    // enable debug port
+    DBG_SWOEnable(1);
+
+    // expose internal reset cause
+    register volatile const ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__RESETINFO__begin;
+
+    // add breakpoint if debugger attached
+    if (DBG_Connected())
+    {
+        asm volatile ("bkpt #0");
+    }
+
+    // enter loop
+    while (1)
+    {
+
+    }
+}
+
+
 bool is_button_override(void)
 {
 #if (BOARD_HATCH_OUTDOOR_V2 == 1 || BOARD_DEV == 1)
     bool pressed;
 
     // Enable GPIO clock
-    CMU_ClockEnable(cmuClock_HFPER, true);
-    CMU_ClockEnable(cmuClock_GPIO, true);
+	CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_GPIO;
 
-    // Reconfigure as an input with pull(up|down) to read the button state
-    GPIO_PinModeSet(BTL_GPIO_ACTIVATION_PORT,
-                    BTL_GPIO_ACTIVATION_PIN,
-                    gpioModeInputPull,
-                    BTL_GPIO_ACTIVATION_POLARITY);
+	// Since the button may have decoupling caps, they may not be charged
+	// after a power-on and could give a false positive result. To avoid
+	// this issue, drive the output as an output for a short time to charge
+	// them up as quickly as possible.
+	GPIO_PinModeSet(BTL_GPIO_ACTIVATION_PORT,
+	                BTL_GPIO_ACTIVATION_PIN,
+	                gpioModePushPull,
+	                BTL_GPIO_ACTIVATION_POLARITY);
+	for (volatile int i = 0; i < 100; i++);
 
-    pressed = GPIO_PinInGet(BTL_GPIO_ACTIVATION_PORT, BTL_GPIO_ACTIVATION_PIN)
-              != BTL_GPIO_ACTIVATION_POLARITY;
+	// Reconfigure as an input with pull(up|down) to read the button state
+	GPIO_PinModeSet(BTL_GPIO_ACTIVATION_PORT,
+	                BTL_GPIO_ACTIVATION_PIN,
+	                gpioModeInputPull,
+	                BTL_GPIO_ACTIVATION_POLARITY);
 
-    // Disable GPIO pin
-    GPIO_PinModeSet(BTL_GPIO_ACTIVATION_PORT,
-                    BTL_GPIO_ACTIVATION_PIN,
-                    gpioModeDisabled,
-                    BTL_GPIO_ACTIVATION_POLARITY);
+	// We have to delay again here so that if the button is depressed the
+	// cap has time to discharge again after being charged up by the above delay
+	for (volatile int i = 0; i < 500; i++);
 
-    // Disable GPIO clock
-    CMU_ClockEnable(cmuClock_GPIO, false);
-    CMU_ClockEnable(cmuClock_HFPER, false);
+	pressed = GPIO_PinInGet(BTL_GPIO_ACTIVATION_PORT, BTL_GPIO_ACTIVATION_PIN)
+	          != BTL_GPIO_ACTIVATION_POLARITY;
 
-    return pressed;
+	// Disable GPIO pin
+	GPIO_PinModeSet(BTL_GPIO_ACTIVATION_PORT,
+	                BTL_GPIO_ACTIVATION_PIN,
+	                gpioModeDisabled,
+	                BTL_GPIO_ACTIVATION_POLARITY);
+
+	// Disable GPIO clock
+	CMU->HFBUSCLKEN0 &= ~CMU_HFBUSCLKEN0_GPIO;
+
+	return pressed;
 #else
     // if no button present, then we skip the button override
     return false;
 #endif
 }
+
+
+bool is_hardware_failure(void)
+{
+    // keep reset reason in SRAM
+    ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__RESETINFO__begin;
+    reset_cause->rmu_reset_cause.RMU_RESET_CAUSE = RMU_ResetCauseGet();
+
+    // clear the rmu reset reason
+    RMU_ResetCauseClear();
+
+    // read rmu reset reason
+    if (reset_cause->rmu_reset_cause.EM4RST)
+    {
+
+    }
+
+    if (reset_cause->rmu_reset_cause.WDOGRST)
+    {
+
+    }
+
+    if (reset_cause->rmu_reset_cause.SYSREQRST)
+    {
+
+    }
+
+    if (reset_cause->rmu_reset_cause.EXTRST)
+    {
+
+    }
+
+    if (reset_cause->rmu_reset_cause.DECBOD)
+    {
+        return true;
+    }
+
+    if (reset_cause->rmu_reset_cause.DVDDBOD)
+    {
+        return true;
+    }
+
+    if (reset_cause->rmu_reset_cause.AVDDBOD)
+    {
+        return true;
+    }
+
+    if (reset_cause->rmu_reset_cause.PORST)
+    {
+
+    }
+
+    return false;
+}
+
 
 bool is_boot_to_bootloader(void)
 {

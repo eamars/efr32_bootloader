@@ -23,6 +23,12 @@ int main(void)
         bootloader();
     }
 
+    // check if hardware failure
+    if (is_hardware_failure())
+    {
+        trap();
+    }
+
     // check if other request to boot into bootloader
     if (is_boot_to_bootloader())
     {
