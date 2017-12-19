@@ -20,6 +20,7 @@ ADD_DEFINITIONS(
 		-DPLATFORM_HEADER="platform/base/hal/micro/cortexm3/compiler/gcc.h"
 		-DBTL_CONFIG_FILE="bootloader_config.h"
 		-DUSE_TINY_LOADER=1
+		-DPHY_RAIL=1
 )
 IF ("${BOARD}" STREQUAL "BOARD_DEV")
 	MESSAGE("USING: EFR32MG12P432F1024GL125")

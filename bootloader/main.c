@@ -64,15 +64,8 @@ int main(void)
     }
 }
 
-
-__attribute__ ((optimize("-O0")))
-void HardFault_Handler(void)
+// override default fault handler for smaller code size
+void fault(void)
 {
-    HFSR_t hfsr;
-    hfsr.HFSR = SCB->HFSR;
-
-    while (1)
-    {
-
-    }
+    while(1);
 }
