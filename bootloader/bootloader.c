@@ -67,6 +67,9 @@ void SysTick_Handler(void)
 __attribute__((noreturn))
 void bootloader(void)
 {
+    // clear previous reset information
+    reset_info_clear();
+
     // enable clock to the GPIO to allow input to be configured
     CMU_ClockEnable(cmuClock_GPIO, true);
 
@@ -232,7 +235,7 @@ void rmu_reset_reason_dump(void)
     reset_info_map->reset_info_common.rmu_reset_cause.RMU_RESET_CAUSE = rmu_reset_cause;
 
     // if the reset info is invalid or unknown, then it will try to decode reset reason and write to reset info region
-    if (reset_info_get_valid() || reset_info_map->reset_info_common.reset_reason == RESET_UNKNOWN)
+    if (!reset_info_get_valid() || reset_info_map->reset_info_common.reset_reason == RESET_UNKNOWN)
     {
         if (reset_info_map->reset_info_common.rmu_reset_cause.PORST)
         {
