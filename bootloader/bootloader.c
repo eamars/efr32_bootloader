@@ -54,8 +54,8 @@ void SysTick_Handler(void)
         led_counter += 1000;
 
 #if (BOARD_DEV == 1 || BOARD_HATCH_OUTDOOR_V2 == 1)
-        GPIO_PinModeSet(BTL_LED0_PORT,
-                        BTL_LED0_PIN,
+        GPIO_PinModeSet(BTL_LED1_PORT,
+                        BTL_LED1_PIN,
                         gpioModeInputPull,
                         (uint32_t) green_led_state);
 #endif
@@ -98,10 +98,10 @@ void bootloader(void)
     {
         while (communication_ready(&comm))
         {
-#if (BOARD_DEV == 1 || BOARD_HATCH_OUTDOOR_V2 == 1)
+#if (BOARD_HATCH_OUTDOOR_V2 == 1)
             // Blue LED
-            GPIO_PinModeSet(BTL_LED1_PORT,
-                            BTL_LED1_PIN,
+            GPIO_PinModeSet(BTL_LED2_PORT,
+                            BTL_LED2_PIN,
                             gpioModeInputPull,
                             (uint32_t) blue_led_state);
             blue_led_state = !blue_led_state;
@@ -119,6 +119,17 @@ void trap(void)
     // disable watchdog timer
     BITS_CLEAR(WDOG0->CTRL, WDOG_CTRL_EN);
     BITS_CLEAR(WDOG1->CTRL, WDOG_CTRL_EN);
+
+#if (BOARD_HATCH_OUTDOOR_V2 == 1 || BOARD_DEV == 1)
+    // enable gpio
+    CMU_ClockEnable(cmuClock_GPIO, true);
+
+    // enable LED0 to indicate the error
+    GPIO_PinModeSet(BTL_LED0_PORT,
+                    BTL_LED0_PIN,
+                    gpioModeInputPull,
+                    0);
+#endif
 
     // enable debug port
     DBG_SWOEnable(1);
