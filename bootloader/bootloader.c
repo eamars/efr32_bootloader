@@ -19,14 +19,14 @@
 #include "em_msc.h"
 #include "em_dbg.h"
 
-#include "btl_reset.h"
-#include "btl_reset_info.h"
+#include "drv_debug.h"
+#include "reset_info.h"
 
 #include "io_device.h"
 #include "communication.h"
 #include "uart_device.h"
-#include "eeprom_cat24c16.h"
 #include "bits.h"
+#include "yield.h"
 
 
 // function that is implemented in another file
@@ -64,23 +64,9 @@ void SysTick_Handler(void)
     }
 }
 
-
-void store_reset_reason(void)
-{
-    uint32_t reset_reason;
-
-    ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__RESETINFO__begin;
-
-    reset_cause->basicResetCause.reason |= (uint16_t) (RMU_ResetCauseGet() & 0xffff);
-    RMU_ResetCauseClear();
-}
-
-
+__attribute__((noreturn))
 void bootloader(void)
 {
-    // keep the reset reason
-    // store_reset_reason();
-
     // enable clock to the GPIO to allow input to be configured
     CMU_ClockEnable(cmuClock_GPIO, true);
 
@@ -134,9 +120,6 @@ void trap(void)
     // enable debug port
     DBG_SWOEnable(1);
 
-    // expose internal reset cause
-    register volatile const ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__RESETINFO__begin;
-
     // add breakpoint if debugger attached
     if (DBG_Connected())
     {
@@ -151,7 +134,7 @@ void trap(void)
 }
 
 
-bool is_button_override(void)
+bool button_override(void)
 {
 #if (BOARD_HATCH_OUTDOOR_V2 == 1 || BOARD_DEV == 1)
     bool pressed;
@@ -199,123 +182,13 @@ bool is_button_override(void)
 }
 
 
-bool is_hardware_failure(void)
+bool boot_to_bootloader(void)
 {
-    // keep reset reason in SRAM
-    ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__RESETINFO__begin;
-    reset_cause->rmu_reset_cause.RMU_RESET_CAUSE = RMU_ResetCauseGet();
+    boot_info_map_t * boot_info_map = (boot_info_map_t *) reset_info_read();
 
-    // clear the rmu reset reason
-    RMU_ResetCauseClear();
-
-    // read rmu reset reason
-    if (reset_cause->rmu_reset_cause.EM4RST)
+    if (reset_info_get_valid() &&
+            boot_info_map->reset_info_common.reset_reason == RESET_BOOTLOADER_BOOTLOAD)
     {
-
-    }
-
-    if (reset_cause->rmu_reset_cause.WDOGRST)
-    {
-
-    }
-
-    if (reset_cause->rmu_reset_cause.SYSREQRST)
-    {
-
-    }
-
-    if (reset_cause->rmu_reset_cause.EXTRST)
-    {
-
-    }
-
-    if (reset_cause->rmu_reset_cause.DECBOD)
-    {
-        return true;
-    }
-
-    if (reset_cause->rmu_reset_cause.DVDDBOD)
-    {
-        return true;
-    }
-
-    if (reset_cause->rmu_reset_cause.AVDDBOD)
-    {
-        return true;
-    }
-
-    if (reset_cause->rmu_reset_cause.PORST)
-    {
-
-    }
-
-    return false;
-}
-
-
-bool is_boot_to_bootloader(void)
-{
-    uint16_t reset_reason = 0;
-
-    // map reset cause structure to the begin of crash info memory
-    const BootloaderResetCause_t * reset_cause = (BootloaderResetCause_t *) &__RESETINFO__begin;
-
-    // if the signature is valid, then use reset reason direction
-    if (reset_cause->signature == BOOTLOADER_RESET_SIGNATURE_VALID)
-    {
-        reset_reason = reset_cause->reason;
-    }
-
-        // otherwise assign some reason
-    else
-    {
-        // if the signature is not set
-        if (reset_cause->signature == 0)
-        {
-            reset_reason = BOOTLOADER_RESET_REASON_BOOTLOAD;
-            if (reset_cause->reason != 1)
-            {
-                reset_reason = BOOTLOADER_RESET_REASON_UNKNOWN;
-            }
-        }
-        else
-        {
-            reset_reason = BOOTLOADER_RESET_REASON_UNKNOWN;
-        }
-    }
-
-    // enter the bootloader only if the reboot is requested by application (not any hardware failure)
-    if (RMU->RSTCAUSE & RMU_RSTCAUSE_SYSREQRST)
-    {
-        // depending on reset reason, we will decide whether to enter bootloader
-        switch(reset_reason)
-        {
-            case BOOTLOADER_RESET_REASON_BOOTLOAD:
-            case BOOTLOADER_RESET_REASON_FORCE:
-            case BOOTLOADER_RESET_REASON_UPGRADE:
-            case BOOTLOADER_RESET_REASON_BADAPP:
-                return true;
-
-            default:
-                break;
-        }
-    }
-
-    return false;
-}
-
-bool is_boot_to_app(uint32_t * app_addr)
-{
-    // map reset cause structure to the begin of crash info memory
-    const ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__RESETINFO__begin;
-
-    if (reset_cause->basicResetCause.signature == BOOTLOADER_RESET_SIGNATURE_VALID &&
-        reset_cause->basicResetCause.reason == BOOTLOADER_RESET_REASON_GO &&
-        reset_cause->app_signature == APP_SIGNATURE &&
-        reset_cause->app_addr != INVALID_BASE_ADDR)
-    {
-        *app_addr = reset_cause->app_addr;
-
         return true;
     }
 
@@ -323,18 +196,117 @@ bool is_boot_to_app(uint32_t * app_addr)
 }
 
 
-bool is_boot_to_prev_app(uint32_t * app_addr)
+bool boot_to_application(uint32_t * aat_addr)
 {
-    *app_addr = 0x100UL;
+    boot_info_map_t * boot_info_map = (boot_info_map_t *) reset_info_read();
 
+    if (reset_info_get_valid() &&
+            boot_info_map->reset_info_common.reset_reason == RESET_BOOTLOADER_GO)
+    {
+        *aat_addr = boot_info_map->next_aat_addr;
+        return true;
+    }
+
+    return false;
+}
+
+
+bool boot_to_prev_application(uint32_t * aat_addr)
+{
+    // TODO: read from persist memory
+    *aat_addr = 0x100;
     return true;
 }
 
-void clear_boot_request(void)
-{
-    // map reset cause structure to the begin of crash info memory
-    ExtendedBootloaderResetCause_t * reset_cause = (ExtendedBootloaderResetCause_t *) &__RESETINFO__begin;
 
-    reset_cause->app_signature = 0UL;
-    reset_cause->app_addr = INVALID_BASE_ADDR;
+void rmu_reset_reason_dump(void)
+{
+    // read reset caused by rmu
+    uint32_t rmu_reset_cause = RMU_ResetCauseGet();
+
+    // clear the previous reset reasons
+    RMU_ResetCauseClear();
+
+    // store the full rmu reset reason
+    reset_info_map_t * reset_info_map = (reset_info_map_t *) reset_info_read();
+    reset_info_map->reset_info_common.rmu_reset_cause.RMU_RESET_CAUSE = rmu_reset_cause;
+
+    // if the reset info is invalid or unknown, then it will try to decode reset reason and write to reset info region
+    if (reset_info_get_valid() || reset_info_map->reset_info_common.reset_reason == RESET_UNKNOWN)
+    {
+        if (reset_info_map->reset_info_common.rmu_reset_cause.PORST)
+        {
+            reset_info_map->reset_info_common.reset_reason = RESET_POWERON_HV; // TODO: what's this?
+        }
+
+        if (reset_info_map->reset_info_common.rmu_reset_cause.AVDDBOD)
+        {
+            reset_info_map->reset_info_common.reset_reason = RESET_BROWNOUT_AVDD0;
+        }
+
+        if (reset_info_map->reset_info_common.rmu_reset_cause.DVDDBOD)
+        {
+            reset_info_map->reset_info_common.reset_reason = RESET_BROWNOUT_DVDD;
+        }
+
+        if (reset_info_map->reset_info_common.rmu_reset_cause.DECBOD)
+        {
+            reset_info_map->reset_info_common.reset_reason = RESET_BROWNOUT_DEC;
+        }
+
+        if (reset_info_map->reset_info_common.rmu_reset_cause.EXTRST)
+        {
+            reset_info_map->reset_info_common.reset_reason = RESET_EXTERNAL_PIN;
+        }
+
+        if (reset_info_map->reset_info_common.rmu_reset_cause.LOCKUPRST)
+        {
+            reset_info_map->reset_info_common.reset_reason = RESET_FATAL_LOCKUP;
+        }
+
+        if (reset_info_map->reset_info_common.rmu_reset_cause.SYSREQRST)
+        {
+            reset_info_map->reset_info_common.reset_reason = RESET_SOFTWARE_REBOOT;
+        }
+
+        if (reset_info_map->reset_info_common.rmu_reset_cause.WDOGRST)
+        {
+            reset_info_map->reset_info_common.reset_reason = RESET_WATCHDOG_EXPIRED;
+        }
+
+        if (reset_info_map->reset_info_common.rmu_reset_cause.EM4RST)
+        {
+            reset_info_map->reset_info_common.reset_reason = RESET_SOFTWARE_EM4;
+        }
+
+        reset_info_set_valid();
+    }
+}
+
+void trap_on_hardware_failure(void)
+{
+    // currently the hardware failure is detected by value read from RMU
+    reset_info_map_t * reset_info_map = (reset_info_map_t *) reset_info_read();
+
+    YIELD
+    (
+        if (reset_info_map->reset_info_common.rmu_reset_cause.AVDDBOD)
+        {
+            break;
+        }
+
+        if (reset_info_map->reset_info_common.rmu_reset_cause.DVDDBOD)
+        {
+            break;
+        }
+
+        if (reset_info_map->reset_info_common.rmu_reset_cause.DECBOD)
+        {
+            break;
+        }
+
+        return;
+    );
+
+    trap();
 }

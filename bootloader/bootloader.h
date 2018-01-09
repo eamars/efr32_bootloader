@@ -22,13 +22,13 @@ extern "C" {
 void bootloader(void);
 void trap(void);
 
-bool is_button_override(void);
-bool is_hardware_failure(void);
-bool is_boot_to_bootloader(void);
-bool is_boot_to_app(uint32_t * app_addr);
-bool is_boot_to_prev_app(uint32_t * app_addr);
+bool button_override(void);
+bool boot_to_bootloader(void);
+bool boot_to_application(uint32_t * aat_addr);
+bool boot_to_prev_application(uint32_t * aat_addr);
 
-void clear_boot_request(void);
+void rmu_reset_reason_dump(void);
+void trap_on_hardware_failure(void);
 
 #ifdef __cplusplus
 }

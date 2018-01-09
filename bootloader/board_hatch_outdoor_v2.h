@@ -121,10 +121,10 @@
 #define BTL_LED2_PIN BSP_LED_BLUE_PIN
 
 // override debug macros for driver
-#include <assert.h>
-#define DRV_ASSERT(x) assert((x))
+extern void assert_failed_null(void);
+#define DRV_ASSERT(x) ((x) ? ((void) 0) : assert_failed_null())
 
 // override debug macro for apps
-#define APP_ASSERT(x) assert((x))
+#define APP_ASSERT(x) DRV_ASSERT((x))
 
 #endif // BOARD_HATCH_OUTDOOR_V2_H_

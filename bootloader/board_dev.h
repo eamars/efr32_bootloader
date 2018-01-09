@@ -237,13 +237,11 @@
 #define BTL_LED1_PORT BSP_LED1_PORT
 #define BTL_LED1_PIN BSP_LED1_PIN
 
-
 // override debug macros for driver
-#include <assert.h>
-
-#define DRV_ASSERT(x) assert((x))
+extern void assert_failed_null(void);
+#define DRV_ASSERT(x) ((x) ? ((void) 0) : assert_failed_null())
 
 // override debug macro for apps
-#define APP_ASSERT(x) assert((x))
+#define APP_ASSERT(x) DRV_ASSERT((x))
 
 #endif //BOARD_DEV_H_
