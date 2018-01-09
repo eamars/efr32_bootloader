@@ -1,6 +1,6 @@
-# Hatch Firmware for EFR32 Series MCUs
+# Hatch Bootloader for EFR32 Series MCUs
 
-This repository contains the firmware for Hatch products.
+This repository contains source code for bootloader for EFR32 series MCU. For more information, please refer to `README.md` in bootloader folder. 
 
 Dependencies
 ------------
