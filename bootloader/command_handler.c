@@ -203,7 +203,7 @@ void inst_branch_to_addr(const communication_t *comm, uint8_t *data, uint8_t siz
 	// if there is no address to boot, then use previous configured base address、
 	if (size == 0)
 	{
-		reboot_to_addr(bootloader_config.base_addr, true);
+		reboot_to_addr(bootloader_config.base_addr);
 	}
 
 		// otherwise, use address specified in command
@@ -220,7 +220,7 @@ void inst_branch_to_addr(const communication_t *comm, uint8_t *data, uint8_t siz
 		APP_ASSERT(is_valid_address(received_base_addr));
 
 		// branch to address
-		reboot_to_addr(received_base_addr, true);
+		reboot_to_addr(received_base_addr);
 	}
 }
 
@@ -382,6 +382,3 @@ void inst_query_chip_info(const communication_t *comm, uint8_t *data, uint8_t si
 	// flush the buffer
 	comm->serial_device->flush(comm->serial_device->device);
 }
-
-
-
