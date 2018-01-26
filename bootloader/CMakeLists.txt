@@ -107,6 +107,9 @@ SET(TARGET_SPECIFIC_INCLUDE_DIRECTORY
 
 		"${TARGET_ROOT_DIRECTORY}/hardware/kit/common/bsp"
 		"${TARGET_ROOT_DIRECTORY}/hardware/kit/common/drivers"
+
+		${TARGET_ROOT_DIRECTORY}/protocol/flex_2.0/connect/plugins
+		${TARGET_ROOT_DIRECTORY}/platform/base/hal/plugin/sim-eeprom
 		)
 
 # add configure file
