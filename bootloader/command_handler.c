@@ -21,6 +21,7 @@
 #include "communication.h"
 #include "convert.h"
 #include "stack32.h"
+#include "drv_debug.h"
 
 /**
  * global variables
@@ -35,350 +36,349 @@ extern bootloader_config_t bootloader_config;
  */
 bool is_valid_address(uint32_t address)
 {
-	// is that the address within flash?
-	if (address >= FLASH_BASE && address < (FLASH_BASE + FLASH_SIZE))
-	{
-		return true;
-	}
+    // is that the address within flash?
+    if (address >= FLASH_BASE && address < (FLASH_BASE + FLASH_SIZE))
+    {
+        return true;
+    }
 
-	// is that the address within sram?
-	if (address >= SRAM_BASE && address < (SRAM_BASE + SRAM_SIZE))
-	{
-		return true;
-	}
+    // is that the address within sram?
+    if (address >= SRAM_BASE && address < (SRAM_BASE + SRAM_SIZE))
+    {
+        return true;
+    }
 
-	// for EFR32:
+    // for EFR32:
 #ifdef BOOTLOADER_PRESENT
 #define BOOTLOADER_FLASH_BASE 0xFE10000
 #define BOOTLOADER_FLASH_SIZE 0x8000
-	if (address >= BOOTLOADER_FLASH_BASE && address < (BOOTLOADER_FLASH_BASE + BOOTLOADER_FLASH_SIZE))
-	{
-		return true;
-	}
+    if (address >= BOOTLOADER_FLASH_BASE && address < (BOOTLOADER_FLASH_BASE + BOOTLOADER_FLASH_SIZE))
+    {
+        return true;
+    }
 #endif
 
-	return false;
+    return false;
 }
 
 void inst_set_base_addr(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	APP_ASSERT(size == 4);
+    APP_ASSERT(size == 4);
 
-	uint32_t received_base_addr = 0xffffffff;
+    uint32_t received_base_addr = 0xffffffff;
 
-	// convert serial data to uint32
-	uint8_to_uint32(data, &received_base_addr);
+    // convert serial data to uint32
+    uint8_to_uint32(data, &received_base_addr);
 
-	// sanity check: make sure the base addr falls within flash or sram
-	APP_ASSERT(is_valid_address(received_base_addr));
+    // sanity check: make sure the base addr falls within flash or sram
+    APP_ASSERT(is_valid_address(received_base_addr));
 
-	// store base address
-	bootloader_config.base_addr = received_base_addr;
+    // store base address
+    bootloader_config.base_addr = received_base_addr;
 }
 
 void inst_get_base_addr(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	APP_ASSERT(size == 0);
+    APP_ASSERT(size == 0);
 
-	uint8_t base_addr_array[4];
-	sip_t sip;
-	crc8_t crc8 = 0;
+    uint8_t base_addr_array[4];
+    sip_t sip;
+    crc8_t crc8 = 0;
 
-	// set sip response message
-	sip_init(&sip);
-	sip_set(&sip, SIP_CMD_S, COMM_DATA);
+    // set sip response message
+    sip_init(&sip);
+    sip_set(&sip, SIP_CMD_S, COMM_DATA);
 
-	// set ackno=0xffff
-	sip_set(&sip, SIP_PAYLOAD_0_S, 0xff);
-	sip_set(&sip, SIP_PAYLOAD_1_S, 0xff);
+    // set ackno=0xffff
+    sip_set(&sip, SIP_PAYLOAD_0_S, 0xff);
+    sip_set(&sip, SIP_PAYLOAD_1_S, 0xff);
 
-	// convert 32bit base address to bytes
-	uint32_to_uint8(&(bootloader_config.base_addr), base_addr_array);
+    // convert 32bit base address to bytes
+    uint32_to_uint8(&(bootloader_config.base_addr), base_addr_array);
 
-	for (uint8_t i = 0; i < 4; i++)
-	{
-		sip_set(&sip, (sip_symbol_t) 2 + i, base_addr_array[i]);
-	}
+    for (uint8_t i = 0; i < 4; i++)
+    {
+        sip_set(&sip, (sip_symbol_t) 2 + i, base_addr_array[i]);
+    }
 
-	// calculate crc
-	for (uint8_t i = SIP_PAYLOAD_0_S; i < 2 + 4; i++)
-	{
-		crc8 = dscrc8_byte(crc8, sip_get(&sip, (sip_symbol_t) i));
-	}
+    // calculate crc
+    for (uint8_t i = SIP_PAYLOAD_0_S; i < 2 + 4; i++)
+    {
+        crc8 = dscrc8_byte(crc8, sip_get(&sip, (sip_symbol_t) i));
+    }
 
-	// set crc
-	sip_set(&sip, (sip_symbol_t) 6, crc8);
+    // set crc
+    sip_set(&sip, (sip_symbol_t) 6, crc8);
 
-	// set total length (includes CRC)
-	sip_set(&sip, SIP_PAYLOAD_LENGTH_S, 7);
+    // set total length (includes CRC)
+    sip_set(&sip, SIP_PAYLOAD_LENGTH_S, 7);
 
-	// get raw pointer
-	uint8_t *raw_ptr = sip_get_raw_ptr(&sip);
+    // get raw pointer
+    uint8_t *raw_ptr = sip_get_raw_ptr(&sip);
 
-	// send to io device
-	for (uint8_t i = 0; i < SIP_FIXED_OVERHEAD + 14; i++)	///< 4 prefix characters + 7*2 payload characters
-	{
-		comm->serial_device->put(comm->serial_device->device, *(raw_ptr + i));
-	}
+    // send to io device
+    for (uint8_t i = 0; i < SIP_FIXED_OVERHEAD + 14; i++)	///< 4 prefix characters + 7*2 payload characters
+    {
+        comm->serial_device->put(comm->serial_device->device, *(raw_ptr + i));
+    }
 
-	// send last terminator
-	comm->serial_device->put(comm->serial_device->device, '>');
+    // send last terminator
+    comm->serial_device->put(comm->serial_device->device, '>');
 
-	// flush the buffer
-	comm->serial_device->flush(comm->serial_device->device);
+    // flush the buffer
+    comm->serial_device->flush(comm->serial_device->device);
 }
 
 void inst_push_base_addr(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	APP_ASSERT(size == 0);
+    APP_ASSERT(size == 0);
 
-	// push current bootloader address to stack
-	stack32_push(&(bootloader_config.base_addr_stack), bootloader_config.base_addr);
+    // push current bootloader address to stack
+    stack32_push(&(bootloader_config.base_addr_stack), bootloader_config.base_addr);
 }
 
 void inst_pop_base_addr(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	APP_ASSERT(size == 0);
+    APP_ASSERT(size == 0);
 
-	// pop previously pushed base address
-	// bootloader_config.base_addr = stack32_pop(&(bootloader_config.base_addr_stack));
+    // pop previously pushed base address
+    // bootloader_config.base_addr = stack32_pop(&(bootloader_config.base_addr_stack));
 }
 
 void inst_set_block_exp(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	APP_ASSERT(size == 1);
+    APP_ASSERT(size == 1);
 
-	// read block exponential
-	bootloader_config.block_size_exp = data[0];
+    // read block exponential
+    bootloader_config.block_size_exp = data[0];
 }
 
 void inst_get_block_exp(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	APP_ASSERT(size == 0);
+    APP_ASSERT(size == 0);
 
-	sip_t sip;
-	crc8_t crc8 = 0;
+    sip_t sip;
+    crc8_t crc8 = 0;
 
-	// set sip response message
-	sip_init(&sip);
-	sip_set(&sip, SIP_CMD_S, COMM_DATA);
+    // set sip response message
+    sip_init(&sip);
+    sip_set(&sip, SIP_CMD_S, COMM_DATA);
 
-	// set ackno=0xffff
-	sip_set(&sip, SIP_PAYLOAD_0_S, 0xff);
-	sip_set(&sip, SIP_PAYLOAD_1_S, 0xff);
+    // set ackno=0xffff
+    sip_set(&sip, SIP_PAYLOAD_0_S, 0xff);
+    sip_set(&sip, SIP_PAYLOAD_1_S, 0xff);
 
-	// write 1 byte block exponential
-	sip_set(&sip, (sip_symbol_t) 2, bootloader_config.block_size_exp);
+    // write 1 byte block exponential
+    sip_set(&sip, (sip_symbol_t) 2, bootloader_config.block_size_exp);
 
-	// calculate crc
-	for (uint8_t i = SIP_PAYLOAD_0_S; i < 2 + 1; i++)
-	{
-		crc8 = dscrc8_byte(crc8, sip_get(&sip, (sip_symbol_t) i));
-	}
+    // calculate crc
+    for (uint8_t i = SIP_PAYLOAD_0_S; i < 2 + 1; i++)
+    {
+        crc8 = dscrc8_byte(crc8, sip_get(&sip, (sip_symbol_t) i));
+    }
 
-	// set crc
-	sip_set(&sip, (sip_symbol_t) 3, crc8);
+    // set crc
+    sip_set(&sip, (sip_symbol_t) 3, crc8);
 
-	// set total length (includes CRC)
-	sip_set(&sip, SIP_PAYLOAD_LENGTH_S, 4);
+    // set total length (includes CRC)
+    sip_set(&sip, SIP_PAYLOAD_LENGTH_S, 4);
 
-	// get raw pointer
-	uint8_t *raw_ptr = sip_get_raw_ptr(&sip);
+    // get raw pointer
+    uint8_t *raw_ptr = sip_get_raw_ptr(&sip);
 
-	// send to io device
-	for (uint8_t i = 0; i < SIP_FIXED_OVERHEAD + 8; i++)	///< 4 prefix characters + 4*2 payload characters
-	{
-		comm->serial_device->put(comm->serial_device->device, *(raw_ptr + i));
-	}
+    // send to io device
+    for (uint8_t i = 0; i < SIP_FIXED_OVERHEAD + 8; i++)	///< 4 prefix characters + 4*2 payload characters
+    {
+        comm->serial_device->put(comm->serial_device->device, *(raw_ptr + i));
+    }
 
-	// send last terminator
-	comm->serial_device->put(comm->serial_device->device, '>');
+    // send last terminator
+    comm->serial_device->put(comm->serial_device->device, '>');
 
-	// flush the buffer
-	comm->serial_device->flush(comm->serial_device->device);
+    // flush the buffer
+    comm->serial_device->flush(comm->serial_device->device);
 }
 
 void inst_branch_to_addr(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	// if there is no address to boot, then use previous configured base address、
-	if (size == 0)
-	{
-		reboot_to_addr(bootloader_config.base_addr);
-	}
+    // if there is no address to boot, then use previous configured base address、
+    if (size == 0)
+    {
+        reboot_to_addr(bootloader_config.base_addr);
+    }
 
-		// otherwise, use address specified in command
-	else
-	{
-		APP_ASSERT(size == 4);
+        // otherwise, use address specified in command
+    else
+    {
+        APP_ASSERT(size == 4);
 
-		uint32_t received_base_addr = 0xffffffff;
+        uint32_t received_base_addr = 0xffffffff;
 
-		// convert serial data to uint32
-		uint8_to_uint32(data, &received_base_addr);
+        // convert serial data to uint32
+        uint8_to_uint32(data, &received_base_addr);
 
-		// sanity check: make sure the base addr falls within flash or sram
-		APP_ASSERT(is_valid_address(received_base_addr));
+        // sanity check: make sure the base addr falls within flash or sram
+        APP_ASSERT(is_valid_address(received_base_addr));
 
-		// branch to address
-		reboot_to_addr(received_base_addr);
-	}
+        // branch to address
+        reboot_to_addr(received_base_addr);
+    }
 }
 
 void inst_erase_page(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	APP_ASSERT(size == 2);
+    APP_ASSERT(size == 2);
 
-	// convert 2 byte block array to uint16 value
-	uint16_t pages_to_erase = 0;
-	uint8_to_uint16(data, &pages_to_erase);
+    // convert 2 byte block array to uint16 value
+    uint16_t pages_to_erase = 0;
+    uint8_to_uint16(data, &pages_to_erase);
 
-	// erase the page
-	for (uint16_t page = 0; page < pages_to_erase; page++)
-	{
-		MSC_ErasePage((uint32_t *) (bootloader_config.base_addr + page * FLASH_PAGE_SIZE));
-	}
+    // erase the page
+    for (uint16_t page = 0; page < pages_to_erase; page++)
+    {
+        MSC_ErasePage((uint32_t *) (bootloader_config.base_addr + page * FLASH_PAGE_SIZE));
+    }
 }
 
 void inst_erase_range(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	APP_ASSERT(size == 8);
+    APP_ASSERT(size == 8);
 
-	// read start and finish address
-	uint32_t start_addr = 0;
-	uint32_t end_addr = 0;
+    // read start and finish address
+    uint32_t start_addr = 0;
+    uint32_t end_addr = 0;
 
-	uint8_to_uint32(data + 0, &start_addr);
-	uint8_to_uint32(data + 4, &end_addr);
+    uint8_to_uint32(data + 0, &start_addr);
+    uint8_to_uint32(data + 4, &end_addr);
 
-	APP_ASSERT((end_addr - start_addr) >= FLASH_PAGE_SIZE);
-	APP_ASSERT(end_addr <= FLASH_BASE + FLASH_SIZE);
+    APP_ASSERT((end_addr - start_addr) >= FLASH_PAGE_SIZE);
+    APP_ASSERT(end_addr <= FLASH_BASE + FLASH_SIZE);
 
-	// align the base address down to nearest flash page boundry
-	start_addr = (start_addr / FLASH_PAGE_SIZE) * FLASH_PAGE_SIZE;
+    // align the base address down to nearest flash page boundry
+    start_addr = (start_addr / FLASH_PAGE_SIZE) * FLASH_PAGE_SIZE;
 
-	// erase the page
-	while (start_addr < end_addr)
-	{
-		MSC_ErasePage((uint32_t *) start_addr);
-		start_addr += FLASH_PAGE_SIZE;
-	}
+    // erase the page
+    while (start_addr < end_addr)
+    {
+        MSC_ErasePage((uint32_t *) start_addr);
+        start_addr += FLASH_PAGE_SIZE;
+    }
 }
 
 void inst_query_proto_ver(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	APP_ASSERT(size == 0);
+    APP_ASSERT(size == 0);
 
-	uint16_t bl_proto_ver = BL_PROTO_VER;
-	uint8_t bl_proto_ver_array[2];
-	sip_t sip;
-	crc8_t crc8 = 0;
+    uint16_t bl_proto_ver = BL_PROTO_VER;
+    uint8_t bl_proto_ver_array[2];
+    sip_t sip;
+    crc8_t crc8 = 0;
 
-	// set sip response message
-	sip_init(&sip);
-	sip_set(&sip, SIP_CMD_S, COMM_DATA);
+    // set sip response message
+    sip_init(&sip);
+    sip_set(&sip, SIP_CMD_S, COMM_DATA);
 
-	// set ackno=0xffff
-	sip_set(&sip, SIP_PAYLOAD_0_S, 0xff);
-	sip_set(&sip, SIP_PAYLOAD_1_S, 0xff);
+    // set ackno=0xffff
+    sip_set(&sip, SIP_PAYLOAD_0_S, 0xff);
+    sip_set(&sip, SIP_PAYLOAD_1_S, 0xff);
 
-	// convert 32bit base address to bytes
-	uint16_to_uint8(&bl_proto_ver, bl_proto_ver_array);
+    // convert 32bit base address to bytes
+    uint16_to_uint8(&bl_proto_ver, bl_proto_ver_array);
 
-	for (uint8_t i = 0; i < 2; i++)
-	{
-		sip_set(&sip, (sip_symbol_t) 2 + i, bl_proto_ver_array[i]);
-	}
+    for (uint8_t i = 0; i < 2; i++)
+    {
+        sip_set(&sip, (sip_symbol_t) 2 + i, bl_proto_ver_array[i]);
+    }
 
-	// calculate crc
-	for (uint8_t i = SIP_PAYLOAD_0_S; i < 2 + 2; i++)
-	{
-		crc8 = dscrc8_byte(crc8, sip_get(&sip, (sip_symbol_t) i));
-	}
+    // calculate crc
+    for (uint8_t i = SIP_PAYLOAD_0_S; i < 2 + 2; i++)
+    {
+        crc8 = dscrc8_byte(crc8, sip_get(&sip, (sip_symbol_t) i));
+    }
 
-	// set crc
-	sip_set(&sip, (sip_symbol_t) 4, crc8);
+    // set crc
+    sip_set(&sip, (sip_symbol_t) 4, crc8);
 
-	// set total length (includes CRC)
-	sip_set(&sip, SIP_PAYLOAD_LENGTH_S, 5);
+    // set total length (includes CRC)
+    sip_set(&sip, SIP_PAYLOAD_LENGTH_S, 5);
 
-	// get raw pointer
-	uint8_t *raw_ptr = sip_get_raw_ptr(&sip);
+    // get raw pointer
+    uint8_t *raw_ptr = sip_get_raw_ptr(&sip);
 
-	// send to io device
-	for (uint8_t i = 0; i < SIP_FIXED_OVERHEAD + 10; i++)	///< 4 prefix characters + 5*2 payload characters
-	{
-		comm->serial_device->put(comm->serial_device->device, *(raw_ptr + i));
-	}
+    // send to io device
+    for (uint8_t i = 0; i < SIP_FIXED_OVERHEAD + 10; i++)	///< 4 prefix characters + 5*2 payload characters
+    {
+        comm->serial_device->put(comm->serial_device->device, *(raw_ptr + i));
+    }
 
-	// send last terminator
-	comm->serial_device->put(comm->serial_device->device, '>');
+    // send last terminator
+    comm->serial_device->put(comm->serial_device->device, '>');
 
-	// flush the buffer
-	comm->serial_device->flush(comm->serial_device->device);
+    // flush the buffer
+    comm->serial_device->flush(comm->serial_device->device);
 }
 
 void inst_reboot(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	APP_ASSERT(size == 0);
+    APP_ASSERT(size == 0);
 
-	// TODO: Maybe we have better way to implement this?
-	NVIC_SystemReset();
+    software_reset(RESET_SOFTWARE_REBOOT);
 }
 
 void inst_query_device_info(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	// TODO: Bluetooth/Zigbee, inc stack version?
+    // TODO: Bluetooth/Zigbee, inc stack version?
 }
 
 void inst_query_chip_info(const communication_t *comm, uint8_t *data, uint8_t size)
 {
-	APP_ASSERT(size == 0);
+    APP_ASSERT(size == 0);
 
-	uint64_t unique_id = SYSTEM_GetUnique();
-	uint8_t unique_id_array[8];
-	sip_t sip;
-	crc8_t crc8 = 0;
+    uint64_t unique_id = SYSTEM_GetUnique();
+    uint8_t unique_id_array[8];
+    sip_t sip;
+    crc8_t crc8 = 0;
 
-	// set sip response message
-	sip_init(&sip);
-	sip_set(&sip, SIP_CMD_S, COMM_DATA);
+    // set sip response message
+    sip_init(&sip);
+    sip_set(&sip, SIP_CMD_S, COMM_DATA);
 
-	// set ackno=0xffff
-	sip_set(&sip, SIP_PAYLOAD_0_S, 0xff);
-	sip_set(&sip, SIP_PAYLOAD_1_S, 0xff);
+    // set ackno=0xffff
+    sip_set(&sip, SIP_PAYLOAD_0_S, 0xff);
+    sip_set(&sip, SIP_PAYLOAD_1_S, 0xff);
 
-	// convert 64bit unique id to bytes
-	uint64_to_uint8(&unique_id, unique_id_array);
+    // convert 64bit unique id to bytes
+    uint64_to_uint8(&unique_id, unique_id_array);
 
-	for (uint8_t i = 0; i < 8; i++)
-	{
-		sip_set(&sip, (sip_symbol_t) 2 + i, unique_id_array[i]);
-	}
+    for (uint8_t i = 0; i < 8; i++)
+    {
+        sip_set(&sip, (sip_symbol_t) 2 + i, unique_id_array[i]);
+    }
 
-	// calculate crc
-	for (uint8_t i = SIP_PAYLOAD_0_S; i < 2 + 8; i++)
-	{
-		crc8 = dscrc8_byte(crc8, sip_get(&sip, (sip_symbol_t) i));
-	}
+    // calculate crc
+    for (uint8_t i = SIP_PAYLOAD_0_S; i < 2 + 8; i++)
+    {
+        crc8 = dscrc8_byte(crc8, sip_get(&sip, (sip_symbol_t) i));
+    }
 
-	// set crc
-	sip_set(&sip, (sip_symbol_t) 10, crc8);
+    // set crc
+    sip_set(&sip, (sip_symbol_t) 10, crc8);
 
-	// set total length (includes CRC)
-	sip_set(&sip, SIP_PAYLOAD_LENGTH_S, 11);
+    // set total length (includes CRC)
+    sip_set(&sip, SIP_PAYLOAD_LENGTH_S, 11);
 
-	// get raw pointer
-	uint8_t *raw_ptr = sip_get_raw_ptr(&sip);
+    // get raw pointer
+    uint8_t *raw_ptr = sip_get_raw_ptr(&sip);
 
-	// send to io device
-	for (uint8_t i = 0; i < SIP_FIXED_OVERHEAD + 22; i++)	///< 4 prefix characters + 11*2 payload characters
-	{
-		comm->serial_device->put(comm->serial_device->device, *(raw_ptr + i));
-	}
+    // send to io device
+    for (uint8_t i = 0; i < SIP_FIXED_OVERHEAD + 22; i++)	///< 4 prefix characters + 11*2 payload characters
+    {
+        comm->serial_device->put(comm->serial_device->device, *(raw_ptr + i));
+    }
 
-	// send last terminator
-	comm->serial_device->put(comm->serial_device->device, '>');
+    // send last terminator
+    comm->serial_device->put(comm->serial_device->device, '>');
 
-	// flush the buffer
-	comm->serial_device->flush(comm->serial_device->device);
+    // flush the buffer
+    comm->serial_device->flush(comm->serial_device->device);
 }
