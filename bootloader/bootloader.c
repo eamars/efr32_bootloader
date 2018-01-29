@@ -150,7 +150,7 @@ void trap(void)
 
 bool button_override(void)
 {
-#if (BOARD_HATCH_OUTDOOR_V2 == 1 || BOARD_DEV == 1)
+#if (BOARD_HATCH_OUTDOOR_V2 == 1 || BOARD_DEV == 1 || BOARD_NCP_V2 == 1)
     bool pressed;
 
     // Enable GPIO clock
