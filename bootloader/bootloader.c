@@ -116,6 +116,9 @@ void bootloader(void)
 __attribute__ ((optimize("-O0")))
 void trap(void)
 {
+    // disable global interrupt
+    __disable_irq();
+
     // disable watchdog timer
     BITS_CLEAR(WDOG0->CTRL, WDOG_CTRL_EN);
     BITS_CLEAR(WDOG1->CTRL, WDOG_CTRL_EN);
@@ -324,3 +327,6 @@ void trap_on_hardware_failure(void)
 
     trap();
 }
+
+// override default fault handler for smaller code size
+void fault(void) __attribute__((alias("trap")));

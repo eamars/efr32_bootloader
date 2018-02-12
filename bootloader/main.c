@@ -51,9 +51,3 @@ int main(void)
 
     trap();
 }
-
-// override default fault handler for smaller code size
-void fault(void)
-{
-    while(1);
-}
