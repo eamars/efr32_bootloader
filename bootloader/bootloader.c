@@ -53,11 +53,13 @@ void SysTick_Handler(void)
     {
         led_counter += 1000;
 
-#if (BOARD_DEV == 1 || BOARD_HATCH_OUTDOOR_V2 == 1 || BOARD_NCP_V2 == 1)
+#if (BOARD_HATCH_OUTDOOR_V2 == 1 || BOARD_NCP_V2 == 1)
         GPIO_PinModeSet(BTL_LED1_PORT,
                         BTL_LED1_PIN,
                         gpioModeInputPull,
                         (uint32_t) green_led_state);
+#elif (BOARD_DEV == 1)
+        GPIO_PinModeSet(BTL_LED1_PORT, BTL_LED1_PIN, gpioModePushPull, green_led_state);
 #endif
 
         green_led_state = !green_led_state;
