@@ -138,14 +138,14 @@ SET(EXT_SRC
 		${TARGET_ROOT_DIRECTORY}/platform/emlib/src/em_wdog.c
 		${TARGET_ROOT_DIRECTORY}/platform/emlib/src/em_dbg.c
 
-		${TARGET_ROOT_DIRECTORY}/platform/emdrv/dmadrv/src/dmadrv.c
+		# ${TARGET_ROOT_DIRECTORY}/platform/emdrv/dmadrv/src/dmadrv.c
 		${TARGET_ROOT_DIRECTORY}/platform/emdrv/gpiointerrupt/src/gpiointerrupt.c
 		${TARGET_ROOT_DIRECTORY}/platform/emdrv/rtcdrv/src/rtcdriver.c
-		${TARGET_ROOT_DIRECTORY}/platform/emdrv/sleep/src/sleep.c
-		${TARGET_ROOT_DIRECTORY}/platform/emdrv/tempdrv/src/tempdrv.c
+		# ${TARGET_ROOT_DIRECTORY}/platform/emdrv/sleep/src/sleep.c
+		# ${TARGET_ROOT_DIRECTORY}/platform/emdrv/tempdrv/src/tempdrv.c
 		${TARGET_ROOT_DIRECTORY}/platform/emdrv/ustimer/src/ustimer.c
-		${TARGET_ROOT_DIRECTORY}/platform/emdrv/uartdrv/src/uartdrv.c
-		${TARGET_ROOT_DIRECTORY}/platform/emdrv/spidrv/src/spidrv.c
+		# ${TARGET_ROOT_DIRECTORY}/platform/emdrv/uartdrv/src/uartdrv.c
+		# ${TARGET_ROOT_DIRECTORY}/platform/emdrv/spidrv/src/spidrv.c
 
 		${TARGET_ROOT_DIRECTORY}/platform/bootloader/driver/btl_driver_uart.c
 		${TARGET_ROOT_DIRECTORY}/platform/bootloader/driver/btl_driver_delay.c
