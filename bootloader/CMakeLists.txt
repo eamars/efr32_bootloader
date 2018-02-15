@@ -84,7 +84,7 @@ SET(TARGET_SPECIFIC_INCLUDE_DIRECTORY
 		"${TARGET_ROOT_DIRECTORY}/middleware/glib/glib"
 
 		"${TARGET_ROOT_DIRECTORY}/protocol"
-		${TARGET_ROOT_DIRECTORY}/protocol/flex_1.2
+		${TARGET_ROOT_DIRECTORY}/protocol/flex_2.1
 		${TARGET_ROOT_DIRECTORY}/util/silicon_labs/silabs_core/memory_manager/
 
 		"${TARGET_ROOT_DIRECTORY}/platform"
@@ -108,7 +108,7 @@ SET(TARGET_SPECIFIC_INCLUDE_DIRECTORY
 		"${TARGET_ROOT_DIRECTORY}/hardware/kit/common/bsp"
 		"${TARGET_ROOT_DIRECTORY}/hardware/kit/common/drivers"
 
-		${TARGET_ROOT_DIRECTORY}/protocol/flex_2.0/connect/plugins
+		${TARGET_ROOT_DIRECTORY}/protocol/flex_2.1/connect/plugins
 		${TARGET_ROOT_DIRECTORY}/platform/base/hal/plugin/sim-eeprom
 		)
 
