@@ -12,7 +12,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-
 #define INVALID_BASE_ADDR 0xffffffff
 
 #ifdef __cplusplus
@@ -29,6 +28,7 @@ bool boot_to_prev_application(uint32_t * aat_addr);
 
 void rmu_reset_reason_dump(void);
 void trap_on_hardware_failure(void);
+bool validate_firmware(uint32_t aat_addr);
 
 #ifdef __cplusplus
 }

@@ -27,6 +27,7 @@
 #include "uart_device.h"
 #include "bits.h"
 #include "yield.h"
+#include "simeeprom.h"
 
 
 // function that is implemented in another file
@@ -223,7 +224,9 @@ bool boot_to_application(uint32_t * aat_addr)
             boot_info_map->reset_info_common.reset_reason == RESET_BOOTLOADER_GO)
     {
         *aat_addr = boot_info_map->next_aat_addr;
-        return true;
+
+        if (validate_firmware(*aat_addr))
+            return true;
     }
 
     return false;
@@ -232,9 +235,37 @@ bool boot_to_application(uint32_t * aat_addr)
 
 bool boot_to_prev_application(uint32_t * aat_addr)
 {
-    // TODO: read from persist memory
+#if 0
+    // read from persist memory
+    simeeprom_t simeeprom;
+    simeeprom_init(&simeeprom);
+
+    // read boot count
+    uint32_t boot_count = 0;
+    simeeprom_read(&simeeprom, TOKEN_HATCH_BOOT_COUNT, &boot_count, TOKEN_HATCH_BOOT_COUNT_SIZE);
+
+    // TODO: when first boot, enter MFG test
+    if (boot_count == 0)
+    {
+        *aat_addr = 0x100;
+    }
+    else
+    {
+        // read boot info
+        hatch_boot_info_t boot_info = {0};
+        simeeprom_read(&simeeprom, TOKEN_HATCH_BOOT_INFO, &boot_info, TOKEN_HATCH_BOOT_INFO_SIZE);
+
+        *aat_addr = boot_info.aat_addr;
+    }
+#else
     *aat_addr = 0x100;
-    return true;
+#endif
+    if (validate_firmware(*aat_addr))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 
@@ -328,6 +359,29 @@ void trap_on_hardware_failure(void)
     );
 
     trap();
+}
+
+bool validate_firmware(uint32_t aat_addr)
+{
+    uint32_t * aat = (uint32_t *) aat_addr;
+
+    // check stack top to see if falls within sram region
+    uint32_t stack_top = aat[0];
+    if (stack_top < SRAM_BASE || stack_top > SRAM_BASE + SRAM_SIZE)
+    {
+        return false;
+    }
+
+    // check reset handler to see if falled within flash region
+    uint32_t reset_handler_addr = aat[1];
+    if (reset_handler_addr < FLASH_BASE || reset_handler_addr > FLASH_BASE + FLASH_SIZE)
+    {
+        return false;
+    }
+
+    // TODO: check crc
+
+    return true;
 }
 
 // override default fault handler for smaller code size
